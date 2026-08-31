@@ -1,0 +1,13 @@
+.DS_Store
+node_modules/
+*.log
+
+# WordPress core / non-theme wp-content, if this project ever hosts a full install
+/wp-admin/
+/wp-includes/
+/*.php
+!wp-content/**/*.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-config.php
