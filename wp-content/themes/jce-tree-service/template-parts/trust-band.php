@@ -15,19 +15,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $items = array(
 	array(
-		'icon' => 'star',
-		'lead' => jce_biz( 'aggregate_rating', '4.9' ),
-		'text' => __( 'Star Rating', 'jce' ),
+		'icon' => 'users',
+		'lead' => jce_biz( 'years_experience', '25' ),
+		'text' => __( 'Years Locally Owned', 'jce' ),
 	),
 	array(
 		'icon' => 'award',
 		'lead' => jce_biz( 'arborist_count', '4' ),
 		'text' => __( 'ISA-Certified Arborists', 'jce' ),
-	),
+	),	
 	array(
-		'icon' => 'users',
-		'lead' => jce_biz( 'years_experience', '25' ),
-		'text' => __( 'Years Locally Owned', 'jce' ),
+		'icon' => 'star',
+		'lead' => jce_biz( 'aggregate_rating', '4.9' ),
+		'text' => __( 'Star Rating', 'jce' ),
 	),
 );
 ?>

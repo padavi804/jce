@@ -7,6 +7,7 @@ $phone     = jce_biz( 'phone' );
 $email     = jce_biz( 'email' );
 $facebook  = jce_biz( 'facebook_url' );
 $instagram = jce_biz( 'instagram_url' );
+$youtube   = jce_biz( 'youtube_url' );
 $street    = jce_biz( 'street_address' );
 ?>
 </main>
@@ -32,7 +33,7 @@ $street    = jce_biz( 'street_address' );
 			<?php endif; ?>
 			<p><?php esc_html_e( 'Family-owned tree care in River Falls since 2001. Four ISA-certified arborists, a full equipment fleet, and a crew that cleans up like they\'re leaving their own yard.', 'jce' ); ?></p>
 
-			<?php if ( $facebook || $instagram ) : ?>
+			<?php if ( $facebook || $instagram || $youtube ) : ?>
 				<div class="footer-socials">
 					<?php if ( $facebook ) : ?>
 						<a href="<?php echo esc_url( $facebook ); ?>" target="_blank" rel="noopener">
@@ -44,6 +45,12 @@ $street    = jce_biz( 'street_address' );
 						<a href="<?php echo esc_url( $instagram ); ?>" target="_blank" rel="noopener">
 							<span class="screen-reader-text"><?php esc_html_e( 'Instagram', 'jce' ); ?></span>
 							<?php jce_icon( 'instagram' ); ?>
+						</a>
+					<?php endif; ?>
+					<?php if ( $youtube ) : ?>
+						<a href="<?php echo esc_url( $youtube ); ?>" target="_blank" rel="noopener">
+							<span class="screen-reader-text"><?php esc_html_e( 'YouTube', 'jce' ); ?></span>
+							<?php jce_icon( 'youtube', 'icon--filled' ); ?>
 						</a>
 					<?php endif; ?>
 				</div>

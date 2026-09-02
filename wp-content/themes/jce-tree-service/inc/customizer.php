@@ -59,6 +59,7 @@ function jce_customize_register( $wp_customize ) {
 		// Social.
 		'jce_facebook_url'      => array( 'jce_social', __( 'Facebook URL', 'jce' ), '', 'esc_url_raw' ),
 		'jce_instagram_url'     => array( 'jce_social', __( 'Instagram URL', 'jce' ), '', 'esc_url_raw' ),
+		'jce_youtube_url'       => array( 'jce_social', __( 'YouTube URL', 'jce' ), '', 'esc_url_raw' ),
 		'jce_google_review_url' => array( 'jce_social', __( 'Google Business Profile URL', 'jce' ), '', 'esc_url_raw' ),
 	);
 

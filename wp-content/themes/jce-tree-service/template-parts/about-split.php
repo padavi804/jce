@@ -34,6 +34,7 @@ $content = trim( get_the_content() );
 				<?php if ( $content ) : ?>
 					<div class="entry-content"><?php the_content(); ?></div>
 				<?php else : ?>
+					<?php // Approved homepage copy — see the creative brief in content/. ?>
 					<h2><?php esc_html_e( 'Anyone with a chainsaw can call themselves a tree service.', 'jce' ); ?></h2>
 					<p class="lede" style="margin-top:1.25rem;"><?php esc_html_e( "Not everyone shows up with certified arborists, a fleet of equipment chosen to protect your lawn, and a professional, experienced crew that cleans up like they're leaving their own yard.", 'jce' ); ?></p>
 					<p style="margin-top:1rem;"><?php esc_html_e( "That's the difference with JCE. For 25 years, we've earned the trust of local homeowners in River Falls, Hudson, and Prescott by doing the job right, from start to finish.", 'jce' ); ?></p>
