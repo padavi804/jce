@@ -16,6 +16,8 @@ require JCE_THEME_DIR . '/inc/customizer.php';
 require JCE_THEME_DIR . '/inc/icons.php';
 require JCE_THEME_DIR . '/inc/media.php';
 require JCE_THEME_DIR . '/inc/custom-post-types.php';
+require JCE_THEME_DIR . '/inc/fields.php';
 require JCE_THEME_DIR . '/inc/meta-boxes.php';
 require JCE_THEME_DIR . '/inc/schema.php';
 require JCE_THEME_DIR . '/inc/seo.php';
+require JCE_THEME_DIR . '/inc/demo-content.php';

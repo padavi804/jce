@@ -105,12 +105,15 @@ add_action( 'widgets_init', 'jce_register_widget_areas' );
  * in Appearance > Menus.
  */
 function jce_primary_menu_fallback() {
+	// These URLs match the slugs Tools > JCE Example Content creates, and the
+	// contact entry matches the jce_estimate_url Customizer default, so the
+	// fallback menu works rather than 404ing before a menu is assigned.
 	$items = array(
 		home_url( '/' )              => __( 'Home', 'jce' ),
 		home_url( '/services/' )     => __( 'Services', 'jce' ),
-		home_url( '/about/' )        => __( 'About Us', 'jce' ),
 		home_url( '/service-area/' ) => __( 'Service Area', 'jce' ),
-		home_url( '/contact/' )      => __( 'Contact', 'jce' ),
+		home_url( '/about/' )        => __( 'About Us', 'jce' ),
+		jce_url( 'estimate_url', '/estimate/' ) => __( 'Contact', 'jce' ),
 	);
 
 	echo '<ul>';

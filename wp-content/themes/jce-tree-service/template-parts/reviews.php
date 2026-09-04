@@ -8,23 +8,54 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$reviews = new WP_Query(
+$args = wp_parse_args(
+	isset( $args ) ? $args : array(),
 	array(
-		'post_type'      => 'testimonial',
-		'posts_per_page' => 3,
-		'no_found_rows'  => true,
+		'related' => '',
+		'heading' => __( 'What Homeowners Say', 'jce' ),
+		'eyebrow' => __( 'From Your Neighbors', 'jce' ),
+		'class'   => 'section--cream',
 	)
 );
+
+$query_args = array(
+	'post_type'      => 'testimonial',
+	'posts_per_page' => 3,
+	'no_found_rows'  => true,
+);
+
+// A service or town page shows reviews tagged to it first. Tagged reviews are
+// the point of the section — a generic five-star quote proves nothing that the
+// star rating in the header hasn't already said.
+if ( $args['related'] ) {
+	$tagged = new WP_Query(
+		array_merge(
+			$query_args,
+			array(
+				'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery
+					array( 'key' => '_jce_review_service', 'value' => $args['related'] ),
+				),
+			)
+		)
+	);
+	if ( $tagged->have_posts() ) {
+		$query_args['post__in'] = wp_list_pluck( $tagged->posts, 'ID' );
+		$query_args['orderby']  = 'post__in';
+	}
+	wp_reset_postdata();
+}
+
+$reviews = new WP_Query( $query_args );
 
 if ( ! $reviews->have_posts() ) {
 	return;
 }
 ?>
-<section class="section section--cream" id="reviews">
+<section class="section <?php echo esc_attr( $args['class'] ); ?>" id="reviews">
 	<div class="wrap">
 		<div class="section-head section-head--center">
-			<p class="eyebrow"><?php esc_html_e( 'From Your Neighbors', 'jce' ); ?></p>
-			<h2><?php esc_html_e( 'What Homeowners Say', 'jce' ); ?></h2>
+			<p class="eyebrow"><?php echo esc_html( $args['eyebrow'] ); ?></p>
+			<h2><?php echo esc_html( $args['heading'] ); ?></h2>
 		</div>
 
 		<div class="reviews-grid">

@@ -66,6 +66,43 @@ function jce_icon( $name, $class = '' ) {
 }
 
 /**
+ * Default icon per Service slug.
+ *
+ * Shared by the services grid and the related-services strip so a new Service
+ * picks up a sensible icon everywhere at once. The per-post "Tile Icon" field
+ * overrides it.
+ */
+function jce_service_icon_map() {
+	return array(
+		'tree-removal'           => 'tree',
+		'tree-pruning'           => 'scissors',
+		'emergency-tree-service' => 'zap',
+		'plant-health-care'      => 'leaf',
+		'tree-inspection'        => 'search',
+		'lot-land-clearing'      => 'layers',
+		'brush-clean-up'         => 'wind',
+		'stump-grinding'         => 'disc',
+	);
+}
+
+/**
+ * Resolve the icon for a Service: the post's own field, then the slug map,
+ * then a generic tree.
+ */
+function jce_service_icon( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$icon    = get_post_meta( $post_id, '_jce_service_icon', true );
+	if ( $icon ) {
+		return $icon;
+	}
+
+	$map  = jce_service_icon_map();
+	$slug = get_post_field( 'post_name', $post_id );
+
+	return isset( $map[ $slug ] ) ? $map[ $slug ] : 'tree';
+}
+
+/**
  * Decorative tree mark used inside image placeholders.
  */
 function jce_placeholder_mark() {

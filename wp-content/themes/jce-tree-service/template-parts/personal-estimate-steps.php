@@ -6,8 +6,10 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$args = wp_parse_args( isset( $args ) ? $args : array(), array( 'class' => '' ) );
 ?>
-<section class="section" id="personal-estimate">
+<section class="section <?php echo esc_attr( $args['class'] ); ?>" id="personal-estimate">
 	<div class="wrap">
 		<div class="section-head">
 			<p class="eyebrow"><?php esc_html_e( 'What Happens After You Reach Out', 'jce' ); ?></p>

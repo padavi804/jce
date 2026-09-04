@@ -44,7 +44,9 @@ function jce_register_post_types() {
 			'has_archive'  => false,
 			'rewrite'      => array( 'slug' => 'service-area' ),
 			'menu_icon'    => 'dashicons-location',
-			'supports'     => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+			// 'excerpt' drives the town card summary and the hero subheading;
+			// without it single-location.php falls back to trimmed body copy.
+			'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'page-attributes' ),
 			'show_in_rest' => true,
 		)
 	);

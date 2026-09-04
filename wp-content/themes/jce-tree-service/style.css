@@ -1159,3 +1159,305 @@ strong { color: var(--ink); font-weight: 600; }
 /* Default box so an icon is never clipped if a context forgets to size it. */
 .icon { display: inline-block; width: 1em; height: 1em; flex: none; overflow: visible; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .icon--filled { fill: currentColor; stroke: none; }
+
+/* ===========================================================
+   23. PAGE SECTIONS — services, service area, about
+   Components used by single-service.php, single-location.php,
+   archive-service.php, and the About / Service Area templates.
+   Every one of them is driven by an editable field, so each has
+   to survive both two items and ten.
+   =========================================================== */
+
+/* -----------------------------------------------------------
+   Feature split — heading on the left, labelled points on the right
+   ----------------------------------------------------------- */
+.feature-split {
+	display: grid;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+	gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+	align-items: start;
+}
+/* The heading column rides down with the list on long pages rather than
+   leaving a tall empty gutter beside it. */
+@media (min-width: 861px) {
+	.feature-split__head { position: sticky; top: calc(var(--header-h) + 1.5rem); }
+}
+@media (max-width: 860px) {
+	.feature-split { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.feature-list { display: grid; gap: 1.5rem; }
+.feature-list__item { display: flex; gap: 1rem; align-items: flex-start; }
+.feature-list__icon {
+	width: 40px; height: 40px; flex: none;
+	display: grid; place-items: center;
+	border-radius: 9px;
+	background: var(--green-050);
+	color: var(--green-700);
+}
+.feature-list__icon .icon { width: 20px; height: 20px; }
+.feature-list__item strong {
+	display: block;
+	font-family: var(--font-display);
+	font-size: var(--step-1);
+	font-weight: 700;
+	line-height: 1.25;
+	letter-spacing: -.01em;
+	color: var(--ink);
+	margin-bottom: .3rem;
+}
+.feature-list__copy { display: block; font-size: .95rem; color: var(--body); }
+
+.section--dark .feature-list__icon { background: rgba(60,180,96,.16); color: var(--green); }
+.section--dark .feature-list__item strong { color: var(--white); }
+.section--dark .feature-list__copy { color: rgba(255,255,255,.75); }
+
+/* -----------------------------------------------------------
+   Scope — what's included beside what moves the price
+   ----------------------------------------------------------- */
+.scope {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 1.5rem;
+	align-items: start;
+}
+.scope__panel {
+	background: var(--white);
+	border: 1px solid var(--line);
+	border-radius: var(--radius-lg);
+	padding: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem);
+	box-shadow: var(--shadow-sm);
+}
+.scope__title { font-size: var(--step-2); margin-bottom: 1.4rem; }
+.scope__note { font-size: .95rem; margin: -.8rem 0 1.5rem; }
+
+/* The estimating panel goes dark so the price conversation reads as the
+   serious half of the pair rather than a second list of features. */
+.scope__panel--dark {
+	background: var(--forest);
+	border-color: var(--forest);
+	color: rgba(255,255,255,.78);
+}
+.scope__panel--dark .scope__title { color: var(--white); }
+.scope__panel--dark .eyebrow { color: var(--green); }
+.scope__panel--dark .scope__note { color: rgba(255,255,255,.68); }
+
+.price-factors { display: grid; gap: 1.15rem; }
+.price-factor { padding-left: 1rem; border-left: 2px solid rgba(60,180,96,.5); }
+.price-factor dt {
+	font-weight: 700;
+	color: var(--white);
+	font-size: .95rem;
+	letter-spacing: .01em;
+	margin-bottom: .2rem;
+}
+.price-factor dd { margin: 0; font-size: .92rem; color: rgba(255,255,255,.72); }
+
+/* -----------------------------------------------------------
+   FAQ — native <details>, so it works with JS disabled
+   ----------------------------------------------------------- */
+.faq { border-top: 1px solid var(--line); }
+.faq__item { border-bottom: 1px solid var(--line); }
+.faq__q {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1.5rem;
+	padding: 1.35rem 0;
+	cursor: pointer;
+	list-style: none;
+	font-family: var(--font-display);
+	font-size: var(--step-1);
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--ink);
+	transition: color .18s ease;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q:hover { color: var(--green-700); }
+.faq__chevron {
+	width: 1.35rem; height: 1.35rem;
+	flex: none;
+	margin-top: .2rem;
+	color: var(--green-700);
+	transition: transform .22s ease;
+}
+.faq__item[open] .faq__chevron { transform: rotate(180deg); }
+.faq__a { padding: 0 0 1.5rem; max-width: 68ch; }
+.faq__a p { color: var(--body); }
+
+.section--dark .faq { border-color: rgba(255,255,255,.14); }
+.section--dark .faq__item { border-color: rgba(255,255,255,.14); }
+.section--dark .faq__q { color: var(--white); }
+.section--dark .faq__a p { color: rgba(255,255,255,.75); }
+
+/* -----------------------------------------------------------
+   Highlight cards — values / coverage promises
+   ----------------------------------------------------------- */
+.highlight-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 1.5rem;
+}
+.highlight-card {
+	background: var(--white);
+	border: 1px solid var(--line);
+	border-radius: var(--radius-lg);
+	padding: 2rem 1.75rem;
+	transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.highlight-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: transparent; }
+.highlight-card__icon {
+	width: 48px; height: 48px;
+	display: grid; place-items: center;
+	border-radius: 10px;
+	background: var(--green-050);
+	color: var(--green-700);
+	margin-bottom: 1.15rem;
+}
+.highlight-card__icon .icon { width: 24px; height: 24px; }
+.highlight-card h3 { font-size: var(--step-1); margin-bottom: .55rem; }
+.highlight-card p { font-size: .94rem; }
+
+/* -----------------------------------------------------------
+   Timeline — the About page's dark band
+   ----------------------------------------------------------- */
+.timeline {
+	display: grid;
+	gap: 0;
+	list-style: none;
+	padding: 0;
+	max-width: 820px;
+}
+.timeline__item {
+	display: grid;
+	grid-template-columns: 5.5rem 1fr;
+	gap: 0 1.75rem;
+	padding-bottom: 2.25rem;
+	position: relative;
+}
+/* The rule runs between the year markers, stopping at the last one rather
+   than trailing off past it. */
+.timeline__item:not(:last-child)::before {
+	content: "";
+	position: absolute;
+	left: calc(5.5rem / 2);
+	top: 2.1rem;
+	bottom: -.5rem;
+	width: 2px;
+	background: rgba(255,255,255,.14);
+	transform: translateX(-1px);
+}
+.timeline__item:last-child { padding-bottom: 0; }
+.timeline__year {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	height: 2.1rem;
+	border-radius: 99px;
+	background: var(--green);
+	color: var(--white);
+	font-family: var(--font-display);
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: .01em;
+}
+.timeline__body h3 { font-size: var(--step-1); margin-bottom: .45rem; }
+.timeline__body p { font-size: .95rem; color: rgba(255,255,255,.75); }
+
+@media (max-width: 560px) {
+	.timeline__item { grid-template-columns: 1fr; gap: .7rem; }
+	.timeline__item::before { display: none; }
+	.timeline__year { justify-self: start; padding-inline: 1rem; }
+}
+
+/* -----------------------------------------------------------
+   Fact strip — the thin bar under a town page's hero
+   ----------------------------------------------------------- */
+.fact-strip { background: var(--charcoal); color: rgba(255,255,255,.82); }
+.fact-strip__inner {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .8rem 2.25rem;
+	padding-block: 1.1rem;
+	font-size: .9rem;
+}
+.fact { display: inline-flex; align-items: center; gap: .55rem; }
+.fact .icon { width: 1.1rem; height: 1.1rem; color: var(--green); flex: none; }
+
+/* -----------------------------------------------------------
+   Chip links (related services, secondary towns) and tags
+   ----------------------------------------------------------- */
+.chip-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+	gap: .8rem;
+	list-style: none;
+	padding: 0;
+}
+.chip-grid--compact { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+
+.chip-link {
+	display: flex;
+	align-items: center;
+	gap: .75rem;
+	padding: .85rem 1rem;
+	background: var(--white);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	font-weight: 600;
+	font-size: .93rem;
+	color: var(--ink);
+	transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.chip-link:hover { border-color: var(--green); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+.chip-link__icon {
+	width: 32px; height: 32px; flex: none;
+	display: grid; place-items: center;
+	border-radius: 7px;
+	background: var(--green-050);
+	color: var(--green-700);
+}
+.chip-link__icon .icon { width: 17px; height: 17px; }
+.chip-link__label { flex: 1; line-height: 1.25; }
+.chip-link__arrow { width: 1rem; height: 1rem; color: var(--green-700); opacity: 0; transition: opacity .18s ease, transform .18s ease; }
+.chip-link:hover .chip-link__arrow { opacity: 1; transform: translateX(2px); }
+
+.town-list { margin-top: 2.5rem; }
+.town-list__title {
+	font-family: var(--font-body);
+	font-size: .82rem;
+	font-weight: 700;
+	letter-spacing: .13em;
+	text-transform: uppercase;
+	color: var(--muted);
+	margin-bottom: 1.1rem;
+}
+
+/* Neighborhood tags — plain labels, not links */
+.tag-list { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; padding: 0; }
+.tag {
+	display: inline-flex;
+	align-items: center;
+	gap: .4rem;
+	padding: .5rem .9rem;
+	border: 1px solid var(--line);
+	border-radius: 99px;
+	background: var(--white);
+	font-size: .88rem;
+	color: var(--ink);
+}
+.tag .icon { width: .95rem; height: .95rem; color: var(--green); flex: none; }
+
+/* Distance line on a town card in the locations grid */
+.area-card__meta {
+	display: inline-flex;
+	align-items: center;
+	gap: .4rem;
+	margin-bottom: .5rem;
+	font-size: .82rem;
+	font-weight: 600;
+	color: var(--green-700);
+}
+.area-card__meta .icon { width: .95rem; height: .95rem; flex: none; }

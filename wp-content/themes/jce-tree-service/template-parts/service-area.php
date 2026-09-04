@@ -1,20 +1,45 @@
 <?php
 /**
- * Service area. Primary towns get their own linked location page (the SEO
- * deliverable); secondary towns are named in text — the brief is explicit that
- * we name towns rather than saying "our service area".
+ * Service area, short version — the block embedded in the homepage, service
+ * pages, and the About page.
+ *
+ * Primary towns get their own linked location page (the SEO deliverable);
+ * secondary towns are named in text, and linked too once they exist as
+ * Location posts. The brief is explicit that we name towns rather than saying
+ * "our service area".
+ *
+ * The full inventory lives in template-parts/locations-grid.php, used by the
+ * Service Area landing page.
+ *
+ * @param array $args {
+ *     @type string $heading Section heading.
+ *     @type string $eyebrow Section eyebrow.
+ *     @type int    $exclude Location ID to leave out (the town being viewed).
+ *     @type string $class   Extra section classes.
+ * }
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$args = wp_parse_args(
+	isset( $args ) ? $args : array(),
+	array(
+		'heading' => __( 'Serving River Falls, Hudson &amp; Prescott', 'jce' ),
+		'eyebrow' => __( 'Where We Work', 'jce' ),
+		'exclude' => 0,
+		'class'   => 'section--cream',
+	)
+);
+
 $primary = new WP_Query(
 	array(
 		'post_type'      => 'location',
-		'posts_per_page' => -1,
+		'posts_per_page' => 3,
 		'orderby'        => 'menu_order title',
 		'order'          => 'ASC',
 		'no_found_rows'  => true,
+		'post__not_in'   => array_filter( array( $args['exclude'] ) ),
 		'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery
 			'relation' => 'OR',
 			array( 'key' => '_jce_location_priority', 'value' => 'primary' ),
@@ -31,13 +56,29 @@ $fallback_primary = array(
 
 $location_images = jce_default_location_images();
 
-$secondary = array( 'Ellsworth', 'Beldenville', 'Roberts', 'Houlton', 'Hammond', 'Baldwin', 'New Richmond', 'Spring Valley', 'Hastings', 'Afton', 'Lake St. Croix Beach', 'Lakeland' );
+// Secondary towns link to their own page once one exists; otherwise they are
+// named as plain text, which is still better than "and surrounding areas".
+$secondary_posts = get_posts(
+	array(
+		'post_type'      => 'location',
+		'posts_per_page' => -1,
+		'orderby'        => 'menu_order title',
+		'order'          => 'ASC',
+		'no_found_rows'  => true,
+		'post__not_in'   => array_filter( array( $args['exclude'] ) ),
+		'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery
+			array( 'key' => '_jce_location_priority', 'value' => 'secondary' ),
+		),
+	)
+);
+
+$fallback_secondary = array( 'Ellsworth', 'Beldenville', 'Roberts', 'Houlton', 'Hammond', 'Baldwin', 'New Richmond', 'Spring Valley', 'Hastings', 'Afton', 'Lake St. Croix Beach', 'Lakeland' );
 ?>
-<section class="section section--cream" id="service-area">
+<section class="section <?php echo esc_attr( $args['class'] ); ?>" id="service-area">
 	<div class="wrap">
 		<div class="section-head">
-			<p class="eyebrow"><?php esc_html_e( 'Where We Work', 'jce' ); ?></p>
-			<h2><?php esc_html_e( 'Serving River Falls, Hudson &amp; Prescott', 'jce' ); ?></h2>
+			<p class="eyebrow"><?php echo esc_html( $args['eyebrow'] ); ?></p>
+			<h2><?php echo esc_html( $args['heading'] ); ?></h2>
 		</div>
 
 		<div class="area-primary">
@@ -77,7 +118,17 @@ $secondary = array( 'Ellsworth', 'Beldenville', 'Roberts', 'Houlton', 'Hammond',
 
 		<p class="area-secondary">
 			<strong><?php esc_html_e( 'Also serving:', 'jce' ); ?></strong>
-			<?php echo esc_html( implode( ' · ', $secondary ) ); ?>
+			<?php if ( $secondary_posts ) : ?>
+				<?php
+				$links = array();
+				foreach ( $secondary_posts as $town ) {
+					$links[] = sprintf( '<a href="%s">%s</a>', esc_url( get_permalink( $town ) ), esc_html( get_the_title( $town ) ) );
+				}
+				echo wp_kses_post( implode( ' · ', $links ) );
+				?>
+			<?php else : ?>
+				<?php echo esc_html( implode( ' · ', $fallback_secondary ) ); ?>
+			<?php endif; ?>
 		</p>
 	</div>
 </section>

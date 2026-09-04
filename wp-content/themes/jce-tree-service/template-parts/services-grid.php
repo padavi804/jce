@@ -10,7 +10,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$args     = wp_parse_args( isset( $args ) ? $args : array(), array( 'limit' => -1, 'heading' => __( 'What We Do', 'jce' ) ) );
+$args = wp_parse_args(
+	isset( $args ) ? $args : array(),
+	array(
+		'limit'   => -1,
+		'heading' => __( 'What We Do', 'jce' ),
+		'eyebrow' => __( 'Our Services', 'jce' ),
+		'lede'    => __( 'Removal is most of what we do, but the crew that shows up is trained for everything on this list.', 'jce' ),
+		'class'   => 'section--cream',
+	)
+);
+
 $services = new WP_Query(
 	array(
 		'post_type'      => 'service',
@@ -19,18 +29,6 @@ $services = new WP_Query(
 		'order'          => 'ASC',
 		'no_found_rows'  => true,
 	)
-);
-
-// Icon lookup by slug, so a new Service picks up a sensible icon automatically.
-$icon_map = array(
-	'tree-removal'           => 'tree',
-	'tree-pruning'           => 'scissors',
-	'emergency-tree-service' => 'zap',
-	'plant-health-care'      => 'leaf',
-	'tree-inspection'        => 'search',
-	'lot-land-clearing'      => 'layers',
-	'brush-clean-up'         => 'wind',
-	'stump-grinding'         => 'disc',
 );
 
 // Label, icon, copy, and the slug used to look up the bundled photo.
@@ -45,12 +43,14 @@ $fallback = array(
 	array( 'Stump Grinding', 'disc', __( 'Grinding down what\'s left so you can put grass, garden, or patio back where the tree stood.', 'jce' ), 'stump-grinding' ),
 );
 ?>
-<section class="section section--cream" id="services">
+<section class="section <?php echo esc_attr( $args['class'] ); ?>" id="services">
 	<div class="wrap">
 		<div class="section-head section-head--center">
-			<p class="eyebrow"><?php esc_html_e( 'Our Services', 'jce' ); ?></p>
+			<p class="eyebrow"><?php echo esc_html( $args['eyebrow'] ); ?></p>
 			<h2><?php echo esc_html( $args['heading'] ); ?></h2>
-			<p class="lede"><?php esc_html_e( 'Removal is most of what we do, but the crew that shows up is trained for everything on this list.', 'jce' ); ?></p>
+			<?php if ( $args['lede'] ) : ?>
+				<p class="lede"><?php echo esc_html( $args['lede'] ); ?></p>
+			<?php endif; ?>
 		</div>
 
 		<div class="services-grid">
@@ -59,11 +59,7 @@ $fallback = array(
 				$i = 0;
 				while ( $services->have_posts() ) :
 					$services->the_post();
-					$slug = get_post_field( 'post_name' );
-					$icon = get_post_meta( get_the_ID(), '_jce_service_icon', true );
-					if ( ! $icon ) {
-						$icon = isset( $icon_map[ $slug ] ) ? $icon_map[ $slug ] : 'tree';
-					}
+					$icon     = jce_service_icon();
 					$featured = ( 0 === $i ) ? ' service-card--featured' : '';
 					$i++;
 					?>
