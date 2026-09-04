@@ -65,6 +65,23 @@ function jce_rows( $value, $columns = 2 ) {
 }
 
 /**
+ * Is this field explicitly switched off?
+ *
+ * Empty and off have to mean different things. Empty means "nothing typed
+ * here yet", and falls back to example copy so a half-built page still reads
+ * as finished. But a page carrying approved copy often has no use for a
+ * section at all, and there the fallback is actively wrong — it publishes
+ * invented text under the client's name.
+ *
+ * So a field containing a single dash means "render nothing".
+ *
+ * @param string $raw Raw meta value.
+ */
+function jce_field_is_off( $raw ) {
+	return in_array( strtolower( trim( (string) $raw ) ), array( '-', 'none', 'hide', 'off' ), true );
+}
+
+/**
  * Read a post meta field as lines.
  *
  * @param string   $key      Meta key, without the leading underscore/prefix.
@@ -75,7 +92,13 @@ function jce_rows( $value, $columns = 2 ) {
  */
 function jce_field_lines( $key, $post_id = null, $fallback = array() ) {
 	$post_id = $post_id ? $post_id : get_the_ID();
-	$lines   = jce_lines( get_post_meta( $post_id, $key, true ) );
+	$raw     = get_post_meta( $post_id, $key, true );
+
+	if ( jce_field_is_off( $raw ) ) {
+		return array();
+	}
+
+	$lines = jce_lines( $raw );
 
 	return $lines ? $lines : $fallback;
 }
@@ -91,7 +114,13 @@ function jce_field_lines( $key, $post_id = null, $fallback = array() ) {
  */
 function jce_field_rows( $key, $columns = 2, $post_id = null, $fallback = array() ) {
 	$post_id = $post_id ? $post_id : get_the_ID();
-	$rows    = jce_rows( get_post_meta( $post_id, $key, true ), $columns );
+	$raw     = get_post_meta( $post_id, $key, true );
+
+	if ( jce_field_is_off( $raw ) ) {
+		return array();
+	}
+
+	$rows = jce_rows( $raw, $columns );
 
 	return $rows ? $rows : $fallback;
 }
@@ -103,7 +132,97 @@ function jce_field( $key, $post_id = null, $fallback = '' ) {
 	$post_id = $post_id ? $post_id : get_the_ID();
 	$value   = get_post_meta( $post_id, $key, true );
 
+	if ( jce_field_is_off( $value ) ) {
+		return '';
+	}
+
 	return ( '' === $value || null === $value ) ? $fallback : $value;
+}
+
+/**
+ * Join names into a readable sentence fragment: "A, B, and C".
+ *
+ * @param string[] $items
+ * @param string   $conjunction
+ */
+function jce_list_sentence( $items, $conjunction = 'and' ) {
+	$items = array_values( array_filter( array_map( 'trim', (array) $items ) ) );
+	$count = count( $items );
+
+	if ( ! $count ) {
+		return '';
+	}
+	if ( 1 === $count ) {
+		return $items[0];
+	}
+	if ( 2 === $count ) {
+		return $items[0] . ' ' . $conjunction . ' ' . $items[1];
+	}
+
+	$last = array_pop( $items );
+
+	return implode( ', ', $items ) . ', ' . $conjunction . ' ' . $last;
+}
+
+/**
+ * The "Proudly serving…" line, built from the Location posts.
+ *
+ * Generated rather than typed so it cannot drift: adding a town in WordPress
+ * updates this sentence everywhere it appears. Primary towns lead, secondary
+ * towns follow after "plus".
+ */
+function jce_area_sentence() {
+	$fetch = static function ( $priority ) {
+		$args = array(
+			'post_type'      => 'location',
+			'posts_per_page' => -1,
+			'orderby'        => 'menu_order title',
+			'order'          => 'ASC',
+			'no_found_rows'  => true,
+			'fields'         => 'ids',
+		);
+
+		$args['meta_query'] = ( 'primary' === $priority ) // phpcs:ignore WordPress.DB.SlowDBQuery
+			? array(
+				'relation' => 'OR',
+				array( 'key' => '_jce_location_priority', 'value' => 'primary' ),
+				array( 'key' => '_jce_location_priority', 'compare' => 'NOT EXISTS' ),
+			)
+			: array( array( 'key' => '_jce_location_priority', 'value' => 'secondary' ) );
+
+		// Town pages are titled "Hudson, WI"; the sentence reads better with
+		// just the town, and the state is already established by context.
+		return array_map(
+			static function ( $id ) {
+				return trim( preg_replace( '/,\s*(WI|MN)\s*$/i', '', get_the_title( $id ) ) );
+			},
+			get_posts( $args )
+		);
+	};
+
+	$primary   = $fetch( 'primary' );
+	$secondary = $fetch( 'secondary' );
+
+	if ( ! $primary ) {
+		$primary   = array( 'River Falls', 'Hudson', 'Prescott' );
+		$secondary = array( 'Ellsworth', 'Beldenville', 'Roberts', 'Houlton', 'Hammond', 'Baldwin', 'New Richmond', 'Spring Valley', 'Hastings', 'Afton', 'Lake St. Croix Beach', 'Lakeland' );
+	}
+
+	$sentence = sprintf(
+		/* translators: %s: list of primary towns */
+		__( 'Proudly serving %s', 'jce' ),
+		jce_list_sentence( $primary )
+	);
+
+	if ( $secondary ) {
+		$sentence .= sprintf(
+			/* translators: %s: list of secondary towns */
+			__( ', plus %s', 'jce' ),
+			jce_list_sentence( $secondary )
+		);
+	}
+
+	return $sentence . '.';
 }
 
 /**
@@ -133,6 +252,24 @@ function jce_band( $signal = '' ) {
 	$cream = ! $cream;
 
 	return $cream ? 'section--cream' : '';
+}
+
+/**
+ * jce_band(), but only when the section is actually going to render.
+ *
+ * A section whose field is empty or switched off returns before printing
+ * anything. If it had still taken a turn from the alternator, the sections
+ * either side of it would both land on the same ground — switch off one
+ * section and two visible ones collide on white.
+ *
+ * So pass the same condition the section itself will test:
+ *
+ *     'class' => jce_band_if( $rows ),
+ *
+ * @param mixed $will_render Truthy if the section has content to show.
+ */
+function jce_band_if( $will_render ) {
+	return $will_render ? jce_band() : '';
 }
 
 /**

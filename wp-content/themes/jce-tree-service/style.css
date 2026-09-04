@@ -338,6 +338,7 @@ strong { color: var(--ink); font-weight: 600; }
 	font-weight: 600;
 	letter-spacing: .07em;
 	text-transform: uppercase;
+	text-decoration: none;
 	white-space: nowrap;
 	position: relative;
 	/* Over a bright sky the scrim alone isn't enough — the shadow buys back
@@ -1461,3 +1462,126 @@ strong { color: var(--ink); font-weight: 600; }
 	color: var(--green-700);
 }
 .area-card__meta .icon { width: .95rem; height: .95rem; flex: none; }
+
+/* ===========================================================
+   24. SERVICE PAGE — hero actions, proof blocks, sub-services
+   =========================================================== */
+
+/* Hero buttons + the "Proudly serving…" line under them */
+.page-hero__actions { margin-top: 2rem; }
+.page-hero__area {
+	display: flex;
+	align-items: flex-start;
+	gap: .55rem;
+	margin-top: 1.5rem;
+	max-width: 62ch;
+	font-size: .9rem;
+	line-height: 1.5;
+	color: rgba(255,255,255,.7);
+}
+.page-hero__area .icon { width: 1.05rem; height: 1.05rem; color: var(--green); flex: none; margin-top: .18rem; }
+
+/* A long keyword headline steps down a size and gets a wider measure —
+   at --step-5 across 20ch it runs to five lines and swamps the hero. */
+.page-hero--long h1 { font-size: var(--step-4); max-width: 26ch; }
+
+/* The trust band sits under a hero photo on the homepage, where the wood
+   texture reads as a border on the image. Away from a hero it needs its own
+   top edge instead. */
+.trust-band--flat { border-top: 0; }
+.trust-band--flat .trust-band__inner { padding-block: 1.35rem; }
+
+/* Five-step process: 3 + 2 rather than a lopsided 4 + 1 */
+@media (min-width: 901px) {
+	.steps--3up { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+	.steps--3up { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* -----------------------------------------------------------
+   Proof blocks — claim, quote, photograph
+   ----------------------------------------------------------- */
+.proof-blocks { display: grid; gap: clamp(3rem, 2rem + 4vw, 5rem); }
+.proof-block {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+	align-items: center;
+}
+@media (min-width: 861px) {
+	.proof-block--reverse .proof-block__media { order: 2; }
+}
+.proof-block__media { display: grid; gap: .75rem; }
+.proof-block__media--pair { grid-template-columns: 1fr 1fr; }
+.proof-shot { margin: 0; }
+.proof-shot .media-ph { border-radius: var(--radius-lg); }
+.proof-shot img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); }
+
+.proof-block__body h3 { font-size: var(--step-3); margin-bottom: .9rem; }
+.proof-block__body > p { font-size: 1.02rem; }
+
+/* The quote is evidence for the claim above it, so it hangs off the same
+   green rule the entry-content blockquote uses rather than becoming a card. */
+.proof-quote {
+	margin-top: 1.75rem;
+	padding-left: 1.4rem;
+	border-left: 4px solid var(--green);
+}
+.proof-quote__stars { display: flex; gap: .15rem; color: var(--amber); margin-bottom: .6rem; }
+.proof-quote__stars .icon { width: 1rem; height: 1rem; }
+.proof-quote p { font-size: var(--step-1); line-height: 1.5; color: var(--ink); font-style: italic; }
+.proof-quote__cite {
+	display: block;
+	margin-top: .7rem;
+	font-style: normal;
+	font-weight: 700;
+	font-size: .9rem;
+	color: var(--body);
+}
+
+/* -----------------------------------------------------------
+   Sub-services + the "Good to Know" panel
+   ----------------------------------------------------------- */
+.good-to-know {
+	background: var(--green-050);
+	border: 1px solid rgba(60,180,96,.28);
+	border-radius: var(--radius-lg);
+	padding: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+	margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
+}
+.good-to-know__head { display: flex; align-items: center; gap: .8rem; margin-bottom: .9rem; }
+.good-to-know__icon {
+	width: 40px; height: 40px; flex: none;
+	display: grid; place-items: center;
+	border-radius: 9px;
+	background: var(--green);
+	color: var(--white);
+}
+.good-to-know__icon .icon { width: 20px; height: 20px; }
+.good-to-know h3 { font-size: var(--step-1); }
+.good-to-know__intro { font-size: .97rem; margin-bottom: 1.1rem; }
+.good-to-know__list { display: grid; gap: .8rem; list-style: none; padding: 0; }
+.good-to-know__list li { display: flex; gap: .7rem; align-items: flex-start; font-size: .95rem; }
+.good-to-know__list .icon { width: 1.25rem; height: 1.25rem; color: var(--green-700); flex: none; margin-top: .15rem; }
+
+.sub-service-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+	gap: 1.5rem;
+}
+.sub-service {
+	display: flex;
+	flex-direction: column;
+	background: var(--white);
+	border: 1px solid var(--line);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+}
+.sub-service:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: transparent; }
+.sub-service__media { aspect-ratio: 16 / 10; background: var(--cream); }
+.sub-service__media img, .sub-service__media .media-ph { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+.sub-service__body { padding: 1.5rem; display: flex; flex-direction: column; gap: .55rem; flex: 1; }
+.sub-service h3 { font-size: var(--step-1); }
+.sub-service p { font-size: .93rem; }

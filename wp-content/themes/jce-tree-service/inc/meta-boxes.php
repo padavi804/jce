@@ -67,6 +67,94 @@ function jce_render_service_sections_box( $post ) {
 	wp_nonce_field( 'jce_save_service_sections', 'jce_service_sections_nonce' );
 	jce_format_note();
 
+	echo '<h4 style="margin:0 0 .75em;">' . esc_html__( 'Hero', 'jce' ) . '</h4>';
+
+	jce_field_text(
+		'jce_service_eyebrow',
+		__( 'Eyebrow', 'jce' ),
+		__( 'Small label above the headline, e.g. "Tree Removal Near Me". Blank uses "Tree Care Services".', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_eyebrow', true )
+	);
+
+	jce_field_text(
+		'jce_service_headline',
+		__( 'Page Headline (H1)', 'jce' ),
+		__( 'The long-form headline for this page, e.g. "Tree Removal by Local Tree Experts in the St. Croix River Valley". Blank uses the post title. Keep the post title short — it is what appears on cards and in menus.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_headline', true )
+	);
+
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'How the job goes', 'jce' ) . '</h4>';
+
+	jce_field_text(
+		'jce_service_steps_heading',
+		__( 'Process Heading', 'jce' ),
+		__( 'e.g. "How the JCE team works with you to get it done." Blank uses "The Personal Estimate".', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_steps_heading', true )
+	);
+
+	jce_field_textarea(
+		'jce_service_steps',
+		__( 'Process Steps', 'jce' ),
+		__( 'Format: Step title | One or two sentences. They are numbered automatically. Blank uses the standard three-step Personal Estimate.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_steps', true ),
+		7
+	);
+
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'Proof', 'jce' ) . '</h4>';
+
+	jce_field_textarea(
+		'jce_service_proof',
+		__( 'Proof Blocks', 'jce' ),
+		__( 'Format: Heading | Body paragraph | Customer quote | Who said it | Photo caption. Leave a part empty to skip it, but each block needs a heading plus a body or a quote. For a before/after pair, put two captions separated by //  — e.g. "Before, from the driveway // After, same angle".', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_proof', true ),
+		7
+	);
+
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'Kinds of this service', 'jce' ) . '</h4>';
+
+	jce_field_text(
+		'jce_service_sub_heading',
+		__( 'Heading', 'jce' ),
+		__( 'e.g. "Tree Removal Services". Leave the list below empty to skip this whole section.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_sub_heading', true )
+	);
+
+	jce_field_textarea(
+		'jce_service_sub_intro',
+		__( 'Intro Paragraphs', 'jce' ),
+		__( 'One paragraph per line.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_sub_intro', true ),
+		4
+	);
+
+	jce_field_textarea(
+		'jce_service_subservices',
+		__( 'The List', 'jce' ),
+		__( 'Format: Title | Description. Each one gets its own photo slot — until a photo is added, the placeholder is labelled with the title so this doubles as a shot list.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_subservices', true ),
+		8
+	);
+
+	jce_field_text(
+		'jce_service_note_intro',
+		__( '"Good to Know" Intro', 'jce' ),
+		__( 'The sentence above the add-ons and exclusions.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_note_intro', true )
+	);
+
+	jce_field_textarea(
+		'jce_service_notes',
+		__( '"Good to Know" Points', 'jce' ),
+		__( 'Format: Short label | The rest of the sentence. Add-ons, exclusions, and anything that would otherwise be a surprise on the estimate.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_notes', true ),
+		5
+	);
+
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'Standard sections', 'jce' ) . '</h4>';
+	echo '<p class="description" style="margin:0 0 1.25em;">'
+		. esc_html__( 'These four come with example copy already written. Replace it, or type a single dash ( - ) to switch that section off for this page.', 'jce' )
+		. '</p>';
+
 	jce_field_textarea(
 		'jce_service_signs',
 		__( 'Signs You Need This', 'jce' ),
@@ -263,8 +351,25 @@ function jce_line_field_map() {
 	return array(
 		'jce_service_sections'  => array(
 			'nonce'  => 'jce_service_sections_nonce',
-			'fields' => array( 'jce_service_signs', 'jce_service_included', 'jce_service_pricing', 'jce_service_faq' ),
-			'text'   => array( 'jce_service_cta_title' ),
+			'fields' => array(
+				'jce_service_signs',
+				'jce_service_included',
+				'jce_service_pricing',
+				'jce_service_faq',
+				'jce_service_steps',
+				'jce_service_proof',
+				'jce_service_sub_intro',
+				'jce_service_subservices',
+				'jce_service_notes',
+			),
+			'text'   => array(
+				'jce_service_cta_title',
+				'jce_service_eyebrow',
+				'jce_service_headline',
+				'jce_service_steps_heading',
+				'jce_service_sub_heading',
+				'jce_service_note_intro',
+			),
 		),
 		'jce_location_sections' => array(
 			'nonce'  => 'jce_location_sections_nonce',

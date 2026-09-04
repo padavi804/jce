@@ -84,10 +84,22 @@ That format was chosen over a JavaScript repeater because it survives WordPress 
 can be pasted straight out of a Google Doc, and is legible to someone who has never seen a
 custom-field UI. Parsing lives in `inc/fields.php`.
 
-**Every field falls back to example copy when empty.** A newly created Service renders as a
-complete page — signs, inclusions, price factors, FAQ — before anyone has typed anything.
-That is deliberate: it means the site is never half-built while copy is being written, and
-it doubles as a worked example of what belongs in each field.
+**Empty and off mean different things.**
+
+- **Blank** falls back to example copy, so a newly created Service renders as a complete
+  page before anyone has typed anything. The site is never half-built while copy is being
+  written, and the fallback doubles as a worked example of what belongs in the field.
+- **A single dash (`-`)** renders nothing. This matters on a page carrying approved copy:
+  Tree Removal has no price-factors section in its signed-off text, and falling back there
+  would publish invented copy under the client's name. `none`, `hide`, and `off` work too.
+
+Two sections have no fallback at all and simply don't render until filled: **proof blocks**
+and **sub-services**. Inventing a customer quote is not the same kind of placeholder as
+inventing a FAQ answer.
+
+The editor body is the third case — it renders only when it has content. It sits first under
+the hero at the largest body size, where placeholder prose is indistinguishable from real
+copy at a glance.
 
 FAQ fields on Services, Locations, and Pages are also published as **FAQPage schema**, which
 is what earns the expandable questions under a search listing.
@@ -97,8 +109,25 @@ is what earns the expandable questions under a search listing.
 `jce_band()` in `inc/fields.php` alternates section backgrounds white/cream in page order,
 because sections render conditionally — a town with no neighborhoods listed skips that
 block. Hardcoding the grounds would produce white-on-white collisions the moment a field
-was left empty. Call `jce_band()` for each light section and `jce_band( 'dark' )` after a
-dark or green band.
+was left empty.
+
+- `jce_band()` — for a section that always renders.
+- `jce_band_if( $rows )` — for one that might not. A skipped section must **not** take a
+  turn from the alternator, or the sections either side of it both land on the same ground.
+- `jce_band( 'dark' )` — after a dark or green band, so the next light section is white.
+
+### Service page anatomy
+
+Beyond the shared sections, a Service page has its own hero and three page-specific blocks:
+
+| Block | Field | Notes |
+|---|---|---|
+| Hero eyebrow / H1 | `Eyebrow`, `Page Headline (H1)` | The post title stays short — it is what cards and menus show — so the long keyword headline gets its own field. Past ~40 characters the H1 automatically steps down a size. |
+| Hero buttons + area line | — | Estimate + call buttons come from the Customizer. The "Proudly serving…" line is generated from the Location posts by `jce_area_sentence()`, so adding a town updates it everywhere. |
+| Trust strip | Customizer > Trust Signals | Rating, arborist count, years, and an optional fourth award slot (`Award / Badge`). Blank award = slot skipped. |
+| Process steps | `Process Heading`, `Process Steps` | Beyond three steps the grid goes three-up, so five read as 3 + 2 rather than 4 + 1. |
+| Proof blocks | `Proof Blocks` | `Heading \| Body \| Quote \| Who \| Photo caption`. Two captions separated by `//` render a before/after pair. A block with no quote **and** no body is dropped — the component will not publish a claim with no evidence under it. |
+| Sub-services + Good to Know | `The List`, `"Good to Know" Points` | Each card gets a photo slot labelled with its own title, so the page doubles as a shot list until photos land. |
 
 ## Editable in WordPress, not code
 
