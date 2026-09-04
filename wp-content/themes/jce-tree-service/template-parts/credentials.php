@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="section-head">
 			<p class="eyebrow"><?php esc_html_e( 'Trusted & Credentialed', 'jce' ); ?></p>
 			<h2><?php esc_html_e( "What Working with JCE's Crew Gets You", 'jce' ); ?></h2>
-			<p class="lede"><?php esc_html_e( 'Anyone with a chainsaw can call themselves a tree service. Here is what shows up in your driveway when you call us.', 'jce' ); ?></p>
 		</div>
 
 		<div class="credentials">
@@ -22,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<p><?php
 					printf(
 						/* translators: %s: number of ISA-certified arborists */
-						esc_html__( '%s ISA Certified Arborists, two forestry-degreed professionals, and four licensed pesticide applicators on staff — which means the person assessing your tree understands how trees grow, decline, and fail, and can tell you when removal is necessary and when a tree can be saved.', 'jce' ),
+						esc_html__( '%s ISA Certified Arborists and two forestry-degreed tree professionals on staff mean the person assessing your tree has the training to understand how trees grow, decline, and fail, and can tell you when removal is necessary and when a tree can be saved. It also means the crews working on your property bring deep knowledge of the trees, diseases, and conditions common to our area.', 'jce' ),
 						esc_html( jce_biz( 'arborist_count', '4' ) )
 					);
 				?></p>
@@ -37,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						esc_html( jce_biz( 'years_experience', '25' ) )
 					);
 				?></h3>
-				<p><?php esc_html_e( 'The owner lives in the same community you do — which means you can reach him after the job just as easily as before it. Many of our employees have been with us for years, and every crew member gets ongoing training.', 'jce' ); ?></p>
+				<p><?php esc_html_e( 'That means the owner lives in the same community you do, and you can reach him after the job just as easily as before it. Many of our employees have been with us for many years, and every crew member receives ongoing training to ensure consistently high-quality work.', 'jce' ); ?></p>
 			</article>
 
 			<article class="credential">
@@ -45,11 +44,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<h3><?php
 					printf(
 						/* translators: %s: star rating */
-						esc_html__( '%s-Star Rating Across the Valley', 'jce' ),
+						esc_html__( '%s-Star Rating Across the St. Croix River Valley', 'jce' ),
 						esc_html( jce_biz( 'aggregate_rating', '4.9' ) )
 					);
 				?></h3>
-				<p><?php esc_html_e( "Which means your neighbors have already put our work to the test on their own properties. We don't filter reviews, and most of our business comes from referrals and repeat customers.", 'jce' ); ?></p>
+				<p><?php esc_html_e( "That means your neighbors have already put our work to the test on their own properties. We don't filter reviews, and the majority of our business comes from our referrals and repeat customers. We take great pride in our work, and you can expect us to bring that same level of care to your property.", 'jce' ); ?></p>
 			</article>
 		</div>
 	</div>

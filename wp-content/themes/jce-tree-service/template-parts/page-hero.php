@@ -5,6 +5,11 @@
  * Pass 'context' (services|about|contact|emergency|blog) to pick up the
  * bundled default photo; a Featured Image on the page overrides it.
  *
+ * Every interior page gets the trust band directly underneath, flat variant,
+ * so the credentials are visible site-wide and no template has to remember
+ * to add it — see template-parts/trust-band.php. The homepage's own hero
+ * calls the (non-flat) trust band itself, since it isn't built on this part.
+ *
  * @param array $args {
  *     @type string $title   H1. Falls back to the post title in the loop.
  *     @type string $sub     Standfirst paragraph.
@@ -96,3 +101,5 @@ $long_title = mb_strlen( wp_strip_all_tags( $args['title'] ) ) > 40;
 		<?php endif; ?>
 	</div>
 </section>
+
+<?php get_template_part( 'template-parts/trust-band', null, array( 'class' => 'trust-band--flat' ) ); ?>

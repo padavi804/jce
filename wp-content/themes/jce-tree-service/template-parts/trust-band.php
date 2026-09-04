@@ -8,9 +8,14 @@
  * three things the brief says decide the comparison: satisfaction, expertise,
  * and longevity.
  *
+ * Every interior page gets it too — template-parts/page-hero.php calls this
+ * automatically (flat variant) right after itself, so the credentials show
+ * up site-wide without each template having to remember to add it.
+ *
  * Every value is Customizer-driven (Business Info > Trust Signals), including
- * the optional fourth award slot ("HomeAdvisor Elite Service"), which is
- * skipped entirely when no award is set.
+ * the fourth slot, which defaults to the brief's approved "HomeAdvisor Elite
+ * Service" credential. Only blank if that field is set to a value that later
+ * evaluates falsy — see jce_biz()'s fallback behavior.
  *
  * @param array $args {
  *     @type string $class Extra classes, e.g. 'trust-band--flat' away from a hero.
@@ -44,7 +49,7 @@ $items = array(
 	),
 );
 
-$award = jce_biz( 'award_label' );
+$award = jce_biz( 'award_label', __( 'HomeAdvisor Elite Service', 'jce' ) );
 if ( $award ) {
 	$items[] = array(
 		'icon' => 'shield',

@@ -52,7 +52,7 @@ function jce_output_seo_meta() {
 
 	// Canonical.
 	$canonical = is_singular() ? get_permalink() : home_url( add_query_arg( array(), $GLOBALS['wp']->request ) );
-	if ( is_front_page() ) {
+	if ( is_front_page() || ( 'page' === get_option( 'show_on_front' ) && is_page( (int) get_option( 'page_on_front' ) ) ) ) {
 		$canonical = home_url( '/' );
 	}
 	printf( '<link rel="canonical" href="%s">' . "\n", esc_url( $canonical ) );
@@ -83,6 +83,33 @@ function jce_output_seo_meta() {
 	}
 }
 add_action( 'wp_head', 'jce_output_seo_meta', 2 );
+
+/**
+ * The page assigned as the static front page is still reachable at its own
+ * permalink (e.g. /home/), where WordPress's template hierarchy treats it as
+ * a normal page instead of the front page — is_front_page() is only true for
+ * the root query, so /home/ falls through to page.php and renders without
+ * any of the front-page.php sections. Sending that URL back to / keeps one
+ * canonical homepage instead of two different-looking versions of it.
+ */
+function jce_redirect_front_page_slug() {
+	if ( is_admin() || is_preview() || empty( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD'] ) {
+		return;
+	}
+
+	if ( 'page' !== get_option( 'show_on_front' ) ) {
+		return;
+	}
+
+	$front_id = (int) get_option( 'page_on_front' );
+	if ( ! $front_id || ! is_page( $front_id ) || is_front_page() ) {
+		return;
+	}
+
+	wp_safe_redirect( home_url( '/' ), 301 );
+	exit;
+}
+add_action( 'template_redirect', 'jce_redirect_front_page_slug' );
 
 /**
  * Meta description field on posts, pages, and the custom post types.

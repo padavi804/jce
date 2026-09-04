@@ -55,9 +55,10 @@ function jce_customize_register( $wp_customize ) {
 		'jce_aggregate_rating'     => array( 'jce_trust', __( 'Star Rating (e.g. 4.9)', 'jce' ), '4.9', 'sanitize_text_field' ),
 		'jce_review_count'         => array( 'jce_trust', __( 'Number of Reviews', 'jce' ), '', 'sanitize_text_field' ),
 		'jce_arborist_count'       => array( 'jce_trust', __( 'ISA-Certified Arborists', 'jce' ), '4', 'sanitize_text_field' ),
-		// Fourth slot in the trust strip. Left blank the slot is skipped,
-		// so the strip never renders an empty badge.
-		'jce_award_label'          => array( 'jce_trust', __( 'Award / Badge (e.g. HomeAdvisor Elite Service)', 'jce' ), '', 'sanitize_text_field' ),
+		// Fourth slot in the trust strip, approved in the brief as "HomeAdvisor
+		// Elite Service." Clear the field if that credential ever lapses —
+		// the slot is skipped entirely when it's blank.
+		'jce_award_label'          => array( 'jce_trust', __( 'Award / Badge (e.g. HomeAdvisor Elite Service)', 'jce' ), 'HomeAdvisor Elite Service', 'sanitize_text_field' ),
 
 		// Social.
 		'jce_facebook_url'      => array( 'jce_social', __( 'Facebook URL', 'jce' ), '', 'esc_url_raw' ),

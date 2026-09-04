@@ -107,8 +107,6 @@ while ( have_posts() ) :
 			'area'    => jce_area_sentence(),
 		)
 	);
-
-	get_template_part( 'template-parts/trust-band', null, array( 'class' => 'trust-band--flat' ) );
 	?>
 
 	<?php

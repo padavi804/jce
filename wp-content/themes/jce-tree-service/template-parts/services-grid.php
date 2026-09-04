@@ -16,7 +16,7 @@ $args = wp_parse_args(
 		'limit'   => -1,
 		'heading' => __( 'What We Do', 'jce' ),
 		'eyebrow' => __( 'Our Services', 'jce' ),
-		'lede'    => __( 'Removal is most of what we do, but the crew that shows up is trained for everything on this list.', 'jce' ),
+		'lede'    => '',
 		'class'   => 'section--cream',
 	)
 );

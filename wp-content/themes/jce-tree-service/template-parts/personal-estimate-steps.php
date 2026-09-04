@@ -26,7 +26,7 @@ $args = wp_parse_args(
 		'rows'    => array(),
 		'heading' => __( 'The Personal Estimate', 'jce' ),
 		'eyebrow' => __( 'What Happens After You Reach Out', 'jce' ),
-		'lede'    => __( 'No sales rep, no ballpark over the phone, no three-day wait for a PDF. Here is exactly how it goes.', 'jce' ),
+		'lede'    => '',
 		'class'   => '',
 		'cta'     => true,
 	)
