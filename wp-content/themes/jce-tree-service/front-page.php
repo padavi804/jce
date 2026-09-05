@@ -21,9 +21,19 @@ if ( have_posts() ) {
 get_template_part( 'template-parts/hero' );
 get_template_part( 'template-parts/trust-band' );
 ?>
-<section class="section section--tight">
+<section class="section section--tight proof-statement">
 	<div class="wrap wrap--narrow">
-		<p class="lede text-center"><?php esc_html_e( "Anyone with a chainsaw can call themselves a tree service. Not everyone shows up with certified arborists, a fleet of equipment chosen to protect your lawn, and a professional, experienced crew that cleans up like they're leaving their own yard. That's the difference with JCE. For 25 years, we've earned the trust of local homeowners by doing the job right, from start to finish.", 'jce' ); ?></p>
+		<span class="proof-statement__mark" aria-hidden="true"><?php jce_icon( 'tree' ); ?></span>
+		<p class="lede">
+			<?php
+			printf(
+				/* translators: 1: opening markup, 2: closing markup around the approved payoff line — wording is unchanged, only the highlight is added */
+				esc_html__( "Anyone with a chainsaw can call themselves a tree service. Not everyone shows up with certified arborists, a fleet of equipment chosen to protect your lawn, and a professional, experienced crew that cleans up like they're leaving their own yard. %1\$sThat's the difference with JCE.%2\$s For 25 years, we've earned the trust of local homeowners by doing the job right, from start to finish.", 'jce' ),
+				'<strong class="proof-statement__punch">',
+				'</strong>'
+			);
+			?>
+		</p>
 	</div>
 </section>
 <?php
@@ -31,7 +41,13 @@ get_template_part( 'template-parts/trust-band' );
 // template-parts/stats.php and its styles are retained — re-add the
 // get_template_part() call here to bring it back.
 get_template_part( 'template-parts/services-grid' );
-get_template_part( 'template-parts/personal-estimate-steps' );
+// Same shared five steps as every other page — only the heading differs, so
+// the homepage can introduce the pillar by name.
+get_template_part(
+	'template-parts/personal-estimate-steps',
+	null,
+	array( 'heading' => jce_biz( 'process_heading_home', jce_default_process_heading_home() ) )
+);
 get_template_part( 'template-parts/credentials' );
 get_template_part( 'template-parts/service-area' );
 get_template_part( 'template-parts/reviews' );

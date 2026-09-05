@@ -185,10 +185,14 @@ Built for the Core Web Vitals side of the visibility goal:
 
 1. **Install into WordPress** — copy this folder to `wp-content/themes/` on the staging site.
    The repo holds the theme only, not a WP core install.
-2. **Tools > JCE Example Content > Import** — creates 8 Services, 10 Locations, 6
-   Testimonials, and the About / Service Area / Estimate / Emergency pages, each filled with
-   realistic example copy and with its page template already assigned. Safe to re-run:
-   anything whose slug already exists is skipped, so it never overwrites edited copy.
+2. **Tools > JCE Example Content > Run Import** — creates 9 Services, 10 Locations, 6
+   Testimonials, and the About / Service Area / Estimate / Emergency pages, with each page
+   template already assigned. Safe to re-run: anything whose slug already exists is skipped.
+
+   Tick **Replace existing content** to rewrite posts that already exist from the copy in
+   `inc/demo-content.php`. That is how approved copy lands on top of placeholder text from an
+   earlier import — it also discards WordPress-side edits, so it is off by default. Published
+   slugs are never rewritten in this mode, so no indexed URL moves.
 3. **Settings > Permalinks** — click Save once so the new Service and Location URLs resolve.
 4. **Settings > Reading** — static front page = "Home", posts page = "Blog".
 5. **Fill in Business Info** — the phone number in the Customizer default is a placeholder.
@@ -198,6 +202,38 @@ Three imported slugs are load-bearing because Customizer defaults link to them:
 mobile call bar), and `/service-area/` (what every town page breadcrumbs up to). The
 importer reports it if WordPress assigns a different slug because something already holds
 that URL.
+
+## Copy status
+
+Eight of the nine Services carry client-approved copy and have their signs / inclusions /
+price-factors / FAQ sections switched off with a dash, because none of them has approved
+text for those. **Tree Pruning is the exception** — it still carries theme-authored
+placeholder copy, and will keep showing the example sections until approved copy replaces it.
+
+Tree Removal is the fullest page: it is the only one with proof blocks and a sub-services
+list. The approved five-step process is shared by every page (see below).
+
+## The process steps
+
+`template-parts/personal-estimate-steps.php` renders in seven places — the homepage, every
+service, every town, and the About / Service Area / Contact templates. Neither half of it is
+duplicated:
+
+- **Design** lives in the template part, so a layout change applies to all seven at once.
+- **Copy** lives in **Customize > Business Info > The Personal Estimate**, so a wording
+  change also applies to all seven — and is made in WordPress, not in PHP.
+
+A caller passes only what genuinely differs; an empty argument means "use the shared
+default". A single Service can still override the steps from its own **Process Steps**
+field, which is the escape hatch for a service whose process really is different.
+
+The homepage is the one deliberate variation: it keeps the creative brief's pillar name,
+**"The Personal Estimate"**, because that is where the pillar gets introduced. It differs in
+heading only — the five steps underneath are the same shared source. That heading has its
+own Customizer field (**Homepage Heading**) rather than being hardcoded.
+
+The About, Service Area, and Contact templates currently inherit the shared interior
+heading. Approved copy for those pages is pending.
 
 ## Still to do
 

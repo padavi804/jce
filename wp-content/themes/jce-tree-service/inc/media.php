@@ -128,6 +128,9 @@ function jce_default_service_images() {
 		'tree-inspection'        => array( 'service-tree-inspection.jpg', __( 'A JCE arborist inspects a large forked trunk from a bucket', 'jce' ) ),
 		'lot-land-clearing'      => array( 'service-lot-land-clearing.jpg', __( 'A tracked skid steer with a forestry mulcher clearing wooded land', 'jce' ) ),
 		'brush-clean-up'         => array( 'service-brush-clean-up.jpg', __( 'A JCE wood chipper processing brush on a job site', 'jce' ) ),
+		// No bundled photo yet — the card falls back to the branded placeholder
+		// until service-brush-mowing.jpg is added or a Featured Image is set.
+		'brush-mowing'           => array( 'service-brush-mowing.jpg', __( 'A tracked brush mower clearing overgrown pasture and saplings', 'jce' ) ),
 		'stump-grinding'         => array( 'service-stump-grinding.jpg', __( 'A grapple saw working a large stump after a tree removal', 'jce' ) ),
 	);
 }

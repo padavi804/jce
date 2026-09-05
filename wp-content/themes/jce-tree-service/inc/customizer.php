@@ -21,6 +21,7 @@ function jce_customize_register( $wp_customize ) {
 		'jce_contact'   => __( 'Contact & Location', 'jce' ),
 		'jce_emergency' => __( 'Emergency Response', 'jce' ),
 		'jce_hero'      => __( 'Homepage Hero', 'jce' ),
+		'jce_process'   => __( 'The Personal Estimate', 'jce' ),
 		'jce_trust'     => __( 'Trust Signals', 'jce' ),
 		'jce_social'    => __( 'Social & Review Links', 'jce' ),
 	);
@@ -73,6 +74,58 @@ function jce_customize_register( $wp_customize ) {
 		$wp_customize->add_control( $id, array( 'label' => $label, 'section' => $section, 'type' => 'text' ) );
 	}
 
+	/*
+	 * The process steps.
+	 *
+	 * These render on the homepage, every service page, every town page, and
+	 * the About / Service Area / Contact templates — seven call sites. Holding
+	 * the copy here rather than in the template part means editing it once, in
+	 * WordPress, updates all of them; a single Service can still override it
+	 * from its own "Process Steps" field when it genuinely differs.
+	 */
+	$wp_customize->add_setting(
+		'jce_process_heading',
+		array( 'default' => jce_default_process_heading(), 'sanitize_callback' => 'sanitize_text_field' )
+	);
+	$wp_customize->add_control(
+		'jce_process_heading',
+		array( 'label' => __( 'Section Heading', 'jce' ), 'section' => 'jce_process', 'type' => 'text' )
+	);
+
+	/*
+	 * The homepage keeps the creative brief's pillar name. Everywhere else the
+	 * section is framed as how the job goes; on the homepage it is introducing
+	 * "The Personal Estimate" as a named thing, which the brief leans on.
+	 */
+	$wp_customize->add_setting(
+		'jce_process_heading_home',
+		array( 'default' => jce_default_process_heading_home(), 'sanitize_callback' => 'sanitize_text_field' )
+	);
+	$wp_customize->add_control(
+		'jce_process_heading_home',
+		array(
+			'label'       => __( 'Homepage Heading', 'jce' ),
+			'description' => __( 'The homepage uses this instead of the heading above.', 'jce' ),
+			'section'     => 'jce_process',
+			'type'        => 'text',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'jce_process_steps',
+		array( 'default' => jce_default_process_steps(), 'sanitize_callback' => 'jce_sanitize_lines' )
+	);
+	$wp_customize->add_control(
+		'jce_process_steps',
+		array(
+			'label'       => __( 'Steps', 'jce' ),
+			'description' => __( 'One step per line, as "Step title | The explanation". They are numbered automatically, and beyond three the grid lays them out three across.', 'jce' ),
+			'section'     => 'jce_process',
+			'type'        => 'textarea',
+			'input_attrs' => array( 'rows' => 12 ),
+		)
+	);
+
 	// Hero background image.
 	$wp_customize->add_setting( 'jce_hero_image', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw' ) );
 	$wp_customize->add_control(
@@ -88,6 +141,48 @@ function jce_customize_register( $wp_customize ) {
 	);
 }
 add_action( 'customize_register', 'jce_customize_register' );
+
+/**
+ * Approved heading for the process section.
+ */
+function jce_default_process_heading() {
+	return __( 'How the JCE team works with you to get it done.', 'jce' );
+}
+
+/**
+ * Approved heading for the process section on the homepage.
+ *
+ * The brief names this pillar, and the homepage is where it gets introduced.
+ */
+function jce_default_process_heading_home() {
+	return __( 'The Personal Estimate', 'jce' );
+}
+
+/**
+ * Approved five-step process, in the standard "title | copy" list format.
+ *
+ * Lives here rather than in the template part because it is the Customizer
+ * default — which is what makes it editable in WordPress instead of in PHP.
+ */
+function jce_default_process_steps() {
+	return implode(
+		"\n",
+		array(
+			__( "You call, we schedule your estimate.|A local arborist walks your property and figures out what's going on. Sometimes that means the tree comes down. Sometimes it means we tell you it didn't need to. Either way, you get an expert assessment and a clear recommendation on next steps.", 'jce' ),
+			__( "Hand-written estimate, walked through with you.|You get a hand-written estimate on the spot, and we walk you through it. No callback in three days, no fine print to decode. Just a straight answer while we're standing right there looking at the same tree you are.", 'jce' ),
+			__( "Scheduled to fit your job and the season.|Once you give the go-ahead, we get you on the schedule, timed to the job and the season. A dead ash in July and a leaning oak in January don't call for the same approach, and we'll tell you why.", 'jce' ),
+			__( "Right crew, right equipment.|We bring the right crew and the right equipment to the job. JCE's spent 25 years buying gear built to protect a yard, not just get a tree down fast, and that's the same standard the crew's trained to.", 'jce' ),
+			__( "Meticulous cleanup.|Thousands of times over twenty five years we've heard from homeowners that they were so impressed with our clean up. Our crew knows your yard should look better when we leave than it did when we got there. Others will say that, but we've proven over time we're committed to meticulous clean up on every job.", 'jce' ),
+		)
+	);
+}
+
+/**
+ * The process steps as parsed rows, for the template part.
+ */
+function jce_process_steps() {
+	return jce_rows( jce_biz( 'process_steps', jce_default_process_steps() ), 2 );
+}
 
 /**
  * Convenience accessor: jce_biz( 'phone' ) instead of get_theme_mod( 'jce_phone' ).

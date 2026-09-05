@@ -46,8 +46,10 @@ function jce_demo_services() {
 				'_jce_service_eyebrow'       => 'Tree Removal Near Me',
 				'_jce_service_headline'      => 'Tree Removal by Local Tree Experts in the St. Croix River Valley',
 
-				'_jce_service_steps_heading' => 'How the JCE team works with you to get it done.',
-				'_jce_service_steps'         => "You call, we schedule your estimate.|A local arborist walks your property and figures out what's going on. Sometimes that means the tree comes down. Sometimes it means we tell you it didn't need to. Either way, you get an expert assessment and a clear recommendation on next steps.\nHand-written estimate, walked through with you.|You get a hand-written estimate on the spot, and we walk you through it. No callback in three days, no fine print to decode. Just a straight answer while we're standing right there looking at the same tree you are.\nScheduled to fit your job and the season.|Once you give the go-ahead, we get you on the schedule, timed to the job and the season. A dead ash in July and a leaning oak in January don't call for the same approach, and we'll tell you why.\nRight crew, right equipment.|We bring the right crew and the right equipment to the job. JCE's spent 25 years buying gear built to protect a yard, not just get a tree down fast, and that's the same standard the crew's trained to.\nMeticulous cleanup.|Thousands of times over twenty five years we've heard from homeowners that they were so impressed with our clean up. Our crew knows your yard should look better when we leave than it did when we got there. Others will say that, but we've proven over time we're committed to meticulous clean up on every job.",
+				// Steps and heading come from the site-wide Customizer default
+				// (Business Info > The Personal Estimate) — the same approved five
+				// steps every other service page uses. Fill this Service's own
+				// "Process Steps" field only to override them for this page.
 
 				'_jce_service_proof'         => "A removal on a tight lot||The JCE Tree Service Team did a great job removing two very large poplars and trimming two others. They have the right equipment to take down big trees in a small area with virtually no property disturbance. I was impressed with their efficiency, professional work, and area clean-up.|Brian Gresback|Before, from the driveway // After, same angle\nRemoving the Tree Without Damaging the Property|Having the right equipment means the tree comes down without putting the rest of your property at risk. Whether that's your pool, your siding, a fence line, a garden, or landscaping you've spent years on, we plan around it before the work starts. A yard can take real damage from the wrong equipment, or work done at the wrong time of year, which is exactly why JCE has spent 25 years investing in the gear to avoid it.|Very friendly, competent, and careful. No lawn damage, and great clean-up afterwards.|Ed, on a dead oak removal|Mats or plywood laid down, drop-zone set up",
 
@@ -84,118 +86,172 @@ function jce_demo_services() {
 				'_jce_service_faq'      => "When is the best time to prune?|For most species, the dormant season — roughly November through March. The tree is not spending energy on leaves, the structure is visible, and disease pressure is at its lowest. Oaks especially should not be pruned April through July because of oak wilt.\nHow much can you take off at once?|As a rule, no more than about a quarter of the live canopy in a season. Beyond that the tree is stressed into producing weak regrowth. If someone offers to take half a tree off, that is a warning sign.\nWill pruning fix a leaning tree?|Sometimes. Reducing weight on the leaning side takes load off the roots and can buy years. If the lean is from root failure rather than growth habit, pruning does not address the cause and we will tell you that.\nDo you top trees?|No. Topping is the single most damaging thing done to trees in this area and we will not do it. If a tree is genuinely too large for its location, we will talk about removal instead.",
 			),
 		),
+		// APPROVED COPY — everything from here down is client-signed-off prose.
+		// The four standard sections are switched off on each of them: none has
+		// approved copy for signs / inclusions / price factors / FAQ, and the
+		// fallbacks would publish invented text under the client's name.
+		// Process steps are left blank deliberately, so they inherit the
+		// creative brief's approved three-step Personal Estimate.
 		array(
 			'slug'    => 'emergency-tree-service',
 			'title'   => 'Emergency Tree Service',
 			'order'   => 3,
-			'excerpt' => 'Storm damage, a tree on a structure, or a hazardous leaner. Call and we will tell you straight what happens next.',
+			'excerpt' => "Tree on your house? Limb blocking your driveway? Tree down after a storm? Call us now: (715) 426-0179.",
 			'body'    => jce_demo_body(
 				array(
-					'When a tree comes down on a house at eleven at night, what you need is not marketing. It is someone who picks up, asks the right three questions, and tells you honestly whether this is a tonight problem or a tomorrow problem.',
-					'Most storm calls are not emergencies in the strict sense. A tree across the lawn can wait for daylight and a proper crew. A limb resting on a roof usually can too, as long as nobody is under it. What genuinely cannot wait is a tree in contact with a power line, a trunk holding tension against a structure that is still moving, or anything blocking the only way out of a property. We triage on that basis, not on who called first.',
-					'Storm work is rigging work. A tree that has already failed is loaded in ways an intact tree is not — bent, compressed, and storing energy in places that are not obvious. Taking weight off a structure in controlled pieces with a crane and proper rigging is a completely different job from cutting a standing tree, and it is the reason this is not work for whoever knocks on your door the morning after.',
+					// Safety instruction, so it gets the amber callout treatment
+					// rather than sitting as the second paragraph of body prose.
+					'<div class="callout callout--warn"><p>If there\'s any risk to a person or downed power lines are involved, call 911 first. Otherwise, stay clear of the tree and give us a call.</p></div>',
+					"During and after a storm, we're on call and working around the clock, so you'll likely reach someone directly. On a quiet night without storm activity, a call might go to voicemail, but we check it often and call back fast.",
+					"We own our crane and grapple saw outright, along with the rest of our equipment fleet, so we can handle large and hazardous jobs and we're not waiting on a subcontractor to show up before we can start working on your property.",
+					"Once we're on your property, we assess the situation and make it safe right away. Sometimes that means a full removal on the spot. Other times it means stabilizing the immediate danger and finishing the job once conditions allow. Either way, your yard will look better when we leave than it did when the storm hit. We document the damage and the work as we go and can help you put together what you need for your insurance claim once the job is done.",
 				)
 			),
 			'meta'    => array(
-				'_jce_service_signs'    => "A tree or limb on the house|Move people and pets out of the rooms underneath it and call. Do not go up to look at it.\nAnything touching a power line|Assume every wire in contact with a tree is live. Call your utility first, then us. We do not touch energised lines and neither should you.\nA trunk that is still moving|A tree resting against a structure is holding tension and can shift without warning. Stay well clear and let us take the load off it.\nBlocked access|A tree across the only driveway is an emergency even when nothing is damaged, because it is between you and everything else.\nA leaner that was not leaning yesterday|New lean plus heaved soil means the root plate has failed. That tree is coming down; the only question is whether it happens on our terms.",
-				'_jce_service_included' => "Phone triage by someone who can actually assess it, not a call service\nSame-day response for trees on structures, lines, or access routes\nControlled dismantling with crane and rigging rather than dropping the tree\nWeight taken off the structure before anything else happens\nPhotographs and a written damage description in the format insurers accept\nFull debris removal and site cleanup once the hazard is gone\nA clear answer about what happens next, given to you on the phone",
-				'_jce_service_pricing'  => "Urgency|Same-day and after-hours response costs more than scheduled work, because it means pulling a crew off another job.\nWhat the tree is resting on|A tree on the lawn is a normal removal. A tree on a roof is rigging work, and the hours go into taking the load off safely.\nEquipment required|Most storm work over a structure needs the crane. That is the difference between a straightforward job and a complex one.\nExtent of the debris|A whole canopy across a yard is a lot more material to process than a single failed limb.\nInsurance documentation|Included at no extra charge — we would rather you get the claim paid.",
-				'_jce_service_faq'      => "Do you answer the phone at night?|Yes, for storm calls. Call rather than using the contact form — a form sits in an inbox and a tree on your roof does not wait for business hours.\nHow fast can you get here?|Trees on structures, on lines, or blocking access are triaged first, usually same-day across our whole service area. Everything else goes on the schedule behind those, and we will tell you honestly where in the line you are.\nWill insurance cover this?|Usually, when a tree has damaged a structure. You get photographs and a written description of the damage and the work in the format adjusters actually accept. We cannot file the claim for you, but we can make it straightforward.\nWhat should I do before you arrive?|Stay away from downed lines and from the tree itself. Move people and pets out of any room under the damage. Take photos from a safe distance, and have your address and cross street ready when you call.",
+				'_jce_service_eyebrow'       => 'Emergency Tree Service Near Me',
+				'_jce_service_headline'      => 'Emergency Tree Removal Services by Local Tree Experts in the St. Croix River Valley',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
 			),
 		),
 		array(
 			'slug'    => 'plant-health-care',
 			'title'   => 'Plant Health Care',
 			'order'   => 4,
-			'excerpt' => 'Four licensed pesticide applicators treating the diseases and pests actually showing up in our area.',
+			'excerpt' => "Most tree problems are easier to fix, and cheaper, if you catch them early. Our four licensed pesticide applicators and certified arborists diagnose what's going on with a struggling tree and recommend a plan based on that diagnosis.",
 			'body'    => jce_demo_body(
 				array(
-					'Most tree companies remove trees. Fewer are set up to keep one alive, which is why so much of what gets diagnosed around here as "the tree is dying" is actually something treatable that nobody looked at closely enough.',
-					'We have four licensed pesticide applicators on staff and two forestry degrees behind the diagnosis. That combination matters because the treatable problems in western Wisconsin are specific and time-sensitive: emerald ash borer, oak wilt, apple scab, spider mites in a dry August, and the slow decline that comes from a tree planted too deep twenty years ago and strangling on its own roots.',
-					'Timing is most of the battle. Ash treated before the canopy starts thinning usually holds; ash treated after it is half gone usually does not. Oak wilt spreads through root grafts between neighbouring trees, so the response is about the trees around the sick one as much as the sick one itself. What we sell here is the assessment first — including, often, the news that the tree does not need treating at all.',
+					"Getting the diagnosis right matters more than people realize. Most tree diseases can be controlled if you catch them in time, but a few can't, and treating a tree for the wrong problem wastes time it may not have. Our arborists are trained to identify what's affecting your tree before recommending anything.",
+					"Treatment depends on what we're dealing with. Fungicides can be sprayed on, injected into the trunk, or applied to the soil around the roots, depending on the disease. For emerald ash borer and several other insects, we use insecticide treatment. Sometimes the better fix isn't a chemical at all, in fact, pruning, fertilization, or a change in watering habits can reduce disease pressure on a tree that's just stressed. We'll walk you through the option that fits your specific tree and situation.",
+					"Emerald ash borer, oak wilt, and Dutch elm disease are all active threats in the St. Croix River Valley right now. Emerald ash borer spreads mainly through moved firewood, over long distances. From late May to September adult female borers fly from tree to tree laying eggs. Oak wilt spreads through root grafts and fresh wounds during warmer months, which is part of why pruning timing matters so much, and Dutch elm disease moves between neighboring elms through root grafts as well as bark beetles. All three are manageable if you catch them early and treat them on the right timeline.",
+					"Treatment plans are written out and walked through with you, and we follow up on treated trees so you know whether it worked.",
 				)
 			),
 			'meta'    => array(
-				'_jce_service_signs'    => "Thinning canopy at the top of an ash|Ash decline starts high and works down. By the time you notice it from the driveway, treatment is a much harder call.\nAn oak dropping leaves in midsummer|Oak wilt moves fast and spreads to neighbouring oaks underground. This one is worth a same-week look.\nD-shaped exit holes or splitting bark|Classic emerald ash borer. Woodpecker activity stripping bark off an ash means the same thing.\nLeaves spotting, curling, or dropping early|Usually fungal, usually treatable, and usually a bigger deal on young trees than mature ones.\nA trunk that goes straight into the ground|No visible root flare means the tree is planted too deep or girdled by its own roots — slow decline with a mechanical cause, not a pest.",
-				'_jce_service_included' => "Diagnosis by an ISA-certified arborist before anything is applied\nTreatment by licensed pesticide applicators, correctly timed to the pest or disease\nEmerald ash borer trunk injection on the schedule the product actually requires\nOak wilt management, including the neighbouring trees sharing root grafts\nSoil and planting-depth assessment where decline has a mechanical cause\nA written plan covering what happens this year and what happens next\nAn honest answer when a tree is too far gone to be worth treating",
-				'_jce_service_pricing'  => "Trunk diameter|Injection products are dosed by trunk size, so a large ash costs more to treat than a small one.\nHow many trees|Treating several on one visit is substantially cheaper per tree than separate trips.\nThe treatment interval|Ash injections generally hold for two seasons. That is the honest comparison against removal cost — per two years, not per year.\nWhether neighbours are involved|Oak wilt work sometimes means severing root grafts between properties, which is more involved than treating a single tree.\nDiagnosis alone|If you only want an assessment and a plan, that is what we quote.",
-				'_jce_service_faq'      => "Is it worth treating my ash tree?|It depends on the tree and how far along it is. A healthy ash with a full canopy in a spot where you would miss it is usually worth treating — the cost over two years is well under what removal and replanting runs. An ash already thinning at the top usually is not, and we will tell you that rather than take the money.\nHow often does ash treatment need repeating?|Generally every two years with the products we use. It is an ongoing commitment for as long as you want the tree, which is exactly the conversation to have before starting rather than after.\nCan you save a tree with oak wilt?|Sometimes, if it is caught very early. More often the work is about protecting the healthy oaks around it, because the fungus moves through connected root systems. Speed matters more here than with almost anything else we treat.\nAre the treatments safe around pets and children?|The trunk injections we use for ash go into the tree, not onto the ground or into the air, and there is no re-entry period. For anything applied differently we will tell you what to expect before we do it.",
+				'_jce_service_eyebrow'       => 'Tree &amp; Plant Health Care',
+				'_jce_service_headline'      => 'Tree Health Care by Certified Arborists and Licensed Pesticide Applicators',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
 			),
 		),
 		array(
 			'slug'    => 'tree-inspection',
 			'title'   => 'Tree Inspection',
 			'order'   => 5,
-			'excerpt' => 'An arborist assessment that tells you when a tree needs to come down, and when it can be saved.',
+			'excerpt' => "Not sure if a tree is a real risk or just looks rough? A certified arborist inspection gives you a straight answer, in writing, before you decide what to do next. Most inspections take 15 to 30 minutes and include written recommendations for any follow-up work.",
 			'body'    => jce_demo_body(
 				array(
-					'Sometimes the question is not what to do about the tree. It is whether there is anything to do at all — and the person best placed to answer that has no financial interest in the answer being yes.',
-					'A tree inspection is an ISA-certified arborist walking the property and giving you a written assessment: species, condition, structural defects, what is likely to fail and roughly when, what is treatable, and what the honest priority order is if there is more than one tree in question. It is the service people call for before buying a house, after a storm has spooked them, when a neighbour is making noises about a shared tree, or when an insurer or a municipality wants something in writing.',
-					'It is also the right call when another company has told you a tree has to come down and something about that did not sit right. We are not going to tell you a tree is fine to be contrary. But we do see trees condemned that had another twenty years in them, and a second opinion costs a great deal less than a removal.',
+					"We examine the whole tree, roots to leaves, along with what's around it. Wind, lightning, and heavy rain are the conditions most tree failures happen in or right after, so we look at exposure to those along with soil conditions, slope, nearby construction, and trenching, since all of them affect how likely a tree is to fail. Every tree carries some risk, and that risk generally grows as a tree gets larger and more mature. Telling a minor flaw apart from a real hazard takes a working knowledge of tree structure and physiology, which is what our certified arborists are trained in.",
+					"People call us before buying or selling a property with mature trees, when a tree looks like it's leaning more than it used to, when a neighbor's tree overhangs their yard, or to get a second opinion on a removal quote from someone else.",
+					"We walk the property and give you a clear recommendation on the spot as to whether to save it, monitor it, treat it, or remove it. Written documentation is available for insurance, real estate, or municipal needs.",
 				)
 			),
 			'meta'    => array(
-				'_jce_service_signs'    => "You are buying or selling a property|Mature trees are an asset or a liability and the difference is not visible to a home inspector. Find out before closing.\nAnother company said it has to come down|Get a second opinion from someone who is not quoting the removal. Sometimes they are right; often enough they are not.\nA neighbour dispute over a shared tree|A written assessment from a certified arborist is the document that ends these conversations.\nAfter a big storm|Trees that survived a storm can still have failed internally. What matters is what moved, not what fell.\nYour insurer or the city has asked|Both usually want a written report from a certified arborist, which is precisely what this is.",
-				'_jce_service_included' => "A site visit by an ISA-certified arborist, on foot, around the whole tree\nSpecies identification and an assessment of overall condition\nStructural defects documented — cracks, cavities, included bark, root issues\nA risk assessment framed around what is underneath the tree\nA written report you can hand to an insurer, a buyer, or a municipality\nA clear recommendation: monitor, prune, treat, or remove\nA priority order when several trees are involved",
-				'_jce_service_pricing'  => "Number of trees|A single tree is quick. A full property inventory on an acreage takes a morning.\nDepth of the report|A verbal recommendation on site costs less than a formal written report prepared for an insurer or a court.\nAccess and terrain|Bluff lots and heavily wooded properties simply take longer to walk properly.\nDiagnostic work needed|Most assessments are visual. Where decay needs measuring, that is additional and we will tell you before doing it.\nFollow-up|If you go ahead with work we recommend, the inspection fee comes off that estimate.",
-				'_jce_service_faq'      => "Is an estimate the same as an inspection?|No, and the difference matters. An estimate is free and answers what the work would cost. An inspection is a paid professional assessment and answers whether the work is needed at all, in writing, from someone with a certification behind it.\nWill you tell me a tree is fine if it is fine?|Yes. That is the whole product. We have talked plenty of people out of removals, and it is the reason those people call us again.\nCan you tell if a tree is rotten inside?|Often, from external signs — fungal brackets, cavities, sound and response to a mallet, the pattern of deadwood. Where it genuinely matters and is not visible, we will say so rather than guess.\nHow long does the report take?|The visit is usually under an hour for one or two trees. A written report follows within a few days.",
+				'_jce_service_eyebrow'       => 'Tree Inspections Near Me',
+				'_jce_service_headline'      => 'Tree Inspections by ISA-Certified Arborists',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
 			),
 		),
 		array(
 			'slug'    => 'lot-land-clearing',
 			'title'   => 'Lot &amp; Land Clearing',
 			'order'   => 6,
-			'excerpt' => 'Clearing for building sites, fence lines, and overgrown acreage on larger country properties.',
+			'excerpt' => "Whether you're clearing a building site, opening up a pasture, or reclaiming an overgrown property line, land clearing takes the right equipment and a plan.",
 			'body'    => jce_demo_body(
 				array(
-					'Clearing a building site, opening a fence line, or reclaiming acreage that has gone to buckthorn and box elder is different work from residential tree care, and it needs different machines. Forestry mulchers, tracked skid steers, and grapple equipment do in a day what a crew with chainsaws does in a week.',
-					'The judgement call on these jobs is what stays. A cleared lot with three good oaks left standing is worth considerably more than a cleared lot, and those oaks have to be identified before the machines start, not after. We walk the site with you first and mark what is worth keeping — which usually includes trees a bulldozer operator would not have looked at twice.',
-					'The other half of the judgement is what happens to the material. Mulching in place is fastest and leaves a layer that suppresses regrowth. Hauling everything off leaves a clean site but costs more. Burning, where it is permitted, sits in between. Which one is right depends on what the ground is going to be used for, and that is a conversation before the quote rather than after.',
+					"We walk the property first to understand what's coming out, what's staying, and what the land will be used for next. From a single overgrown lot to several acres, we bring equipment sized to the job. If frozen ground would mean less damage during a winter clearing, we'll tell you that too.",
+					"Debris can be hauled off, chipped, or left as usable firewood, whatever works best for you.",
 				)
 			),
 			'meta'    => array(
-				'_jce_service_signs'    => "You are building|Clearing a footprint plus access and staging, with the trees worth keeping identified and protected before anything starts.\nA fence line has disappeared|Ten years of buckthorn and box elder along a property line, cut back to something you can maintain again.\nPasture or field edges creeping in|Woody encroachment takes usable acres out of production a few feet a year until someone stops it.\nInvasive species taking over|Buckthorn and honeysuckle outcompete everything and come back from cut stumps. Clearing without treating the stumps is a two-year fix.\nOvergrown acreage you cannot walk|Sometimes the goal is just to be able to use land you own again.",
-				'_jce_service_included' => "A walk-through before quoting, marking what stays and what goes\nForestry mulching, tracked equipment, and grapple work as the site calls for\nSelective clearing that protects the trees worth keeping\nStump treatment on invasives so they do not simply resprout\nMaterial mulched in place or hauled off, whichever suits the end use\nErosion considerations on slopes and near water discussed up front\nA finished grade you can actually build on, fence, or mow",
-				'_jce_service_pricing'  => "Acreage and density|An acre of scattered box elder and an acre of mature timber are entirely different jobs.\nStem size|Forestry mulchers handle small stuff quickly. Anything above about eight inches needs to be taken down and processed separately.\nTerrain|Flat and dry is fast. Slopes, wet ground, and rock all slow equipment down and sometimes rule it out.\nWhat happens to the material|Mulching in place is the economical option. Hauling everything off is the expensive one.\nSelectivity|Clearing everything is quicker than clearing around trees that have to survive it.",
-				'_jce_service_faq'      => "How much can you clear in a day?|With a forestry mulcher on reasonable terrain and small-diameter growth, an acre or more. Heavier timber or difficult ground is a good deal slower, and we would rather give you an honest range after walking it.\nDo I need a permit?|Sometimes — shoreland zoning, wetland setbacks, and county ordinances all apply in this area and they are not intuitive. We will flag what we know of and tell you who to call, but the permit is the landowner's responsibility.\nWill the brush grow back?|Buckthorn and honeysuckle absolutely will from cut stumps, which is why stump treatment is part of the job rather than an upsell. Without it you are doing this again in two years.\nCan you leave some trees?|Yes, and you should. Tell us what matters, or let us walk it with you and point out what is worth keeping. It is the single biggest difference between a cleared lot and a good one.",
+				'_jce_service_eyebrow'       => 'Land &amp; Lot Clearing',
+				'_jce_service_headline'      => 'Lot &amp; Land Clearing in the St. Croix River Valley',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
 			),
 		),
 		array(
+			// Was "Brush Clean Up & Mowing" — the approved copy splits mowing out
+			// into its own service below, and the two cross-reference each other.
 			'slug'    => 'brush-clean-up',
-			'title'   => 'Brush Clean Up &amp; Mowing',
+			'title'   => 'Brush Clean Up',
 			'order'   => 7,
-			'excerpt' => 'Overgrown brush cut back and hauled out, leaving the property usable again.',
+			'excerpt' => "Storm debris, overgrown brush, a pile of branches that's been sitting since last fall. We'll clear it out and haul it away so your property looks the way you want it.",
 			'body'    => jce_demo_body(
 				array(
-					'Not every job is a tree. A lot of what we get called for is the slow encroachment that happens at the edges of a property — the treeline pushing into the lawn, the ditch nobody has cut in three years, the pile of storm debris at the back of the lot that has become its own ecosystem.',
-					'This is straightforward work and we price it that way. Brush mowing for rough ground and ditch banks, hand cutting where machines cannot reach or where there is something worth preserving, chipping on site, and hauling out whatever should not stay. It is often the job that gets a property back to a state where normal maintenance is possible again.',
-					'It also pairs naturally with everything else we do. If we are already on site for a removal, adding the brush line at the back of the property costs a fraction of what a separate visit would — the expensive part of any job is getting the equipment there.',
+					"We assess the scope, give you a straightforward estimate, and remove the brush completely. Brush clean-up often pairs well with a removal, pruning, or land clearing job, so ask if bundling makes sense for your project.",
 				)
 			),
 			'meta'    => array(
-				'_jce_service_signs'    => "The treeline is advancing on the lawn|Woody growth reclaims mowed ground a few feet a year. Cutting it back once is much cheaper than doing it after another five.\nDitches and banks nobody can mow|Too steep or too rough for a lawn mower, and exactly what brush mowing equipment is built for.\nStorm debris still sitting where it fell|Brush piles are a fire and pest issue and they only get harder to deal with as they settle.\nAn overgrown fence line|You cannot maintain a fence you cannot get to.\nA property you have just bought|Clearing the neglect is usually the first step to knowing what you actually own.",
-				'_jce_service_included' => "Brush and small-diameter growth cut back to the line you want\nMowing of rough ground, ditch banks, and field edges\nHand cutting where equipment cannot reach or where plantings need protecting\nOn-site chipping of everything that can be chipped\nStorm debris and old brush piles removed\nThe finished area raked and left tidy, not just cut\nCombined pricing when it runs alongside other work on the property",
-				'_jce_service_pricing'  => "Area and density|The size of the area and how thick the growth is are most of the number.\nStem size|Anything a brush mower can take is quick. Larger stems have to be cut and processed separately.\nTerrain|Slopes, wet ground, and rock all slow equipment down or force hand work.\nHaul-off|Chipping on site is included. Trucking the material away is extra.\nCombined with other work|Substantially cheaper when we are already on site for a removal or pruning job.",
-				'_jce_service_faq'      => "Do you haul the brush away?|We chip what can be chipped and take the chips with us unless you want them. Larger material and anything that will not chip is hauled off for an additional charge, or stacked on site if you would rather deal with it yourself.\nCan you get into wet or steep ground?|Usually, with tracked equipment. There is a point where the honest answer is to wait for frozen ground, and we will tell you when that is the case rather than tear up your property.\nHow short do you cut it?|As close to ground level as the terrain safely allows. Where there are rocks or stumps hidden in the growth, cutting height goes up — for the equipment's sake and the operator's.\nIs this cheaper if you are already here?|Considerably. Mobilising the equipment is the expensive part, so adding brush work to a scheduled removal costs a fraction of a separate trip.",
+				'_jce_service_eyebrow'       => 'Brush Clean Up',
+				'_jce_service_headline'      => 'Brush Clean Up in the St. Croix River Valley',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
+			),
+		),
+		array(
+			// New service, split out of the old "Brush Clean Up & Mowing".
+			// No bundled photo yet — see inc/media.php.
+			'slug'    => 'brush-mowing',
+			'title'   => 'Brush Mowing',
+			'order'   => 8,
+			'excerpt' => "For larger overgrown areas like a back pasture, a fence line that's grown in, or land that hasn't been maintained in years brush mowing clears it fast!",
+			'body'    => jce_demo_body(
+				array(
+					"We mow down small trees, underbrush, and deadfall to manageable ground cover. Many customers reclaim space taken over by invasive species like buckthorn and cedar. Others want to open up walking trails or clear lanes for deer hunting. Whatever the goal, we'll walk your woods with you and discuss what makes sense for the land, both for your intended use and for the long-term health of the forest. If you're dealing with established trees rather than brush and saplings, see our <a href=\"/services/lot-land-clearing/\">Land &amp; Lot Clearing</a> page instead.",
+				)
+			),
+			'meta'    => array(
+				'_jce_service_eyebrow'       => 'Brush Mowing',
+				'_jce_service_headline'      => 'Brush Mowing for Overgrown Land in the St. Croix River Valley',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
 			),
 		),
 		array(
 			'slug'    => 'stump-grinding',
 			'title'   => 'Stump Grinding',
-			'order'   => 8,
-			'excerpt' => 'Grinding down what is left so you can put grass, garden, or patio back where the tree stood.',
+			'order'   => 9,
+			'excerpt' => "A leftover stump can be a tripping hazard, a mower obstacle, or it can simply be in the way of whatever you want to do with that spot next. We grind it down below grade so you can plant, seed, or landscape right over it.",
 			'body'    => jce_demo_body(
 				array(
-					'A stump is a trip hazard, a mower killer, a termite and carpenter ant hotel, and — if it is a species that suckers — the start of a dozen new saplings across the lawn. Grinding it out is what turns a removal into a finished job.',
-					'The machine takes the stump and the major surface roots down below grade, typically eight to twelve inches, which is enough for turf, a garden bed, or paving. Deeper than that if you are planting a replacement tree in the same spot, which is worth saying up front because it changes how we do it.',
-					'What is left behind is a pile of grindings, and you have a choice about them. Left in place they settle over a season and make perfectly good fill once mixed with soil. Hauled off, you get a clean hole ready for topsoil right away. Neither is wrong; the second costs more. And it is always cheaper to grind at the same visit as the removal than to bring the machine back separately.',
+					"Stump grinding is priced separately from removal, so just ask us to include it in your estimate. We grind the visible stump and root flare, and we can haul away the resulting wood chips or leave them on-site for you to use.",
 				)
 			),
 			'meta'    => array(
-				'_jce_service_signs'    => "You want lawn back|Grinding below grade is what lets you topsoil, seed, and mow over the spot as if nothing was there.\nSuckers coming up around it|Some species keep sending up shoots from the stump and roots for years. Grinding stops it.\nIt is a hazard|Stumps in a lawn are exactly the wrong height to see and the right height to catch a foot or a mower deck.\nInsects have moved in|Decaying stumps attract carpenter ants and termites, and they are close to the house by definition.\nYou are replanting|A new tree cannot go in where the old stump is. Grinding deeper makes the spot usable again.",
-				'_jce_service_included' => "Stump ground to eight to twelve inches below grade as standard\nMajor surface roots ground out where they run through the work area\nUtility locate arranged before the machine touches the ground\nGrindings raked back into the hole and levelled, or hauled off if you prefer\nThe surrounding lawn protected and cleaned up afterward\nDeeper grinding where a replacement tree is going into the same spot\nDiscounted pricing when done at the same visit as the removal",
-				'_jce_service_pricing'  => "Diameter|Stumps are priced largely by width across the cut. Measure at the widest point, including the flare.\nHow many|Several stumps on one visit cost far less each than a single stump on its own trip.\nAccess|The grinder needs to get there. A backyard behind a narrow gate means a smaller machine and more time.\nGrindings|Leaving them is included. Hauling them away and bringing in topsoil is extra.\nDepth|Standard depth suits lawn and paving. Going deeper for a replacement tree takes longer.",
-				'_jce_service_faq'      => "How deep do you grind?|Eight to twelve inches below grade as standard, which is enough for turf, beds, or paving. If you are planting a new tree in the same spot, say so and we will go deeper.\nWhat happens to the grindings?|By default they go back in the hole and get levelled — they settle over a season and make fine fill mixed with soil. If you want a clean hole for topsoil, we will haul them off for an extra charge.\nCan I plant grass right away?|Once the grindings are topped with a few inches of soil, yes. Planting straight into pure grindings does not work well; they are wood, and they tie up nitrogen as they break down.\nWhat about the roots?|We grind the major surface roots running through the work area. The deeper root system stays and decays in place over several years, which is harmless.\nIs it cheaper with the removal?|Yes, noticeably. Most of the cost is getting the machine to your property, so combining the visits saves you money.",
+				'_jce_service_eyebrow'       => 'Stump Grinding',
+				'_jce_service_headline'      => 'Stump Grinding in the St. Croix River Valley',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
 			),
 		),
 	);
@@ -565,13 +621,22 @@ function jce_demo_pages() {
  * ------------------------------------------------------------- */
 
 /**
- * Create a post if nothing with that slug and type exists yet.
+ * Create a post, or update it when the caller asked to replace existing copy.
  *
- * @return string 'created' or 'skipped'.
+ * Two modes, because both are needed at different points in a build:
+ *  - Default: anything whose slug already exists is left alone, so a re-run
+ *    after adding one new service cannot touch the other eight.
+ *  - Replace: existing posts are rewritten from the copy in this file. This is
+ *    how approved copy lands on top of the placeholder text an earlier import
+ *    created. It overwrites edits made in WordPress, so it is off by default
+ *    and the admin screen states plainly what it does.
+ *
+ * @return string 'created', 'updated' or 'skipped'.
  */
-function jce_demo_insert( $post_type, $item, &$log ) {
+function jce_demo_insert( $post_type, $item, &$log, $replace = false ) {
 	$existing = get_page_by_path( $item['slug'], OBJECT, $post_type );
-	if ( $existing ) {
+
+	if ( $existing && ! $replace ) {
 		$log[] = sprintf(
 			/* translators: 1: post type, 2: post title */
 			__( 'Skipped %1$s "%2$s" — already exists.', 'jce' ),
@@ -581,23 +646,31 @@ function jce_demo_insert( $post_type, $item, &$log ) {
 		return 'skipped';
 	}
 
-	$post_id = wp_insert_post(
-		array(
-			'post_type'    => $post_type,
-			'post_title'   => wp_specialchars_decode( $item['title'] ),
-			'post_name'    => $item['slug'],
-			'post_content' => isset( $item['body'] ) ? $item['body'] : '',
-			'post_excerpt' => isset( $item['excerpt'] ) ? $item['excerpt'] : '',
-			'post_status'  => isset( $item['status'] ) ? $item['status'] : 'publish',
-			'menu_order'   => isset( $item['order'] ) ? $item['order'] : 0,
-		),
-		true
+	$fields = array(
+		'post_type'    => $post_type,
+		'post_title'   => wp_specialchars_decode( $item['title'] ),
+		'post_name'    => $item['slug'],
+		'post_content' => isset( $item['body'] ) ? $item['body'] : '',
+		'post_excerpt' => isset( $item['excerpt'] ) ? $item['excerpt'] : '',
+		'post_status'  => isset( $item['status'] ) ? $item['status'] : 'publish',
+		'menu_order'   => isset( $item['order'] ) ? $item['order'] : 0,
 	);
+
+	$was_update = false;
+	if ( $existing ) {
+		$fields['ID'] = $existing->ID;
+		$was_update   = true;
+		// Keep the published slug exactly as it is. Rewriting post_name on an
+		// indexed URL is the one thing here that would cost real traffic.
+		unset( $fields['post_name'] );
+	}
+
+	$post_id = wp_insert_post( $fields, true );
 
 	if ( is_wp_error( $post_id ) ) {
 		$log[] = sprintf(
 			/* translators: 1: post title, 2: error message */
-			__( 'Failed to create "%1$s": %2$s', 'jce' ),
+			__( 'Failed to save "%1$s": %2$s', 'jce' ),
 			$item['title'],
 			$post_id->get_error_message()
 		);
@@ -623,6 +696,16 @@ function jce_demo_insert( $post_type, $item, &$log ) {
 	// /emergency-tree-service/, /service-area/), so a drifted slug is a broken
 	// nav button rather than a cosmetic difference — say so rather than
 	// reporting a clean success.
+	if ( $was_update ) {
+		$log[] = sprintf(
+			/* translators: 1: post type, 2: post title */
+			__( 'Updated %1$s "%2$s" from the approved copy.', 'jce' ),
+			$post_type,
+			$item['title']
+		);
+		return 'updated';
+	}
+
 	$actual = get_post_field( 'post_name', $post_id );
 	if ( $actual !== $item['slug'] ) {
 		$log[] = sprintf(
@@ -650,9 +733,10 @@ function jce_demo_insert( $post_type, $item, &$log ) {
  *
  * @return array{created:int,skipped:int,log:string[]}
  */
-function jce_run_demo_import() {
+function jce_run_demo_import( $replace = false ) {
 	$log     = array();
 	$created = 0;
+	$updated = 0;
 	$skipped = 0;
 
 	$sets = array(
@@ -677,8 +761,11 @@ function jce_run_demo_import() {
 
 	foreach ( $sets as $post_type => $items ) {
 		foreach ( $items as $item ) {
-			if ( 'created' === jce_demo_insert( $post_type, $item, $log ) ) {
+			$result = jce_demo_insert( $post_type, $item, $log, $replace );
+			if ( 'created' === $result ) {
 				$created++;
+			} elseif ( 'updated' === $result ) {
+				$updated++;
 			} else {
 				$skipped++;
 			}
@@ -691,6 +778,7 @@ function jce_run_demo_import() {
 
 	return array(
 		'created' => $created,
+		'updated' => $updated,
 		'skipped' => $skipped,
 		'log'     => $log,
 	);
@@ -720,7 +808,7 @@ function jce_render_demo_page() {
 		isset( $_POST['jce_demo_nonce'] )
 		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['jce_demo_nonce'] ) ), 'jce_import_demo' )
 	) {
-		$result = jce_run_demo_import();
+		$result = jce_run_demo_import( ! empty( $_POST['jce_demo_replace'] ) );
 	}
 
 	$counts = array(
@@ -738,9 +826,10 @@ function jce_render_demo_page() {
 				<p>
 					<strong><?php
 						printf(
-							/* translators: 1: number created, 2: number skipped */
-							esc_html__( 'Done — %1$d created, %2$d skipped.', 'jce' ),
+							/* translators: 1: created, 2: updated, 3: skipped */
+							esc_html__( 'Done — %1$d created, %2$d updated, %3$d skipped.', 'jce' ),
 							(int) $result['created'],
+							(int) $result['updated'],
 							(int) $result['skipped']
 						);
 					?></strong>
@@ -777,9 +866,20 @@ function jce_render_demo_page() {
 
 		<form method="post">
 			<?php wp_nonce_field( 'jce_import_demo', 'jce_demo_nonce' ); ?>
+
+			<p style="max-width:42em;padding:.9em 1.1em;background:#fcf9e8;border-left:4px solid #dba617;">
+				<label>
+					<input type="checkbox" name="jce_demo_replace" value="1">
+					<strong><?php esc_html_e( 'Replace existing content', 'jce' ); ?></strong>
+				</label><br>
+				<span class="description">
+					<?php esc_html_e( 'Rewrites Services, Locations, and Pages that already exist, using the copy above. This is how approved copy lands on top of placeholder text from an earlier import — but it also discards any edits made in WordPress since. Published URLs are never changed. Leave unchecked to add only what is missing.', 'jce' ); ?>
+				</span>
+			</p>
+
 			<p>
 				<button type="submit" class="button button-primary button-hero">
-					<?php esc_html_e( 'Import Example Content', 'jce' ); ?>
+					<?php esc_html_e( 'Run Import', 'jce' ); ?>
 				</button>
 			</p>
 		</form>

@@ -35,6 +35,7 @@ function jce_icon_paths( $name ) {
 		'layers'     => '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
 		'wind'       => '<path d="M9.59 4.59A2 2 0 1 1 11 8H2"/><path d="M12.59 19.41A2 2 0 1 0 14 16H2"/><path d="M17.73 7.73A2.5 2.5 0 1 1 19.5 12H2"/>',
 		'disc'       => '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>',
+		'grass'      => '<path d="M12 21V11"/><path d="M12 15c-.5-4-3.2-6.8-7-8 .2 4.2 3 7.2 7 8z"/><path d="M12 15c.5-4 3.2-6.8 7-8-.2 4.2-3 7.2-7 8z"/><line x1="3" y1="21" x2="21" y2="21"/>',
 		'clipboard'  => '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/>',
 		'droplet'    => '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
 		'calendar'   => '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
@@ -81,6 +82,7 @@ function jce_service_icon_map() {
 		'tree-inspection'        => 'search',
 		'lot-land-clearing'      => 'layers',
 		'brush-clean-up'         => 'wind',
+		'brush-mowing'           => 'grass',
 		'stump-grinding'         => 'disc',
 	);
 }

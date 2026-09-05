@@ -1,17 +1,27 @@
 <?php
 /**
  * "The Personal Estimate" — the pillar that defuses the "am I being upsold"
- * fear. Approved copy from the creative brief is the default; a Service can
- * override the whole list with its own steps.
+ * fear, and the one section that appears on nearly every page: the homepage,
+ * every service, every town, and the About / Service Area / Contact templates.
  *
- * Beyond three steps the grid switches to three-up rows, so five steps read
- * as 3 + 2 rather than a lopsided 4 + 1.
+ * Because it renders in seven places, neither the design nor the copy is
+ * duplicated. The markup lives here, so a layout change applies everywhere at
+ * once. The copy lives in the Customizer (Business Info > The Personal
+ * Estimate), so a wording change also applies everywhere at once — and is made
+ * in WordPress rather than in PHP.
+ *
+ * An empty argument means "use the shared default", so a caller only ever
+ * passes what genuinely differs for that page. A single Service can override
+ * the steps from its own "Process Steps" field.
+ *
+ * Beyond three steps the grid switches to three-up rows, so the approved five
+ * read as 3 + 2 rather than a lopsided 4 + 1.
  *
  * @param array $args {
- *     @type array  $rows    Rows of [ title, copy ]. Defaults to the brief's three.
- *     @type string $heading Section heading.
- *     @type string $eyebrow Section eyebrow.
- *     @type string $lede    Paragraph under the heading.
+ *     @type array  $rows    Rows of [ title, copy ]. Empty = the Customizer steps.
+ *     @type string $heading Empty = the Customizer heading.
+ *     @type string $eyebrow Empty = the standard eyebrow.
+ *     @type string $lede    Optional paragraph under the heading.
  *     @type string $class   Extra section classes.
  *     @type bool   $cta     Show the estimate button under the steps.
  * }
@@ -24,8 +34,8 @@ $args = wp_parse_args(
 	isset( $args ) ? $args : array(),
 	array(
 		'rows'    => array(),
-		'heading' => __( 'The Personal Estimate', 'jce' ),
-		'eyebrow' => __( 'What Happens After You Reach Out', 'jce' ),
+		'heading' => '',
+		'eyebrow' => '',
 		'lede'    => '',
 		'class'   => '',
 		'cta'     => true,
@@ -33,20 +43,13 @@ $args = wp_parse_args(
 );
 
 if ( ! $args['rows'] ) {
-	$args['rows'] = array(
-		array(
-			__( 'You call, we schedule your free estimate.', 'jce' ),
-			__( "A local arborist walks your property and figures out what's going on. Sometimes that means the tree comes down. Sometimes it means we tell you it didn't need to. Either way, you get an expert assessment and a clear recommendation on next steps.", 'jce' ),
-		),
-		array(
-			__( "We walk you through what's needed.", 'jce' ),
-			__( "You get a hand-written estimate on the spot, and we walk you through it. No callback in three days, no fine print to decode. Just a straight answer while we're standing right there looking at the same tree you are.", 'jce' ),
-		),
-		array(
-			__( 'We schedule the job to fit your needs and the season.', 'jce' ),
-			__( "Once you give the go-ahead, we get you on the schedule, timed to the job and the season. A dead ash in July and a leaning oak in January don't call for the same approach, and we'll tell you why.", 'jce' ),
-		),
-	);
+	$args['rows'] = jce_process_steps();
+}
+if ( ! $args['heading'] ) {
+	$args['heading'] = jce_biz( 'process_heading', jce_default_process_heading() );
+}
+if ( ! $args['eyebrow'] ) {
+	$args['eyebrow'] = __( 'What Happens After You Reach Out', 'jce' );
 }
 
 $steps_class = count( $args['rows'] ) > 3 ? 'steps steps--3up' : 'steps';
