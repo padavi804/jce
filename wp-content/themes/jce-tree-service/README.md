@@ -52,7 +52,7 @@ inc/
   meta-boxes.php             Admin fields for those CPTs and the page templates
   demo-content.php           Tools > JCE Example Content — the one-click importer
   schema.php                 LocalBusiness + Review (sitewide), Service (service pages)
-  seo.php                    Meta description, canonical, Open Graph, breadcrumbs
+  seo.php                    Meta description, canonical, Open Graph
 assets/js/main.js            Mobile nav only — no jQuery, deferred
 ```
 
@@ -116,6 +116,24 @@ was left empty.
   turn from the alternator, or the sections either side of it both land on the same ground.
 - `jce_band( 'dark' )` — after a dark or green band, so the next light section is white.
 
+### Service page body copy
+
+Service bodies use the `.entry-content--service` modifier: a standfirst on the opening
+paragraph, line-height 1.78, and a 68ch measure for running text. It is pure CSS — the copy
+is written in WordPress exactly as before.
+
+The standfirst is the body's **own** first paragraph, never the Excerpt. The Excerpt already
+renders as the hero subheading, and printing it twice is the usual way this pattern goes
+wrong. A body that opens with a callout or a heading correctly gets no standfirst.
+
+One sentence per page can be lifted out as a **pull statement**: select the paragraph in the
+editor, then Styles > "Pull Statement" (registered in `inc/theme-setup.php`). Applying it
+means that sentence becomes its own paragraph, so it is an editorial decision, not a
+styling one. `.pull` works too for hand-written HTML.
+
+Tree Removal has no body prose — its argument lives in the proof blocks and sub-services —
+so none of this affects that page.
+
 ### Service page anatomy
 
 Beyond the shared sections, a Service page has its own hero and three page-specific blocks:
@@ -178,8 +196,11 @@ Built for the Core Web Vitals side of the visibility goal:
 - Only two font families, four weights total, `display=swap` + preconnect.
 - Hero image gets `fetchpriority="high"` (it's the LCP element); everything else lazy-loads.
 - Emoji scripts, oEmbed discovery, generator tags, and the classic block stylesheet are removed.
-- LocalBusiness + Review + Service + BreadcrumbList schema. SEO meta output auto-disables if
+- LocalBusiness + Review + Service schema. SEO meta output auto-disables if
   Yoast / Rank Math / AIOSEO / SEO Framework is installed, so no duplicate tags.
+- Breadcrumbs were removed at the client's request — both the visible trail and the
+  BreadcrumbList schema. Search results will show the page URL rather than a breadcrumb
+  path. To restore, revert the commit that removed `jce_breadcrumbs()` from `inc/seo.php`.
 
 ## Getting a site up
 
@@ -199,7 +220,7 @@ Built for the Core Web Vitals side of the visibility goal:
 
 Three imported slugs are load-bearing because Customizer defaults link to them:
 `/estimate/`, `/emergency-tree-service/` (the nav's Storm Emergency button and the sticky
-mobile call bar), and `/service-area/` (what every town page breadcrumbs up to). The
+mobile call bar), and `/service-area/` (the hub every town page links up to). The
 importer reports it if WordPress assigns a different slug because something already holds
 that URL.
 

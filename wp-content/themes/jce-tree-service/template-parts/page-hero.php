@@ -1,6 +1,6 @@
 <?php
 /**
- * Compact interior-page hero with breadcrumbs.
+ * Compact interior-page hero.
  *
  * Pass 'context' (services|about|contact|emergency|blog) to pick up the
  * bundled default photo; a Featured Image on the page overrides it.
@@ -67,7 +67,6 @@ $long_title = mb_strlen( wp_strip_all_tags( $args['title'] ) ) > 40;
 	<?php endif; ?>
 
 	<div class="wrap">
-		<?php jce_breadcrumbs(); ?>
 		<?php if ( $args['eyebrow'] ) : ?>
 			<p class="eyebrow"><?php echo esc_html( $args['eyebrow'] ); ?></p>
 		<?php endif; ?>

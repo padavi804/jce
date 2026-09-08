@@ -1,6 +1,6 @@
 <?php
 /**
- * Baseline SEO output: meta description, canonical, Open Graph, breadcrumbs.
+ * Baseline SEO output: meta description, canonical, and Open Graph tags.
  *
  * These only fire when no dedicated SEO plugin is active, so installing Yoast
  * or Rank Math later won't produce duplicate tags.
@@ -148,70 +148,3 @@ function jce_save_seo_meta( $post_id ) {
 }
 add_action( 'save_post', 'jce_save_seo_meta' );
 
-/**
- * Breadcrumbs — helps crawlers understand the service/location hierarchy and
- * earns breadcrumb display in search results via BreadcrumbList schema.
- */
-function jce_breadcrumbs() {
-	if ( is_front_page() ) {
-		return;
-	}
-
-	$crumbs = array( array( 'name' => __( 'Home', 'jce' ), 'url' => home_url( '/' ) ) );
-
-	if ( is_singular( 'service' ) ) {
-		$crumbs[] = array( 'name' => __( 'Services', 'jce' ), 'url' => get_post_type_archive_link( 'service' ) );
-		$crumbs[] = array( 'name' => get_the_title(), 'url' => '' );
-	} elseif ( is_post_type_archive( 'service' ) ) {
-		$crumbs[] = array( 'name' => __( 'Services', 'jce' ), 'url' => '' );
-	} elseif ( is_singular( 'location' ) ) {
-		$crumbs[] = array( 'name' => __( 'Service Area', 'jce' ), 'url' => home_url( '/service-area/' ) );
-		$crumbs[] = array( 'name' => get_the_title(), 'url' => '' );
-	} elseif ( is_singular( 'post' ) ) {
-		$crumbs[] = array( 'name' => __( 'Blog', 'jce' ), 'url' => get_permalink( get_option( 'page_for_posts' ) ) );
-		$crumbs[] = array( 'name' => get_the_title(), 'url' => '' );
-	} elseif ( is_singular() ) {
-		$crumbs[] = array( 'name' => get_the_title(), 'url' => '' );
-	} elseif ( is_home() ) {
-		$crumbs[] = array( 'name' => __( 'Blog', 'jce' ), 'url' => '' );
-	} elseif ( is_search() ) {
-		$crumbs[] = array( 'name' => __( 'Search Results', 'jce' ), 'url' => '' );
-	} elseif ( is_404() ) {
-		$crumbs[] = array( 'name' => __( 'Page Not Found', 'jce' ), 'url' => '' );
-	}
-
-	if ( count( $crumbs ) < 2 ) {
-		return;
-	}
-
-	echo '<nav class="breadcrumbs" aria-label="' . esc_attr__( 'Breadcrumb', 'jce' ) . '"><ol>';
-	foreach ( $crumbs as $crumb ) {
-		if ( $crumb['url'] ) {
-			printf( '<li><a href="%s">%s</a></li>', esc_url( $crumb['url'] ), esc_html( $crumb['name'] ) );
-		} else {
-			printf( '<li><span aria-current="page">%s</span></li>', esc_html( $crumb['name'] ) );
-		}
-	}
-	echo '</ol></nav>';
-
-	// BreadcrumbList schema.
-	$items = array();
-	foreach ( $crumbs as $i => $crumb ) {
-		$item = array(
-			'@type'    => 'ListItem',
-			'position' => $i + 1,
-			'name'     => $crumb['name'],
-		);
-		if ( $crumb['url'] ) {
-			$item['item'] = $crumb['url'];
-		}
-		$items[] = $item;
-	}
-	echo '<script type="application/ld+json">' . wp_json_encode(
-		array(
-			'@context'        => 'https://schema.org',
-			'@type'           => 'BreadcrumbList',
-			'itemListElement' => $items,
-		)
-	) . '</script>';
-}

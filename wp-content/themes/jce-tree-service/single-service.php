@@ -124,7 +124,7 @@ while ( have_posts() ) :
 	if ( trim( get_the_content() ) ) :
 		?>
 		<article class="section <?php echo esc_attr( jce_band() ); ?>">
-			<div class="wrap wrap--narrow entry-content"><?php the_content(); ?></div>
+			<div class="wrap wrap--narrow entry-content entry-content--service"><?php the_content(); ?></div>
 		</article>
 		<?php
 	endif;

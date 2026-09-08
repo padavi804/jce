@@ -2,8 +2,7 @@
 /**
  * Template Name: Service Area
  *
- * Assign to the page at /service-area/ — the parent that every town page
- * breadcrumbs back up to (see jce_breadcrumbs() in inc/seo.php).
+ * Assign to the page at /service-area/ — the hub every town page links up to.
  *
  * The Location post type has has_archive => false precisely so this page can
  * own that URL: an archive would be a bare list, and this needs to be a real

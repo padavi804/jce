@@ -26,7 +26,6 @@ while ( have_posts() ) :
 			</div>
 		<?php endif; ?>
 		<div class="wrap">
-			<?php jce_breadcrumbs(); ?>
 			<p class="eyebrow" style="color:var(--amber);"><?php echo esc_html( jce_biz( 'emergency_note', '24/7 storm response' ) ); ?></p>
 			<h1><?php echo esc_html( get_the_title() ? get_the_title() : __( 'Emergency Tree Service', 'jce' ) ); ?></h1>
 			<p class="emergency-hero__sub"><?php esc_html_e( 'A tree on the house, a limb through the roof, or one leaning that was not leaning yesterday. Call us — do not use the contact form. We will tell you straight away whether we can get there and what to do until we do.', 'jce' ); ?></p>

@@ -85,6 +85,29 @@ function jce_defer_scripts( $tag, $handle ) {
 }
 add_filter( 'script_loader_tag', 'jce_defer_scripts', 10, 2 );
 
+/**
+ * Block styles.
+ *
+ * "Pull Statement" gives an editor a way to lift one sentence out of the body
+ * on a service page without typing a CSS class: select the paragraph, then
+ * Styles > Pull Statement in the block sidebar. One per page is the intent —
+ * it is the line someone should remember if they read nothing else.
+ */
+function jce_register_block_styles() {
+	if ( ! function_exists( 'register_block_style' ) ) {
+		return;
+	}
+
+	register_block_style(
+		'core/paragraph',
+		array(
+			'name'  => 'jce-pull',
+			'label' => __( 'Pull Statement', 'jce' ),
+		)
+	);
+}
+add_action( 'init', 'jce_register_block_styles' );
+
 function jce_register_widget_areas() {
 	register_sidebar(
 		array(
@@ -164,3 +187,23 @@ function jce_dequeue_unused_styles() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'jce_dequeue_unused_styles', 20 );
+
+/**
+ * Favicon: a single tree lifted from the JCE logo, used until someone sets a
+ * Site Icon in the Customizer (has_site_icon() then takes over instead).
+ */
+function jce_favicon() {
+	if ( has_site_icon() ) {
+		return;
+	}
+
+	$dir = get_template_directory_uri() . '/assets/images/favicon';
+	?>
+	<link rel="icon" href="<?php echo esc_url( get_template_directory_uri() . '/favicon.ico' ); ?>" sizes="any">
+	<link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( $dir . '/favicon-16x16.png' ); ?>">
+	<link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( $dir . '/favicon-32x32.png' ); ?>">
+	<link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url( $dir . '/favicon-192x192.png' ); ?>">
+	<link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( $dir . '/apple-touch-icon.png' ); ?>">
+	<?php
+}
+add_action( 'wp_head', 'jce_favicon' );
