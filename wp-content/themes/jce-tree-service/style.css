@@ -708,10 +708,10 @@ strong { color: var(--ink); font-weight: 600; }
 
 
 /* ===========================================================
-   9. STATS BAND — NOT CURRENTLY RENDERED.
-   Removed from front-page.php and the About template as redundant.
-   template-parts/stats.php is retained; re-add its get_template_part()
-   call to bring it back.
+   9. STATS BAND
+   Used by the About page for "What 25 Years Actually Buys You" — the
+   approved copy's own headed recap, distinct from the compact trust-band
+   strip under every page's hero.
    =========================================================== */
 .stats { background: var(--charcoal); color: var(--white); }
 .stats__grid {
@@ -748,6 +748,14 @@ strong { color: var(--ink); font-weight: 600; }
 .split--reverse .split__media { order: 2; }
 .split__media { position: relative; }
 .split__media img, .split__media .media-ph { border-radius: var(--radius-lg); }
+
+/* A full-width photo otherwise fills a full 1fr track and renders far taller
+   than the copy beside it. Capping the track width keeps it human-scaled;
+   height stays auto (not forced/cropped) so the whole photo stays visible. */
+.split__media img { width: 100%; height: auto; }
+@media (min-width: 761px) {
+	.split--photo { grid-template-columns: minmax(280px, 420px) 1fr; }
+}
 
 /* Floating badge on split images */
 .split__badge {

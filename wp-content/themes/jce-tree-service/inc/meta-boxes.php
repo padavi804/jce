@@ -338,6 +338,30 @@ function jce_render_page_sections_box( $post ) {
 		get_post_meta( $post->ID, '_jce_page_faq', true ),
 		6
 	);
+
+	jce_field_textarea(
+		'jce_page_standard',
+		__( 'Our Standard (About Us)', 'jce' ),
+		__( 'The "Why We Still Do It the Same Way" section. One paragraph per line.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_standard', true ),
+		4
+	);
+
+	jce_field_textarea(
+		'jce_page_yard',
+		__( 'Yard Care (About Us)', 'jce' ),
+		__( 'The "We Treat Your Yard Like It\'s Ours" section. One paragraph per line.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_yard', true ),
+		3
+	);
+
+	jce_field_textarea(
+		'jce_page_local',
+		__( 'Local Roots (About Us)', 'jce' ),
+		__( 'The "We\'re Proud to Be Located in River Falls" section. One paragraph per line.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_local', true ),
+		4
+	);
 }
 
 /* ---------------------------------------------------------------
@@ -378,7 +402,7 @@ function jce_line_field_map() {
 		),
 		'jce_page_sections'     => array(
 			'nonce'  => 'jce_page_sections_nonce',
-			'fields' => array( 'jce_page_highlights', 'jce_page_milestones', 'jce_page_faq' ),
+			'fields' => array( 'jce_page_highlights', 'jce_page_milestones', 'jce_page_faq', 'jce_page_standard', 'jce_page_yard', 'jce_page_local' ),
 			'text'   => array(),
 		),
 	);

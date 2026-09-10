@@ -538,23 +538,37 @@ function jce_demo_testimonials() {
  * ------------------------------------------------------------- */
 function jce_demo_pages() {
 	return array(
+		// APPROVED COPY — signed off by the client. Do not rewrite it. There is
+		// no approved timeline or FAQ for this page, so both are switched off
+		// with a dash rather than left to fall back to the theme's example
+		// text. Every other named block in the brief — Our Story, Why We
+		// Still Do It the Same Way, The Crew Behind the Work, We Treat Your
+		// Yard Like It's Ours, and We're Proud to Be Located in River Falls —
+		// gets its own section on the page (see page-templates/template-about.php)
+		// rather than being flattened into one long editor-content block.
 		array(
 			'slug'     => 'about',
-			'title'    => 'About Us',
+			'title'    => '25 Years of Doing Right by People and Trees in our Community.',
 			'template' => 'page-templates/template-about.php',
-			'excerpt'  => 'Family-owned in River Falls since 2001, still run by the person who writes your estimate.',
+			'excerpt'  => 'Locally-owned. Arborist-led. The highest standard of tree care. No exceptions.',
+			// "Our Story" — the split section next to the crew photo.
 			'body'     => jce_demo_body(
 				array(
-					'<h2>A local crew, not a franchise passing through.</h2>',
-					'Joe Cardin founded JCE Tree Service in River Falls in 2001. Twenty-five years later the company is still family-owned, still based here, and still run by someone who lives in the same community as the people he works for.',
-					'That matters more than it sounds like it should. It means the person who wrote your estimate is the person you can call afterward. It means the crew knows which streets have the ash problem and which oaks should not be touched in July. And it means our reputation here is the only marketing that has ever really worked for us — most of our customers call us again, and most of the rest were sent by a neighbor.',
-					'People think anyone with a chainsaw can take down a tree. Sometimes that is true. The difference shows up in what your yard looks like the next morning.',
+					"JCE Tree Service started in River Falls in 2001. Twenty-five years later, we're still here, still local, and still running on the same high quality standard we started with.",
+					"Today JCE is a crew of 10-12, led by Joe Cardin and Ross Zimmermann, right here in River Falls. Along the way we've added ISA-certified arborists, forestry degrees, licensed pesticide applicators, and a lot more equipment all so we can treat your trees and your property with the same care whether it's a big job or a small one.",
 				)
 			),
 			'meta'     => array(
-				'_jce_page_highlights' => "We tell you when not to do it|The fastest way to lose a customer for twenty years is to take down a tree that did not need to come down. We would rather write the smaller estimate and keep the phone number.\nThe owner is still on the property|Joe walks most estimates himself. There is no sales department here, and nobody working on commission is deciding what your tree needs.\nThe yard matters as much as the tree|Every machine we own was bought with turf in mind. If the ground is too soft, we will tell you to wait rather than leave you with ruts to repair.\nThe crew stays|Most of our people have been here for years, and they train continuously. That is unusual in this trade, and it is the reason the work is consistent.",
-				'_jce_page_milestones' => "2001|Joe starts JCE|One truck, one chainsaw, and a phone number handed around River Falls. The first customers are neighbors, which sets the tone for everything after.\n2008|First bucket truck|The jobs stop being ones that can be climbed. Buying lift equipment means taking on the removals other companies were turning down.\n2013|Emerald ash borer arrives|The beetle reaches western Wisconsin and changes the work permanently. We add licensed pesticide applicators so we can treat the ash worth saving instead of only removing the ones that are gone.\n2017|Crane and spider lift|Equipment that can reach over a house without touching the lawn. It is what makes the difficult backyard removals possible at all.\n2021|Four certified arborists on staff|Two forestry degrees among them. The assessments stop being one person's judgement and start being a standard.\n2026|Twenty-five years, same town|Still family-owned, still based in River Falls, still mostly working for people who found us through someone they know.",
-				'_jce_page_faq'        => "Are you actually local, or a national brand with a local name?|Local. One owner, one location, in River Falls since 2001. If you call the number on this site during business hours, you are calling an office a few miles from your house.\nHow big is the crew?|Big enough to run multiple jobs at once and bring real equipment to each of them, small enough that the owner still knows every property we are working on that week.\nWho will I actually deal with?|Joe or one of our certified arborists for the estimate, and the same crew leader through the job itself. You will not be handed between a salesperson and a stranger.\nDo you do commercial and municipal work?|Yes — property managers, HOAs, and municipal contracts alongside the residential work. The standards are the same either way.",
+				// "The Crew Behind the Work" — the highlight cards.
+				'_jce_page_highlights' => "Four ISA-Certified Arborists|Which means the person diagnosing your tree's health has the training to be right about it, not just confident about it.\nTwo Team Members with Forestry Degrees|Which means we understand how trees behave in this climate, this soil, and these species — not tree care in general.\nFour Licensed Pesticide Applicators|Which means treatment for disease or pests comes from people licensed to do the work.\nAn Owner Who's Spent Decades in These Woods|Which means the estimate you get reflects 25 years of judgment calls on trees just like yours, in neighborhoods just like yours.\nA Crew That Sticks Around|Many of our team members have been with JCE for years, and every one of them trains on the same quality standard, so the crew that shows up is never a variable.",
+				// "Why We Still Do It the Same Way".
+				'_jce_page_standard'    => "We built JCE around one rule: the standard doesn't change, job to job, customer to customer. Same crew training. Same equipment. Same guy — usually the owner, Joe — walking your property, writing your estimate by hand, and explaining to you what your trees need. We offer the highest standard of tree care in the area. No exceptions.\nThat's the whole business model. It's also why more than 8 out of 10 JCE customers call us again.",
+				// "We Treat Your Yard Like It's Ours".
+				'_jce_page_yard'        => 'Property damage is the fear nobody tells you they have until it happens to them — the driveway that gets rutted, the flower bed that doesn\'t survive the truck, the "quick job" that leaves ruts in the lawn for a season. We\'ve spent 25 years buying equipment specifically chosen to avoid that, not just to get a tree down fast. And we clean up like we\'re the ones who have to look at your yard tomorrow (because in this community, we probably will)!',
+				// "We're Proud to Be Located in River Falls".
+				'_jce_page_local'       => "We're not a franchise, and we're not a crew that drives in from out of the area to work a job and leave. Joe and Ross live here. So does most of the crew. When we talk about the ash borer problem hitting River Falls and the surrounding area, it's because we're dealing with it in our neighborhoods too.\nWe're proud to support our local community where we can. We enjoy being part of the River Falls Days and the Holidazzle parade, and we support local youth sports and local fundraisers throughout the year. We don't spend a lot of money on advertising, but when we do, we try to support local businesses like WEVR and the Falls Movie Theater. We live here, work here, and we're glad to show up for the community the same way we show up for our customers.",
+				'_jce_page_milestones'  => '-',
+				'_jce_page_faq'         => '-',
 			),
 		),
 		array(

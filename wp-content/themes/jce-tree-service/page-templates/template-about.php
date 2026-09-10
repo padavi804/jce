@@ -2,13 +2,14 @@
 /**
  * Template Name: About Us
  *
- * Assign to the "About" page. The editor content is the story; the timeline,
- * the values cards, and the FAQ come from the "Page Sections" box below the
- * editor. The credential, estimate, and service-area sections are shared with
- * the homepage so the proof stays consistent everywhere.
- *
- * Every section falls back to example copy while the real text is being
- * written — see inc/fields.php for the field formats.
+ * Assign to the "About" page. Every named block in the approved brief gets
+ * its own section here (Our Story, Why We Still Do It the Same Way, The
+ * Crew Behind the Work, We Treat Your Yard Like It's Ours, We're Proud to
+ * Be Located in River Falls, What 25 Years Actually Buys You) rather than
+ * being flattened into one long editor-content block. The editor content is
+ * "Our Story"; the rest come from the "Page Sections" box below the editor.
+ * The estimate and service-area sections are shared with the homepage so
+ * the proof stays consistent everywhere.
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -34,9 +35,14 @@ while ( have_posts() ) :
 	);
 	?>
 
+	<?php
+	/* --------------------------------------------------------------
+	 * Our Story — photo + editor content
+	 * ------------------------------------------------------------ */
+	?>
 	<section class="section <?php echo esc_attr( jce_band() ); ?>">
 		<div class="wrap">
-			<div class="split">
+			<div class="split split--photo">
 				<div class="split__media">
 					<?php
 					// A Featured Image on this page wins; otherwise the bundled
@@ -60,13 +66,12 @@ while ( have_posts() ) :
 					</div>
 				</div>
 				<div class="split__content entry-content">
+					<h2 class="mt-0"><?php esc_html_e( 'Our Story', 'jce' ); ?></h2>
 					<?php if ( trim( get_the_content() ) ) : ?>
 						<?php the_content(); ?>
 					<?php else : ?>
-						<h2 class="mt-0"><?php esc_html_e( 'A local crew, not a franchise passing through.', 'jce' ); ?></h2>
-						<p><?php esc_html_e( 'Joe Cardin founded JCE Tree Service in River Falls in 2001. Twenty-five years later the company is still family-owned, still based here, and still run by someone who lives in the same community as the people he works for.', 'jce' ); ?></p>
-						<p><?php esc_html_e( 'That matters more than it sounds like it should. It means the person who wrote your estimate is the person you can call afterward. It means the crew knows which streets have the ash problem and which oaks should not be touched in July. And it means our reputation here is the only marketing that has ever really worked for us — most of our customers call us again, and most of the rest were sent by a neighbor.', 'jce' ); ?></p>
-						<p><?php esc_html_e( 'People think anyone with a chainsaw can take down a tree. Sometimes that is true. The difference shows up in what your yard looks like the next morning.', 'jce' ); ?></p>
+						<p><?php esc_html_e( "JCE Tree Service started in River Falls in 2001. Twenty-five years later, we're still here, still local, and still running on the same high quality standard we started with.", 'jce' ); ?></p>
+						<p><?php esc_html_e( "Today JCE is a crew of 10-12, led by Joe Cardin and Ross Zimmermann, right here in River Falls. Along the way we've added ISA-certified arborists, forestry degrees, licensed pesticide applicators, and a lot more equipment all so we can treat your trees and your property with the same care whether it's a big job or a small one.", 'jce' ); ?></p>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -75,7 +80,35 @@ while ( have_posts() ) :
 
 	<?php
 	/* --------------------------------------------------------------
-	 * What we stand for — "Highlight Cards" field
+	 * Why We Still Do It the Same Way — single-field paragraphs
+	 * ------------------------------------------------------------ */
+	$standard_paragraphs = jce_field_lines(
+		'_jce_page_standard',
+		null,
+		array(
+			__( "We built JCE around one rule: the standard doesn't change, job to job, customer to customer. Same crew training. Same equipment. Same guy — usually the owner, Joe — walking your property, writing your estimate by hand, and explaining to you what your trees need. We offer the highest standard of tree care in the area. No exceptions.", 'jce' ),
+			__( "That's the whole business model. It's also why more than 8 out of 10 JCE customers call us again.", 'jce' ),
+		)
+	);
+	if ( $standard_paragraphs ) :
+		?>
+		<section class="section <?php echo esc_attr( jce_band() ); ?>">
+			<div class="wrap wrap--narrow">
+				<div class="section-head section-head--center">
+					<h2><?php esc_html_e( 'Why We Still Do It the Same Way', 'jce' ); ?></h2>
+				</div>
+				<div class="entry-content">
+					<?php foreach ( $standard_paragraphs as $paragraph ) : ?>
+						<p><?php echo esc_html( $paragraph ); ?></p>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+		<?php
+	endif;
+
+	/* --------------------------------------------------------------
+	 * The Crew Behind the Work — "Highlight Cards" field
 	 * ------------------------------------------------------------ */
 	get_template_part(
 		'template-parts/highlight-cards',
@@ -86,87 +119,99 @@ while ( have_posts() ) :
 				2,
 				null,
 				array(
-					array( __( 'We tell you when not to do it', 'jce' ), __( 'The fastest way to lose a customer for twenty years is to take down a tree that did not need to come down. We would rather write the smaller estimate and keep the phone number.', 'jce' ) ),
-					array( __( 'The owner is still on the property', 'jce' ), __( 'Joe walks most estimates himself. There is no sales department here, and nobody working on commission is deciding what your tree needs.', 'jce' ) ),
-					array( __( 'The yard matters as much as the tree', 'jce' ), __( 'Every machine we own was bought with turf in mind. If the ground is too soft, we will tell you to wait rather than leave you with ruts to repair.', 'jce' ) ),
-					array( __( 'The crew stays', 'jce' ), __( 'Most of our people have been here for years, and they train continuously. That is unusual in this trade, and it is the reason the work is consistent.', 'jce' ) ),
+					array( __( 'Four ISA-Certified Arborists', 'jce' ), __( "Which means the person diagnosing your tree's health has the training to be right about it, not just confident about it.", 'jce' ) ),
+					array( __( 'Two Team Members with Forestry Degrees', 'jce' ), __( 'Which means we understand how trees behave in this climate, this soil, and these species — not tree care in general.', 'jce' ) ),
+					array( __( 'Four Licensed Pesticide Applicators', 'jce' ), __( 'Which means treatment for disease or pests comes from people licensed to do the work.', 'jce' ) ),
+					array( __( "An Owner Who's Spent Decades in These Woods", 'jce' ), __( 'Which means the estimate you get reflects 25 years of judgment calls on trees just like yours, in neighborhoods just like yours.', 'jce' ) ),
+					array( __( 'A Crew That Sticks Around', 'jce' ), __( 'Many of our team members have been with JCE for years, and every one of them trains on the same quality standard, so the crew that shows up is never a variable.', 'jce' ) ),
 				)
 			),
-			'icons'   => array( 'shield', 'users', 'truck', 'award' ),
-			'eyebrow' => __( 'How We Work', 'jce' ),
-			'heading' => __( 'What Twenty-Five Years Taught Us', 'jce' ),
-			'lede'    => __( 'Four things we will not trade away, whatever the job is worth.', 'jce' ),
+			'icons'   => array( 'award', 'leaf', 'droplet', 'clock', 'users' ),
+			'eyebrow' => __( 'Our Team', 'jce' ),
+			'heading' => __( 'The Crew Behind the Work', 'jce' ),
 			'class'   => jce_band(),
 		)
 	);
 
 	/* --------------------------------------------------------------
-	 * Timeline — "Timeline" field (dark band)
+	 * We Treat Your Yard Like It's Ours — single-field paragraph(s)
 	 * ------------------------------------------------------------ */
-	get_template_part(
-		'template-parts/milestones',
+	$yard_paragraphs = jce_field_lines(
+		'_jce_page_yard',
 		null,
 		array(
-			'rows' => jce_field_rows(
-				'_jce_page_milestones',
-				3,
-				null,
-				array(
-					array( '2001', __( 'Joe starts JCE', 'jce' ), __( 'One truck, one chainsaw, and a phone number handed around River Falls. The first customers are neighbors, which sets the tone for everything after.', 'jce' ) ),
-					array( '2008', __( 'First bucket truck', 'jce' ), __( 'The jobs stop being ones that can be climbed. Buying lift equipment means taking on the removals other companies were turning down.', 'jce' ) ),
-					array( '2013', __( 'Emerald ash borer arrives', 'jce' ), __( 'The beetle reaches western Wisconsin and changes the work permanently. We add licensed pesticide applicators so we can treat the ash worth saving instead of only removing the ones that are gone.', 'jce' ) ),
-					array( '2017', __( 'Crane and spider lift', 'jce' ), __( 'Equipment that can reach over a house without touching the lawn. It is what makes the difficult backyard removals possible at all.', 'jce' ) ),
-					array( '2021', __( 'Four certified arborists on staff', 'jce' ), __( 'Two forestry degrees among them. The assessments stop being one person\'s judgement and start being a standard.', 'jce' ) ),
-					array( '2026', __( 'Twenty-five years, same town', 'jce' ), __( 'Still family-owned, still based in River Falls, still mostly working for people who found us through someone they know.', 'jce' ) ),
-				)
-			),
+			__( 'Property damage is the fear nobody tells you they have until it happens to them — the driveway that gets rutted, the flower bed that doesn\'t survive the truck, the "quick job" that leaves ruts in the lawn for a season. We\'ve spent 25 years buying equipment specifically chosen to avoid that, not just to get a tree down fast. And we clean up like we\'re the ones who have to look at your yard tomorrow (because in this community, we probably will)!', 'jce' ),
 		)
 	);
-	jce_band( 'dark' );
-
-	get_template_part(
-		'template-parts/feature-list',
-		null,
-		array(
-			'rows'    => array(
-				array( __( 'ISA Certified Arborists', 'jce' ), __( 'The certification means continuing education and a testable body of knowledge behind the diagnosis, not just years of holding a saw.', 'jce' ) ),
-				array( __( 'Forestry degrees', 'jce' ), __( 'Two of our staff studied this formally. It shows up most in the calls about disease and decline, where being wrong costs a tree.', 'jce' ) ),
-				array( __( 'Licensed pesticide applicators', 'jce' ), __( 'Four of them, which is what lets us treat ash and oak disease legally and correctly rather than referring it out.', 'jce' ) ),
-				array( __( 'Fully licensed and insured', 'jce' ), __( 'Liability and workers compensation, certificate handed over before we start. An uninsured crew in your tree becomes your problem, not theirs.', 'jce' ) ),
-				array( __( 'Continuous crew training', 'jce' ), __( 'Rigging, aerial rescue, and equipment operation, on an ongoing schedule. It is the least visible thing on this list and the reason nobody gets hurt.', 'jce' ) ),
-			),
-			'eyebrow' => __( 'Credentials', 'jce' ),
-			'heading' => __( 'Who Actually Shows Up', 'jce' ),
-			'lede'    => __( 'Anyone can print "certified" on a truck door. Here is what ours means.', 'jce' ),
-			'icon'    => 'award',
-			'class'   => jce_band(),
-		)
-	);
+	if ( $yard_paragraphs ) :
+		?>
+		<section class="section <?php echo esc_attr( jce_band() ); ?>">
+			<div class="wrap wrap--narrow">
+				<div class="section-head section-head--center">
+					<h2><?php esc_html_e( "We Treat Your Yard Like It's Ours", 'jce' ); ?></h2>
+				</div>
+				<div class="entry-content">
+					<?php foreach ( $yard_paragraphs as $paragraph ) : ?>
+						<p><?php echo esc_html( $paragraph ); ?></p>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+		<?php
+	endif;
 
 	get_template_part( 'template-parts/personal-estimate-steps', null, array( 'class' => jce_band() ) );
 
-	get_template_part(
-		'template-parts/faq',
+	/* --------------------------------------------------------------
+	 * We're Proud to Be Located in River Falls — single-field paragraphs
+	 * ------------------------------------------------------------ */
+	$local_paragraphs = jce_field_lines(
+		'_jce_page_local',
 		null,
 		array(
-			'rows'    => jce_field_rows(
-				'_jce_page_faq',
-				2,
-				null,
-				array(
-					array( __( 'Are you actually local, or a national brand with a local name?', 'jce' ), __( 'Local. One owner, one location, in River Falls since 2001. If you call the number on this site during business hours, you are calling an office a few miles from your house.', 'jce' ) ),
-					array( __( 'How big is the crew?', 'jce' ), __( 'Big enough to run multiple jobs at once and bring real equipment to each of them, small enough that the owner still knows every property we are working on that week.', 'jce' ) ),
-					array( __( 'Who will I actually deal with?', 'jce' ), __( 'Joe or one of our certified arborists for the estimate, and the same crew leader through the job itself. You will not be handed between a salesperson and a stranger.', 'jce' ) ),
-					array( __( 'Do you do commercial and municipal work?', 'jce' ), __( 'Yes — property managers, HOAs, and municipal contracts alongside the residential work. The standards are the same either way.', 'jce' ) ),
-				)
-			),
-			'heading' => __( 'Questions About Us', 'jce' ),
-			'class'   => jce_band(),
+			__( "We're not a franchise, and we're not a crew that drives in from out of the area to work a job and leave. Joe and Ross live here. So does most of the crew. When we talk about the ash borer problem hitting River Falls and the surrounding area, it's because we're dealing with it in our neighborhoods too.", 'jce' ),
+			__( "We're proud to support our local community where we can. We enjoy being part of the River Falls Days and the Holidazzle parade, and we support local youth sports and local fundraisers throughout the year. We don't spend a lot of money on advertising, but when we do, we try to support local businesses like WEVR and the Falls Movie Theater. We live here, work here, and we're glad to show up for the community the same way we show up for our customers.", 'jce' ),
 		)
 	);
+	if ( $local_paragraphs ) :
+		?>
+		<section class="section <?php echo esc_attr( jce_band() ); ?>">
+			<div class="wrap wrap--narrow">
+				<div class="section-head section-head--center">
+					<h2><?php esc_html_e( "We're Proud to Be Located in River Falls", 'jce' ); ?></h2>
+				</div>
+				<div class="entry-content">
+					<?php foreach ( $local_paragraphs as $paragraph ) : ?>
+						<p><?php echo esc_html( $paragraph ); ?></p>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+		<?php
+	endif;
 
 	get_template_part( 'template-parts/reviews', null, array( 'class' => jce_band() ) );
 	get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
+
+	/* --------------------------------------------------------------
+	 * What 25 Years Actually Buys You — credential recap, right before the
+	 * closing CTA, same as the approved copy's own ordering.
+	 * ------------------------------------------------------------ */
+	get_template_part(
+		'template-parts/stats',
+		null,
+		array(
+			'heading' => __( 'What 25 Years Actually Buys You', 'jce' ),
+			'stats'   => array(
+				array( '4.9', __( 'Star Rating, Unfiltered', 'jce' ) ),
+				array( '80%+', __( 'Repeat & Referral Customers', 'jce' ) ),
+				array( '4', __( 'ISA-Certified Arborists on Staff', 'jce' ) ),
+				array( 'Elite', __( 'HomeAdvisor Service Rating', 'jce' ) ),
+				array( '2001', __( 'Locally Owned & Operated Since', 'jce' ) ),
+			),
+		)
+	);
+
 	get_template_part( 'template-parts/cta-band' );
 
 endwhile;
