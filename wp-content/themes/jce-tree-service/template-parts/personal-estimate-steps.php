@@ -23,7 +23,10 @@
  *     @type string $eyebrow Empty = the standard eyebrow.
  *     @type string $lede    Optional paragraph under the heading.
  *     @type string $class   Extra section classes.
- *     @type bool   $cta     Show the estimate button under the steps.
+ *     @type bool|string $cta Button under the steps: true for the estimate
+ *                           CTA, 'call' where the approved copy ends the
+ *                           section on the phone number instead (the Service
+ *                           Area pages), false for none.
  * }
  */
 if ( ! defined( 'ABSPATH' ) ) {
@@ -77,7 +80,20 @@ $steps_class = count( $args['rows'] ) > 3 ? 'steps steps--3up' : 'steps';
 			<?php endforeach; ?>
 		</div>
 
-		<?php if ( $args['cta'] ) : ?>
+		<?php if ( 'call' === $args['cta'] && jce_biz( 'phone' ) ) : ?>
+			<div class="btn-row" style="margin-top:2.5rem;">
+				<a class="btn btn--primary btn--lg" href="tel:<?php echo esc_attr( jce_tel() ); ?>">
+					<?php jce_icon( 'phone' ); ?>
+					<?php
+					printf(
+						/* translators: %s: phone number */
+						esc_html__( 'Call now: %s', 'jce' ),
+						esc_html( jce_biz( 'phone' ) )
+					);
+					?>
+				</a>
+			</div>
+		<?php elseif ( true === $args['cta'] ) : ?>
 			<div class="btn-row" style="margin-top:2.5rem;">
 				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( jce_url( 'estimate_url', '/estimate/' ) ); ?>">
 					<?php esc_html_e( 'Get Your Personal Estimate', 'jce' ); ?><?php jce_icon( 'arrow-right' ); ?>

@@ -48,14 +48,6 @@ $primary = new WP_Query(
 	)
 );
 
-$fallback_primary = array(
-	array( 'river-falls', 'River Falls, WI', __( 'Home base since 2001. Most of our work happens within a few miles of downtown.', 'jce' ) ),
-	array( 'hudson', 'Hudson, WI', __( 'Established neighborhoods, mature trees, and a lot of ash that needs a plan.', 'jce' ) ),
-	array( 'prescott', 'Prescott, WI', __( 'Bluff properties and river lots where access and cleanup take real equipment.', 'jce' ) ),
-);
-
-$location_images = jce_default_location_images();
-
 // Secondary towns link to their own page once one exists; otherwise they are
 // named as plain text, which is still better than "and surrounding areas".
 $secondary_posts = get_posts(
@@ -72,7 +64,12 @@ $secondary_posts = get_posts(
 	)
 );
 
-$fallback_secondary = array( 'Ellsworth', 'Beldenville', 'Roberts', 'Houlton', 'Hammond', 'Baldwin', 'New Richmond', 'Spring Valley', 'Hastings', 'Afton', 'Lake St. Croix Beach', 'Lakeland' );
+// Naming towns is the entire point of this section — with no Location posts
+// there is nothing to name, so it does not render. It used to fall back to a
+// hardcoded list of town blurbs, which was invented copy.
+if ( ! $primary->have_posts() && ! $secondary_posts ) {
+	return;
+}
 ?>
 <section class="section <?php echo esc_attr( $args['class'] ); ?>" id="service-area">
 	<div class="wrap">
@@ -81,44 +78,34 @@ $fallback_secondary = array( 'Ellsworth', 'Beldenville', 'Roberts', 'Houlton', '
 			<h2><?php echo esc_html( $args['heading'] ); ?></h2>
 		</div>
 
-		<div class="area-primary">
-			<?php if ( $primary->have_posts() ) : ?>
+		<?php if ( $primary->have_posts() ) : ?>
+			<div class="area-primary">
 				<?php
 				while ( $primary->have_posts() ) :
 					$primary->the_post();
+					// A town with no Excerpt and no body copy would otherwise
+					// leave an empty paragraph under its name. Approved town
+					// copy is still pending, so absent has to render as absent.
+					$card_summary = trim( wp_trim_words( get_the_excerpt(), 18 ) );
 					?>
 					<a class="area-card" href="<?php the_permalink(); ?>">
 						<span class="area-card__media"><?php jce_card_image( 'location' ); ?></span>
 						<span class="area-card__body">
 							<h3><?php the_title(); ?></h3>
-							<p><?php echo esc_html( wp_trim_words( get_the_excerpt(), 18 ) ); ?></p>
+							<?php if ( $card_summary ) : ?>
+								<p><?php echo esc_html( $card_summary ); ?></p>
+							<?php endif; ?>
 							<span class="link-arrow"><?php esc_html_e( 'See our work here', 'jce' ); ?><?php jce_icon( 'arrow-right' ); ?></span>
 						</span>
 					</a>
 				<?php endwhile; ?>
 				<?php wp_reset_postdata(); ?>
-			<?php else : ?>
-				<?php foreach ( $fallback_primary as $town ) : ?>
-					<div class="area-card">
-						<?php if ( isset( $location_images[ $town[0] ] ) && jce_img_exists( $location_images[ $town[0] ][0] ) ) : ?>
-							<span class="area-card__media">
-								<img src="<?php echo esc_url( jce_img_uri( $location_images[ $town[0] ][0] ) ); ?>"
-									alt="<?php echo esc_attr( $location_images[ $town[0] ][1] ); ?>"
-									width="1600" height="900" loading="lazy" decoding="async">
-							</span>
-						<?php endif; ?>
-						<span class="area-card__body">
-							<h3><?php echo esc_html( $town[1] ); ?></h3>
-							<p><?php echo esc_html( $town[2] ); ?></p>
-						</span>
-					</div>
-				<?php endforeach; ?>
-			<?php endif; ?>
-		</div>
+			</div>
+		<?php endif; ?>
 
-		<p class="area-secondary">
-			<strong><?php esc_html_e( 'Also serving:', 'jce' ); ?></strong>
-			<?php if ( $secondary_posts ) : ?>
+		<?php if ( $secondary_posts ) : ?>
+			<p class="area-secondary">
+				<strong><?php esc_html_e( 'Also serving:', 'jce' ); ?></strong>
 				<?php
 				$links = array();
 				foreach ( $secondary_posts as $town ) {
@@ -126,9 +113,8 @@ $fallback_secondary = array( 'Ellsworth', 'Beldenville', 'Roberts', 'Houlton', '
 				}
 				echo wp_kses_post( implode( ' · ', $links ) );
 				?>
-			<?php else : ?>
-				<?php echo esc_html( implode( ' · ', $fallback_secondary ) ); ?>
-			<?php endif; ?>
-		</p>
+			</p>
+		<?php endif; ?>
+
 	</div>
 </section>

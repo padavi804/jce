@@ -2,14 +2,25 @@
 /**
  * Single Location page (River Falls, Hudson, Prescott, + secondary towns).
  *
+ * EVERY word below the hero is the creative brief's approved "SERVICE AREA
+ * PAGES / RIVER FALLS" copy. The brief notes that each mention of the town is
+ * a placeholder for whichever town the page is about, so the whole flow is
+ * written against $town and reused for every Location post.
+ *
+ * Two deliberate exceptions to that substitution, both approved as written:
+ *  - "JCE is located in River Falls, WI" in Locally Owned & Operated names the
+ *    actual headquarters, not the page's town, so it stays fixed everywhere.
+ *  - "across the St. Croix River Valley" is the region, not the town.
+ *
+ * Nothing here falls back to invented example text. Sections the brief has no
+ * approved copy for — local tree conditions, neighborhoods, a per-town FAQ,
+ * a distance/ZIP fact strip — are not rendered at all rather than filled with
+ * plausible-sounding placeholder, because this page publishes under the
+ * client's name. If approved copy arrives for any of them later, add the
+ * section back with that copy.
+ *
  * Guardrail from the creative brief: River Falls is defending organic rank it
  * already earned. Do not change that page's slug without a 301 redirect plan.
- *
- * The local specifics — what fails on trees in this town, which neighborhoods,
- * how far it is from the yard — are fields in the "Service Area Page Sections"
- * box, so each town page can be made genuinely different from the others
- * without touching PHP. Thin, near-identical town pages are the classic way
- * local SEO pages get discounted; these fields exist to prevent that.
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,235 +33,347 @@ while ( have_posts() ) :
 
 	$town      = get_the_title();
 	$town_slug = get_post_field( 'post_name' );
+	$years     = jce_biz( 'years_experience', '25' );
+	$phone     = jce_biz( 'phone' );
 
 	// Featured Image wins; otherwise fall back to the bundled town photo, which
 	// is already produced at hero size (1600x900).
 	$location_hero = '';
+	$location_map  = jce_default_location_images();
 	if ( has_post_thumbnail() ) {
 		$location_hero = get_the_post_thumbnail_url( get_the_ID(), 'jce-hero' );
-	} else {
-		$location_map = jce_default_location_images();
-		if ( isset( $location_map[ $town_slug ] ) && jce_img_exists( $location_map[ $town_slug ][0] ) ) {
-			$location_hero = jce_img_uri( $location_map[ $town_slug ][0] );
-		}
+	} elseif ( isset( $location_map[ $town_slug ] ) && jce_img_exists( $location_map[ $town_slug ][0] ) ) {
+		$location_hero = jce_img_uri( $location_map[ $town_slug ][0] );
 	}
 
+	// The hero renders the approved trust bar (4.9 rating, arborists, years,
+	// HomeAdvisor) directly beneath itself — see template-parts/page-hero.php.
 	get_template_part(
 		'template-parts/page-hero',
 		null,
 		array(
-			'eyebrow' => __( 'Service Area', 'jce' ),
-			'title'   => sprintf(
+			'eyebrow' => sprintf(
 				/* translators: %s: town name */
-				__( 'Tree Service in %s', 'jce' ),
+				__( 'Local Tree Service Proudly Serving %s, WI', 'jce' ),
 				$town
 			),
-			'sub'     => get_the_excerpt(),
+			'title'   => __( 'The Highest Standard of Tree Care. No Exceptions.', 'jce' ),
+			'sub'     => sprintf(
+				/* translators: 1: town name, 2: years in business */
+				__( 'Trusted in %1$s and throughout the St. Croix River Valley for %2$s years', 'jce' ),
+				$town,
+				$years
+			),
 			'image'   => $location_hero,
+			'buttons' => true,
 		)
 	);
 
-	jce_band( 'dark' ); // The hero is a dark band — start the alternation on white.
+	jce_band( 'dark' ); // The hero and its trust band are dark — start the alternation on white.
 
-	// Fact strip — only rendered when there is something to put in it.
-	$distance = jce_field( '_jce_location_distance' );
-	$zips     = jce_field( '_jce_location_zip' );
+	/* --------------------------------------------------------------
+	 * Intro. A photo in the "Service Area Page Photos" box turns this into a
+	 * photo split; without one it stays a narrow column of text.
+	 * ------------------------------------------------------------ */
+	$intro_image_id = (int) jce_field( '_jce_location_intro_image' );
 	?>
-
-	<?php if ( $distance || $zips ) : ?>
-		<div class="fact-strip">
-			<div class="wrap fact-strip__inner">
-				<?php if ( $distance ) : ?>
-					<span class="fact"><?php jce_icon( 'truck' ); ?><?php echo esc_html( $distance ); ?></span>
+	<article class="section section--tight <?php echo esc_attr( jce_band() ); ?>">
+		<div class="wrap<?php echo $intro_image_id ? '' : ' wrap--narrow'; ?>">
+			<div class="<?php echo $intro_image_id ? 'split split--photo' : ''; ?>">
+				<?php if ( $intro_image_id ) : ?>
+					<div class="split__media">
+						<?php echo wp_get_attachment_image( $intro_image_id, 'large', false, array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
+					</div>
 				<?php endif; ?>
-				<?php if ( $zips ) : ?>
-					<span class="fact"><?php jce_icon( 'map-pin' ); ?><?php
-						printf(
-							/* translators: %s: comma-separated ZIP codes */
-							esc_html__( 'ZIP codes served: %s', 'jce' ),
-							esc_html( $zips )
-						);
-					?></span>
-				<?php endif; ?>
-				<span class="fact"><?php jce_icon( 'clock' ); ?><?php echo esc_html( jce_biz( 'emergency_note', '24/7 storm response' ) ); ?></span>
+				<div class="<?php echo $intro_image_id ? 'split__content ' : ''; ?>entry-content">
+					<?php if ( trim( get_the_content() ) ) : ?>
+						<?php the_content(); ?>
+					<?php else : ?>
+						<p class="lede mt-0"><?php
+							printf(
+								/* translators: 1: town name, 2: years in business */
+								esc_html__( "Anyone with a chainsaw can call themselves a tree service. Not everyone shows up with certified arborists, a fleet of equipment chosen to protect your lawn, and a professional, experienced crew that cleans up like they're leaving their own yard. That's the difference with JCE. For %2\$s years, we've earned the trust of homeowners in %1\$s by doing the job right, from start to finish.", 'jce' ),
+								esc_html( $town ),
+								esc_html( $years )
+							);
+						?></p>
+					<?php endif; ?>
+				</div>
 			</div>
-		</div>
-	<?php endif; ?>
-
-	<article class="section <?php echo esc_attr( jce_band() ); ?>">
-		<div class="wrap wrap--narrow entry-content">
-			<?php if ( trim( get_the_content() ) ) : ?>
-				<?php the_content(); ?>
-			<?php else : ?>
-				<?php // Stand-in body copy — replace it in the WordPress editor. ?>
-				<h2 class="mt-0"><?php
-					printf(
-						/* translators: %s: town name */
-						esc_html__( 'Working on trees in %s', 'jce' ),
-						esc_html( $town )
-					);
-				?></h2>
-				<p><?php
-					printf(
-						/* translators: %s: town name */
-						esc_html__( 'This is placeholder copy so you can see the page with text in it. Replace it in the WordPress editor, and fill in the "Service Area Page Sections" box below the editor to change the local details, the neighborhoods, and the questions further down this page. Every one of those sections has example content in it right now for the same reason — so %s reads as a finished page while the real copy is being written.', 'jce' ),
-						esc_html( $town )
-					);
-				?></p>
-				<p><?php esc_html_e( 'What belongs here is the stuff only a company that actually works in this town could write. Which decade the neighborhoods went in and what got planted then. Which streets are boulevard trees the city owns. Where the soil is thin over rock and the roots stay shallow. How far a crane has to reach on the lots down by the river.', 'jce' ); ?></p>
-				<p><?php esc_html_e( 'Two or three paragraphs of that does more for both a reader and a search engine than any amount of "proudly serving" language. It is also the part a competitor cannot copy without doing the work.', 'jce' ); ?></p>
-			<?php endif; ?>
 		</div>
 	</article>
 
 	<?php
 	/* --------------------------------------------------------------
-	 * What we see on trees here — the anti-thin-page section
+	 * The Highest Standard of Tree Care. No Exceptions.
+	 *
+	 * The brief follows this paragraph with a four-item bullet list that is
+	 * the trust bar verbatim (4.9 rating, ISA arborists, 25 years locally
+	 * owned, HomeAdvisor Elite). The hero already renders exactly those four
+	 * a screen above, so they are not repeated here.
+	 * ------------------------------------------------------------ */
+	$standard_image_id = (int) jce_field( '_jce_location_standard_image' );
+	?>
+	<section class="section section--tight <?php echo esc_attr( jce_band() ); ?>">
+		<div class="wrap<?php echo $standard_image_id ? '' : ' wrap--narrow'; ?>">
+			<div class="<?php echo $standard_image_id ? 'split split--photo split--reverse' : ''; ?>">
+				<?php if ( $standard_image_id ) : ?>
+					<div class="split__media">
+						<?php echo wp_get_attachment_image( $standard_image_id, 'large', false, array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
+					</div>
+				<?php endif; ?>
+				<div class="<?php echo $standard_image_id ? 'split__content ' : 'text-center '; ?>entry-content">
+					<h2 class="mt-0"><?php esc_html_e( 'The Highest Standard of Tree Care. No Exceptions.', 'jce' ); ?></h2>
+					<p><?php esc_html_e( "We built JCE around one rule: the standard doesn't change, job to job, customer to customer. Same crew training. Same equipment. Same guy — usually the owner, Joe — walking your property, writing your estimate by hand, and explaining to you what your trees need. We offer the highest standard of tree care in the area. No exceptions.", 'jce' ); ?></p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<?php
+	/* --------------------------------------------------------------
+	 * Services — the brief highlights Tree Removal and Tree Pruning, so
+	 * those two get the featured card treatment.
+	 * ------------------------------------------------------------ */
+	$most_requested = array(
+		array(
+			'slug'     => 'tree-removal',
+			'icon'     => 'tree',
+			'eyebrow'  => __( 'Tree Removal Near Me', 'jce' ),
+			/* translators: %s: town name */
+			'headline' => __( 'Tree Removal by Local Tree Experts in %s, WI', 'jce' ),
+			'body'     => __( "A dead or hazardous tree isn't something to gamble on. Our arborists don't just take trees down, they know when a tree can be saved and when it can't, and they've got 25 years of judgment behind that call.", 'jce' ),
+		),
+		array(
+			'slug'     => 'tree-pruning',
+			'icon'     => 'scissors',
+			'eyebrow'  => __( 'Tree Pruning & Trimming Near Me', 'jce' ),
+			/* translators: %s: town name */
+			'headline' => __( 'Tree Pruning & Trimming by Local Tree Experts in %s, WI', 'jce' ),
+			'body'     => __( 'Regular pruning keeps your trees healthy, shaped, and safe. Our ISA-certified arborists and professional crew know how each species responds to a cut, and when in the season to make it.', 'jce' ),
+		),
+		array(
+			'slug'     => 'plant-health-care',
+			'icon'     => 'leaf',
+			'eyebrow'  => __( 'Tree Health Care Near Me', 'jce' ),
+			/* translators: %s: town name */
+			'headline' => __( 'Tree Health Care by Local Tree Experts in %s, WI', 'jce' ),
+			'body'     => __( "Most tree problems are easier (and cheaper!) to fix if you catch them early. Whether you're dealing with disease, pests or a tree in general decline, our certified arborists diagnose what's going on before recommending a treatment plan.", 'jce' ),
+		),
+	);
+
+	$other_services = array(
+		array(
+			'emergency-tree-service',
+			'zap',
+			__( 'Emergency Tree Service:', 'jce' ),
+			$phone
+				? sprintf(
+					/* translators: %s: phone number */
+					__( 'Tree on the house, or a storm-damaged limb? We respond fast. Call %s', 'jce' ),
+					$phone
+				)
+				: __( 'Tree on the house, or a storm-damaged limb? We respond fast.', 'jce' ),
+		),
+		array( 'tree-inspection', 'search', __( 'Tree Inspection:', 'jce' ), __( "An arborist's honest read on what a tree needs, before anything comes down.", 'jce' ) ),
+		array( 'lot-land-clearing', 'layers', __( 'Lot & Land Clearing:', 'jce' ), __( 'Clear ground for a build, a pasture, or a project.', 'jce' ) ),
+		array( 'brush-clean-up', 'wind', __( 'Brush Clean Up & Mowing:', 'jce' ), __( 'Reclaim overgrown areas of your property.', 'jce' ) ),
+		array( 'stump-grinding', 'disc', __( 'Stump Grinding:', 'jce' ), __( 'Available as an add-on to any removal — just ask at your estimate.', 'jce' ) ),
+	);
+	?>
+	<section class="section <?php echo esc_attr( jce_band() ); ?>" id="services">
+		<div class="wrap">
+			<div class="section-head section-head--center">
+				<p class="eyebrow"><?php esc_html_e( 'Services', 'jce' ); ?></p>
+				<h2><?php esc_html_e( 'Most Requested Services', 'jce' ); ?></h2>
+			</div>
+
+			<div class="services-grid">
+				<?php foreach ( $most_requested as $i => $item ) : ?>
+					<article class="service-card<?php echo $i < 2 ? ' service-card--featured' : ''; ?>">
+						<div class="service-card__body">
+							<div class="service-card__icon"><?php jce_icon( $item['icon'] ); ?></div>
+							<p class="eyebrow"><?php echo esc_html( $item['eyebrow'] ); ?></p>
+							<h3>
+								<a href="<?php echo esc_url( jce_service_url( $item['slug'] ) ); ?>">
+									<?php echo esc_html( sprintf( $item['headline'], $town ) ); ?>
+								</a>
+							</h3>
+							<p><?php echo esc_html( $item['body'] ); ?></p>
+							<a class="link-arrow" href="<?php echo esc_url( jce_service_url( $item['slug'] ) ); ?>">
+								<?php esc_html_e( 'Learn more', 'jce' ); ?><?php jce_icon( 'arrow-right' ); ?>
+								<span class="screen-reader-text"><?php echo esc_html( sprintf( $item['headline'], $town ) ); ?></span>
+							</a>
+						</div>
+					</article>
+				<?php endforeach; ?>
+			</div>
+
+			<ul class="service-list" style="margin-top:2.5rem;">
+				<?php foreach ( $other_services as $item ) : ?>
+					<li>
+						<a class="service-list__link" href="<?php echo esc_url( jce_service_url( $item[0] ) ); ?>">
+							<span class="service-list__icon"><?php jce_icon( $item[1] ); ?></span>
+							<span class="service-list__body"><strong><?php echo esc_html( $item[2] ); ?></strong> <?php echo esc_html( $item[3] ); ?></span>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</section>
+
+	<?php
+	/* --------------------------------------------------------------
+	 * Process — the brief's three-step Personal Estimate.
+	 *
+	 * Passed explicitly rather than inherited: the Customizer default is the
+	 * five-step version approved for the Services pages, and this page's
+	 * approved copy is the three-step one.
 	 * ------------------------------------------------------------ */
 	get_template_part(
-		'template-parts/feature-list',
+		'template-parts/personal-estimate-steps',
 		null,
 		array(
-			'rows'    => jce_field_rows(
-				'_jce_location_conditions',
-				2,
-				null,
+			'heading' => __( 'The Personal Estimate', 'jce' ),
+			'rows'    => array(
 				array(
-					array( __( 'Ash, and a lot of it', 'jce' ), __( 'Emerald ash borer has worked through this area and the trees planted along these streets in the seventies are the ones paying for it. Some can still be treated. Most of what we take down now is ash.', 'jce' ) ),
-					array( __( 'Oak wilt in the wrong season', 'jce' ), __( 'Oaks pruned between April and July are the ones that catch it. We schedule oak work in the dormant season for exactly this reason, and we will push back if you ask us to do it in June.', 'jce' ) ),
-					array( __( 'Storm corridors along the river', 'jce' ), __( 'The straight-line winds that come up the valley hit the same properties every few years. If you are on an exposed edge, the pruning conversation is really a wind-load conversation.', 'jce' ) ),
-					array( __( 'Silver maples reaching the end', 'jce' ), __( 'Fast growers planted for quick shade forty years ago are now large, brittle, and directly over the garage. They shed limbs long before they fail outright.', 'jce' ) ),
-					array( __( 'Tight lots and narrow access', 'jce' ), __( 'Older blocks here were not laid out for a chip truck. We know which alleys work, and when the answer is to carry it out by hand instead of tearing up a lawn.', 'jce' ) ),
-				)
+					__( 'You call, we schedule your free estimate.', 'jce' ),
+					__( "A local arborist walks your property and figures out what's going on. Sometimes that means the tree comes down. Sometimes it means we tell you it didn't need to. Either way, you get an expert assessment and a clear recommendation on next steps.", 'jce' ),
+				),
+				array(
+					__( "We walk you through what's needed", 'jce' ),
+					__( "You get a hand-written estimate on the spot, and we walk you through it. No callback in three days, no fine print to decode. Just a straight answer while we're standing right there looking at the same tree you are.", 'jce' ),
+				),
+				array(
+					__( 'We schedule the job to fit your needs and the season.', 'jce' ),
+					__( "Once you give the go-ahead, we get you on the schedule, timed to the job and the season. A dead ash in July and a leaning oak in January don't call for the same approach, and we'll tell you why.", 'jce' ),
+				),
 			),
-			'eyebrow' => __( 'Local Conditions', 'jce' ),
-			'heading' => sprintf(
-				/* translators: %s: town name */
-				__( 'What We See on Trees in %s', 'jce' ),
-				$town
-			),
-			'lede'    => __( 'Twenty-five years on these streets means the assessment starts before we get out of the truck.', 'jce' ),
-			'icon'    => 'leaf',
+			// The approved copy ends this section on the phone number, not the
+			// estimate button the shared part offers by default.
+			'cta'     => 'call',
 			'class'   => jce_band(),
 		)
 	);
+
 
 	/* --------------------------------------------------------------
-	 * Neighborhoods
+	 * Property-First Care
 	 * ------------------------------------------------------------ */
-	$neighborhoods = jce_field_lines( '_jce_location_neighborhoods' );
-	if ( $neighborhoods ) :
-		?>
-		<section class="section section--tight <?php echo esc_attr( jce_band() ); ?>">
-			<div class="wrap">
-				<div class="section-head">
-					<p class="eyebrow"><?php esc_html_e( 'On These Streets', 'jce' ); ?></p>
-					<h2 style="font-size:var(--step-3);"><?php
-						printf(
+	$before_image_id = (int) jce_field( '_jce_location_before_image' );
+	$after_image_id  = (int) jce_field( '_jce_location_after_image' );
+	?>
+	<section class="section section--tight <?php echo esc_attr( jce_band() ); ?>">
+		<div class="wrap wrap--narrow entry-content">
+			<p class="eyebrow"><?php esc_html_e( 'Property-First Care', 'jce' ); ?></p>
+			<h2 class="mt-0"><?php esc_html_e( "We Treat Your Yard Like It's Ours", 'jce' ); ?></h2>
+			<p><?php esc_html_e( 'Property damage is the fear nobody tells you they have until it happens to them like the driveway that gets rutted, the flower bed that doesn\'t survive the truck, the "quick job" that leaves ruts in the lawn for a season. We\'ve spent 25 years buying equipment specifically chosen to avoid that. And we clean up like we\'re the ones who have to look at your yard tomorrow (because in this community, we probably will)!', 'jce' ); ?></p>
+
+			<h3><?php esc_html_e( 'Removing the Tree Without Damaging the Property', 'jce' ); ?></h3>
+			<p><?php esc_html_e( "Having the right equipment means the tree comes down without putting the rest of your property at risk. Whether that's your pool, your siding, a fence line, a garden, or landscaping you've spent years on, we plan around it before the work starts. A yard can take real damage from the wrong equipment, or work done at the wrong time of year, which is exactly why JCE has spent 25 years investing in the gear to avoid it.", 'jce' ); ?></p>
+
+			<h3><?php esc_html_e( 'Meticulous Cleanup, Every Time', 'jce' ); ?></h3>
+			<p><?php esc_html_e( "Thousands of times over twenty five years we've heard from homeowners that they were so impressed with our clean up. Our crew knows your yard should look better when we leave than it did when we got there. Others will say that, but we've proven over time we're committed to meticulous clean up on every job.", 'jce' ); ?></p>
+		</div>
+
+		<?php // Until both photos are set the slots stay labelled placeholders, so the page doubles as a shot list. ?>
+		<div class="wrap" style="margin-top:clamp(2rem,1.5rem + 2vw,3rem);">
+			<div class="proof-block__media proof-block__media--pair">
+				<figure class="proof-shot"><?php
+					jce_attachment_or_placeholder(
+						$before_image_id,
+						'large',
+						'media-ph--wide',
+						sprintf(
 							/* translators: %s: town name */
-							esc_html__( 'Neighborhoods We Work in Around %s', 'jce' ),
+							__( 'Before — property protection on a %s job', 'jce' ),
+							$town
+						)
+					);
+				?></figure>
+				<figure class="proof-shot"><?php
+					jce_attachment_or_placeholder(
+						$after_image_id,
+						'large',
+						'media-ph--wide',
+						sprintf(
+							/* translators: %s: town name */
+							__( 'After — same angle, %s', 'jce' ),
+							$town
+						)
+					);
+				?></figure>
+			</div>
+		</div>
+	</section>
+
+	<?php
+	/* --------------------------------------------------------------
+	 * Locally Owned & Operated
+	 * ------------------------------------------------------------ */
+	// A chosen photo wins; otherwise the bundled town photo, where one exists.
+	$local_image_id = (int) jce_field( '_jce_location_local_image' );
+	$has_town_photo = $local_image_id || ( isset( $location_map[ $town_slug ] ) && jce_img_exists( $location_map[ $town_slug ][0] ) );
+	?>
+	<section class="section section--tight <?php echo esc_attr( jce_band() ); ?>">
+		<div class="wrap<?php echo $has_town_photo ? '' : ' wrap--narrow'; ?>">
+			<div class="<?php echo $has_town_photo ? 'split split--photo split--reverse' : ''; ?>">
+				<?php if ( $has_town_photo ) : ?>
+					<div class="split__media">
+						<?php if ( $local_image_id ) : ?>
+							<?php echo wp_get_attachment_image( $local_image_id, 'large', false, array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
+						<?php else : ?>
+							<img src="<?php echo esc_url( jce_img_uri( $location_map[ $town_slug ][0] ) ); ?>"
+								alt="<?php echo esc_attr( $location_map[ $town_slug ][1] ); ?>"
+								width="1600" height="900" loading="lazy" decoding="async">
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<div class="<?php echo $has_town_photo ? 'split__content ' : ''; ?>entry-content">
+					<h2 class="mt-0"><?php esc_html_e( 'Locally Owned & Operated', 'jce' ); ?></h2>
+					<p><?php
+						printf(
+							/* translators: %s: town name. "River Falls, WI" is the JCE headquarters and stays fixed. */
+							esc_html__( "JCE is located in River Falls, WI, and we've been doing work in %s and the surrounding area for the last 25 years. You can trust that you can reach JCE and the owner, Joe Cardin, after the job just as easily as before it. Many of our employees have been with us for many years, and every crew member receives ongoing training to ensure consistently high-quality work.", 'jce' ),
 							esc_html( $town )
 						);
-					?></h2>
+					?></p>
+					<p><?php
+						printf(
+							/* translators: %s: star rating */
+							esc_html__( "JCE has a %s-star rating in Google which means your neighbors have already put our work to the test on their own properties. We don't filter reviews, and the majority of our business comes from our referrals and repeat customers.", 'jce' ),
+							esc_html( jce_biz( 'aggregate_rating', '4.9' ) )
+						);
+					?></p>
 				</div>
-				<ul class="tag-list">
-					<?php foreach ( $neighborhoods as $hood ) : ?>
-						<li class="tag"><?php jce_icon( 'map-pin' ); ?><?php echo esc_html( $hood ); ?></li>
-					<?php endforeach; ?>
-				</ul>
 			</div>
-		</section>
-		<?php
-	endif;
+		</div>
+	</section>
 
-	get_template_part(
-		'template-parts/services-grid',
-		null,
-		array(
-			'heading' => sprintf(
-				/* translators: %s: town name */
-				__( 'What We Do in %s', 'jce' ),
-				$town
-			),
-			'eyebrow' => __( 'Services Here', 'jce' ),
-			'lede'    => __( 'The full list, with the same crew and the same equipment that works every other town on our map.', 'jce' ),
-			'class'   => jce_band(),
-		)
-	);
-
-	get_template_part( 'template-parts/credentials' );
-	jce_band( 'dark' );
-	get_template_part( 'template-parts/personal-estimate-steps', null, array( 'class' => jce_band() ) );
-
-	get_template_part(
-		'template-parts/faq',
-		null,
-		array(
-			'rows'    => jce_field_rows(
-				'_jce_location_faq',
-				2,
-				null,
-				array(
-					array(
-						sprintf(
-							/* translators: %s: town name */
-							__( 'Do you actually work in %s regularly?', 'jce' ),
-							$town
-						),
-						sprintf(
-							/* translators: %s: town name */
-							__( 'Yes — it is a regular stop, not an outer edge we will drive to once. Ask the neighbors: a good share of our work here came from someone watching us take a tree out three doors down.', 'jce' ),
-							$town
-						),
-					),
-					array( __( 'Who owns the tree between the sidewalk and the street?', 'jce' ), __( 'Usually the municipality, not you — which means you cannot have it removed and you should not be paying to. We will tell you which side of that line your tree is on before quoting anything.', 'jce' ) ),
-					array( __( 'How soon can someone come look?', 'jce' ), __( 'Estimates here are typically within the week. Storm damage and anything on a structure is same-day.', 'jce' ) ),
-					array( __( 'Can you get equipment into a small backyard?', 'jce' ), __( 'Usually. Our smaller tracked machines fit through a standard gate, and a spider lift reaches over the house where a bucket truck cannot. Where nothing fits, we climb and rig it out by hand.', 'jce' ) ),
-				)
-			),
-			'heading' => sprintf(
-				/* translators: %s: town name */
-				__( 'Questions From %s Homeowners', 'jce' ),
-				$town
-			),
-			'class'   => jce_band(),
-		)
-	);
-
+	<?php
+	/* --------------------------------------------------------------
+	 * Reviews — "What Homeowners Say", the brief's own heading.
+	 * ------------------------------------------------------------ */
 	get_template_part(
 		'template-parts/reviews',
 		null,
 		array(
 			'related' => $town_slug,
-			'heading' => sprintf(
-				/* translators: %s: town name */
-				__( 'What %s Homeowners Say', 'jce' ),
-				$town
-			),
+			'heading' => __( 'What Homeowners Say', 'jce' ),
 			'class'   => jce_band(),
 		)
 	);
 
-	get_template_part(
-		'template-parts/service-area',
-		null,
-		array(
-			'exclude' => get_the_ID(),
-			'eyebrow' => __( 'Nearby', 'jce' ),
-			'heading' => __( 'Other Towns We Cover', 'jce' ),
-			'class'   => jce_band(),
-		)
-	);
-
+	/* --------------------------------------------------------------
+	 * Final CTA
+	 * ------------------------------------------------------------ */
 	get_template_part(
 		'template-parts/cta-band',
 		null,
 		array(
-			'title' => sprintf(
-				/* translators: %s: town name */
-				__( 'Got a tree in %s worth a second opinion?', 'jce' ),
-				$town
-			),
+			'title' => __( 'The Highest Standard of Tree Care. No Exceptions.', 'jce' ),
+			'copy'  => __( 'Call now for a free estimate by a certified arborist.', 'jce' ),
+			'email' => true,
 		)
 	);
 

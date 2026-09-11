@@ -50,7 +50,7 @@ get_template_part(
 );
 get_template_part( 'template-parts/credentials' );
 get_template_part( 'template-parts/service-area' );
-get_template_part( 'template-parts/reviews' );
 get_template_part( 'template-parts/cta-band' );
+get_template_part( 'template-parts/reviews' );
 
 get_footer();

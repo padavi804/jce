@@ -787,9 +787,16 @@ strong { color: var(--ink); font-weight: 600; }
 /* ===========================================================
    11. SERVICES GRID
    =========================================================== */
+/* auto-FIT, not auto-fill: at the full 1200px wrap there is room for four
+   tracks, so a three-card row (the Service Area pages' most-requested
+   services) would otherwise reserve an empty fourth track and sit at
+   three-quarters width while the list below it ran full-bleed. auto-fit
+   collapses the empty track so any card count fills the wrap. With enough
+   cards to occupy every track the two behave identically, so the eight-card
+   services grid is unaffected. */
 .services-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
 	gap: 1.25rem;
 }
 .service-card {
@@ -819,8 +826,15 @@ strong { color: var(--ink); font-weight: 600; }
 }
 .service-card__icon .icon { width: 22px; height: 22px; }
 .service-card h3 { font-size: var(--step-1); }
+.service-card h3 a { text-decoration: none; }
+.service-card h3 a:hover { color: var(--green-700); }
 .service-card p { font-size: .93rem; flex: 1; }
 .service-card .link-arrow { margin-top: .4rem; }
+
+/* Card eyebrows drop the rule that precedes a section eyebrow — inside a
+   narrow card it steals a line and pushes the label into an awkward wrap. */
+.service-card .eyebrow { margin-bottom: 0; font-size: .72rem; letter-spacing: .11em; }
+.service-card .eyebrow::before { display: none; }
 
 /* Priority service gets visual weight (removal-first, per the brief) */
 .service-card--featured { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
@@ -1272,8 +1286,8 @@ strong { color: var(--ink); font-weight: 600; }
 
 /* ===========================================================
    23. PAGE SECTIONS — services, service area, about
-   Components used by single-service.php, single-location.php,
-   archive-service.php, and the About / Service Area templates.
+   Components used by single-service.php, single-location.php, and the
+   Services / About / Service Area page templates.
    Every one of them is driven by an editable field, so each has
    to survive both two items and ten.
    =========================================================== */
@@ -1533,6 +1547,33 @@ strong { color: var(--ink); font-weight: 600; }
 .chip-link__label { flex: 1; line-height: 1.25; }
 .chip-link__arrow { width: 1rem; height: 1rem; color: var(--green-700); opacity: 0; transition: opacity .18s ease, transform .18s ease; }
 .chip-link:hover .chip-link__arrow { opacity: 1; transform: translateX(2px); }
+
+/* Other-services list — a linked description list, one line each, used where
+   a chip's bare label isn't enough room for the approved sentence (e.g. the
+   "List other services" block on a Location page). */
+.service-list { display: grid; gap: .8rem; list-style: none; padding: 0; }
+.service-list__link {
+	display: flex;
+	gap: .9rem;
+	align-items: flex-start;
+	padding: 1rem 1.1rem;
+	background: var(--white);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	color: var(--ink);
+	transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.service-list__link:hover { border-color: var(--green); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+.service-list__icon {
+	width: 36px; height: 36px; flex: none;
+	display: grid; place-items: center;
+	border-radius: 8px;
+	background: var(--green-050);
+	color: var(--green-700);
+}
+.service-list__icon .icon { width: 18px; height: 18px; }
+.service-list__body { font-size: .95rem; line-height: 1.5; }
+.service-list__body strong { color: var(--ink); }
 
 .town-list { margin-top: 2.5rem; }
 .town-list__title {

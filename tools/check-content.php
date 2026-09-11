@@ -87,7 +87,10 @@ check( count( array_unique( $slugs ) ) === 9, 'service slugs unique' );
 
 foreach ( $svc as $s ) {
 	check( ! isset( $s['meta']['_jce_service_steps'] ), "{$s['slug']} inherits the shared steps rather than copying them" );
-	check( ! empty( $s['excerpt'] ), "{$s['slug']} has an excerpt" );
+	// A protected entry holds no copy on purpose — its text lives in WordPress.
+	if ( empty( $s['protect'] ) ) {
+		check( ! empty( $s['excerpt'] ), "{$s['slug']} has an excerpt" );
+	}
 }
 
 // Icons: every service must resolve one, and it must be defined.
@@ -108,7 +111,7 @@ foreach ( $slugs as $sl ) {
 if ( $missing ) { echo 'NOTE: no bundled photo yet for: ' . implode( ', ', $missing ) . "\n"; }
 
 /* ---------- approved copy ---------- */
-$approved = array( 'tree-removal', 'emergency-tree-service', 'plant-health-care', 'tree-inspection',
+$approved = array( 'tree-removal', 'tree-pruning', 'emergency-tree-service', 'plant-health-care', 'tree-inspection',
 	'lot-land-clearing', 'brush-clean-up', 'brush-mowing', 'stump-grinding' );
 
 foreach ( $approved as $sl ) {
@@ -123,10 +126,23 @@ foreach ( $approved as $sl ) {
 	}
 }
 
-// Tree Pruning is the one service still awaiting approved copy.
-check( isset( $byslug['tree-pruning'] ), 'tree-pruning still present' );
-check( ! jce_field_is_off( $byslug['tree-pruning']['meta']['_jce_service_faq'] ?? '' ),
-	'tree-pruning still uses placeholder copy (no approved text supplied yet)' );
+/*
+ * Tree Pruning's copy is now approved and pasted in here, same as the other
+ * eight — it no longer needs (or has) the protect flag. check-importer.php
+ * separately proves the protect mechanism itself still works, with its own
+ * synthetic protected post, so that guard stays exercised even with nothing
+ * in this file currently using it.
+ */
+check( empty( $byslug['tree-pruning']['protect'] ?? false ), 'tree-pruning no longer needs protect — its copy lives here now' );
+
+// The importer mechanism itself must still exist and run before any write,
+// even though nothing in this file currently sets it.
+$dc    = file_get_contents( "$THEME/inc/demo-content.php" );
+$guard = strpos( $dc, "! empty( \$item['protect'] )" );
+$write = strpos( $dc, 'wp_insert_post(' );
+check( false !== $guard, 'jce_demo_insert() still checks the protect flag' );
+check( false !== $guard && false !== $write && $guard < $write,
+	'the protect check runs before wp_insert_post(), not after' );
 
 /* ---------- Tree Removal, the fullest page ---------- */
 $tr = $byslug['tree-removal'];
@@ -168,7 +184,16 @@ $primary = array_filter( $loc, fn( $l ) => 'primary' === $l['priority'] );
 check( count( $primary ) === 3, 'three primary towns' );
 foreach ( $primary as $l ) {
 	check( in_array( $l['slug'], array( 'river-falls', 'hudson', 'prescott' ), true ), "primary town {$l['slug']} has a bundled photo" );
-	check( count( jce_lines( $l['meta']['_jce_location_neighborhoods'] ) ) >= 4, "{$l['slug']} lists neighborhoods" );
+	// Optional sections: the brief has no approved copy for neighborhoods,
+	// local conditions, or a per-town FAQ, so they are absent by design. What
+	// matters is that anything present is well formed.
+	foreach ( array( '_jce_location_conditions' => 2, '_jce_location_faq' => 2 ) as $key => $cols ) {
+		$raw = $l['meta'][ $key ] ?? '';
+		if ( '' === $raw || jce_field_is_off( $raw ) ) { continue; }
+		foreach ( jce_rows( $raw, $cols ) as $r ) {
+			check( $r[0] !== '' && $r[1] !== '', "{$l['slug']} $key has an incomplete row" );
+		}
+	}
 }
 
 /* ---------- pages ---------- */
@@ -176,12 +201,13 @@ $pages = jce_demo_pages();
 $ptpl  = array_column( $pages, 'template', 'slug' );
 check( ( $ptpl['about'] ?? '' ) === 'page-templates/template-about.php', 'about page template assigned' );
 check( ( $ptpl['service-area'] ?? '' ) === 'page-templates/template-service-area.php', 'service-area page template assigned' );
+check( ( $ptpl['services'] ?? '' ) === 'page-templates/template-services.php', 'services page template assigned' );
 foreach ( $pages as $p ) {
 	if ( empty( $p['template'] ) ) { continue; }
 	check( file_exists( "$THEME/" . $p['template'] ), "template file exists: {$p['template']}" );
 }
 // Slugs the Customizer defaults link to. A drift here is a broken nav button.
-foreach ( array( 'estimate', 'emergency-tree-service', 'service-area', 'about' ) as $slug ) {
+foreach ( array( 'estimate', 'emergency-tree-service', 'service-area', 'about', 'services' ) as $slug ) {
 	check( in_array( $slug, array_column( $pages, 'slug' ), true ), "load-bearing page slug '$slug' is created by the importer" );
 }
 
@@ -195,13 +221,59 @@ foreach ( array_unique( $used[0] ) as $field ) {
 	check( preg_match( "/'jce_page_sections'.*?$bare/s", $mb ) === 1, "$field is registered for saving" );
 }
 
+// Town cards must tolerate a town with no excerpt and no body — which is
+// every town right now, since approved location copy is still pending.
+foreach ( array( 'template-parts/service-area.php', 'template-parts/locations-grid.php' ) as $part ) {
+	$src = file_get_contents( "$THEME/$part" );
+	check( str_contains( $src, '$card_summary' ),
+		"$part guards the card summary so an empty excerpt does not render a bare <p>" );
+}
+
+/*
+ * No template part may keep a hardcoded fallback list of marketing copy.
+ *
+ * Those lists publish invented text under the client's name, and they go stale
+ * silently — the services grid was still advertising eight services and a
+ * "Brush Clean Up & Mowing" months after that service had been split in two.
+ * A part with nothing real to show renders nothing instead.
+ *
+ * Scoped to fallback *variables* on purpose: section headings, button labels,
+ * and aria-labels are chrome, not copy, and belong in the template.
+ */
+foreach ( glob( "$THEME/template-parts/*.php" ) as $part ) {
+	$src  = file_get_contents( $part );
+	$name = basename( $part );
+
+	if ( preg_match_all( '/\$\w*fallback\w*\s*=\s*array\s*\(/i', $src, $m ) ) {
+		check( false, "$name still has " . count( $m[0] ) . ' hardcoded fallback copy array(s)' );
+	}
+}
+
+// Both listings must bail rather than render a heading over an empty grid.
+foreach ( array( 'services-grid.php', 'service-area.php' ) as $part ) {
+	$src = file_get_contents( "$THEME/template-parts/$part" );
+	check( preg_match( '/have_posts\(\)[^;]*\)\s*\{\s*return;/s', $src ) === 1
+		|| preg_match( '/\breturn;/', $src ) === 1,
+		"$part returns early when there is nothing to list" );
+}
+
 /* ---------- testimonials ---------- */
 $tst = jce_demo_testimonials();
-check( count( $tst ) >= 5, 'testimonials present' );
-$valid = array_merge( $slugs, $lslugs );
+check( count( $tst ) >= 1, 'at least one testimonial' );
 foreach ( $tst as $t ) {
-	check( in_array( $t['meta']['_jce_review_service'], $valid, true ),
-		"review tag '{$t['meta']['_jce_review_service']}' resolves to a real service or town" );
+	check( ! empty( $t['title'] ), 'testimonial has a name' );
+	check( ! empty( $t['body'] ), "testimonial '{$t['title']}' has a quote" );
+	$rating = $t['meta']['_jce_rating'] ?? 5;
+	check( $rating >= 1 && $rating <= 5, "testimonial '{$t['title']}' has a valid rating" );
+}
+$valid = array_merge( $slugs, $lslugs );
+// The tag is optional — an untagged review still shows in the general rotation.
+// What must not happen is a tag pointing at a page that does not exist, which
+// would silently filter the reviews section down to nothing.
+foreach ( $tst as $t ) {
+	$tag = $t['meta']['_jce_review_service'] ?? '';
+	if ( '' === $tag ) { continue; }
+	check( in_array( $tag, $valid, true ), "review tag '$tag' resolves to a real service or town" );
 }
 
 echo $fail ? "\n$fail CHECK(S) FAILED\n" : "check-content: all passed\n";

@@ -3,8 +3,18 @@
  * Services grid. Order comes from each Service's Page Attributes > Order,
  * so removal leads and pruning follows, per the creative brief.
  *
- * Falls back to the brief's service list when no Service posts exist yet, so
- * the homepage never renders an empty section during build-out.
+ * Renders nothing when there are no Service posts. It used to fall back to a
+ * hardcoded list, but that list was invented copy and went stale the moment
+ * the real services were imported — it still advertised eight services and a
+ * "Brush Clean Up & Mowing" that has since been split in two.
+ *
+ * @param array $args {
+ *     @type int    $limit   Maximum cards, -1 for all.
+ *     @type string $heading Section heading.
+ *     @type string $eyebrow Section eyebrow.
+ *     @type string $lede    Optional paragraph under the heading.
+ *     @type string $class   Extra section classes.
+ * }
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -31,17 +41,9 @@ $services = new WP_Query(
 	)
 );
 
-// Label, icon, copy, and the slug used to look up the bundled photo.
-$fallback = array(
-	array( 'Tree Removal', 'tree', __( 'Large and complex removals handled safely, from a dying ash to an oak leaning over the roofline.', 'jce' ), 'tree-removal' ),
-	array( 'Tree Pruning', 'scissors', __( 'Structural and health pruning timed to the season and the species, not just whatever week we\'re in the neighborhood.', 'jce' ), 'tree-pruning' ),
-	array( 'Emergency Tree Service', 'zap', __( 'Storm damage, a tree on a structure, or a hazardous leaner. Call and we will tell you straight what happens next.', 'jce' ), 'emergency-tree-service' ),
-	array( 'Plant Health Care', 'leaf', __( 'Four licensed pesticide applicators treating the diseases and pests actually showing up in our area.', 'jce' ), 'plant-health-care' ),
-	array( 'Tree Inspection', 'search', __( 'An arborist assessment that tells you when a tree needs to come down, and when it can be saved.', 'jce' ), 'tree-inspection' ),
-	array( 'Lot & Land Clearing', 'layers', __( 'Clearing for building sites, fence lines, and overgrown acreage on larger country properties.', 'jce' ), 'lot-land-clearing' ),
-	array( 'Brush Clean Up & Mowing', 'wind', __( 'Overgrown brush cut back and hauled out, leaving the property usable again.', 'jce' ), 'brush-clean-up' ),
-	array( 'Stump Grinding', 'disc', __( 'Grinding down what\'s left so you can put grass, garden, or patio back where the tree stood.', 'jce' ), 'stump-grinding' ),
-);
+if ( ! $services->have_posts() ) {
+	return;
+}
 ?>
 <section class="section <?php echo esc_attr( $args['class'] ); ?>" id="services">
 	<div class="wrap">
@@ -54,51 +56,30 @@ $fallback = array(
 		</div>
 
 		<div class="services-grid">
-			<?php if ( $services->have_posts() ) : ?>
-				<?php
-				$i = 0;
-				while ( $services->have_posts() ) :
-					$services->the_post();
-					$icon     = jce_service_icon();
-					$featured = ( 0 === $i ) ? ' service-card--featured' : '';
-					$i++;
-					?>
-					<article class="service-card<?php echo esc_attr( $featured ); ?>">
-						<div class="service-card__media"><?php jce_card_image( 'service' ); ?></div>
-						<div class="service-card__body">
-							<div class="service-card__icon"><?php jce_icon( $icon ); ?></div>
-							<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-							<p><?php echo esc_html( get_the_excerpt() ); ?></p>
-							<a class="link-arrow" href="<?php the_permalink(); ?>">
-								<?php esc_html_e( 'Learn more', 'jce' ); ?><?php jce_icon( 'arrow-right' ); ?>
-								<span class="screen-reader-text"><?php the_title(); ?></span>
-							</a>
-						</div>
-					</article>
-				<?php endwhile; ?>
-				<?php wp_reset_postdata(); ?>
-			<?php else : ?>
-				<?php
-				$fallback_images = jce_default_service_images();
-				foreach ( $fallback as $i => $item ) :
-					$slug = isset( $item[3] ) ? $item[3] : '';
-					?>
-					<article class="service-card<?php echo 0 === $i ? ' service-card--featured' : ''; ?>">
-						<?php if ( $slug && isset( $fallback_images[ $slug ] ) && jce_img_exists( $fallback_images[ $slug ][0] ) ) : ?>
-							<div class="service-card__media">
-								<img src="<?php echo esc_url( jce_img_uri( $fallback_images[ $slug ][0] ) ); ?>"
-									alt="<?php echo esc_attr( $fallback_images[ $slug ][1] ); ?>"
-									width="800" height="500" loading="lazy" decoding="async">
-							</div>
+			<?php
+			$i = 0;
+			while ( $services->have_posts() ) :
+				$services->the_post();
+				$featured     = ( 0 === $i ) ? ' service-card--featured' : '';
+				$card_summary = trim( get_the_excerpt() );
+				$i++;
+				?>
+				<article class="service-card<?php echo esc_attr( $featured ); ?>">
+					<div class="service-card__media"><?php jce_card_image( 'service' ); ?></div>
+					<div class="service-card__body">
+						<div class="service-card__icon"><?php jce_icon( jce_service_icon() ); ?></div>
+						<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+						<?php if ( $card_summary ) : ?>
+							<p><?php echo esc_html( $card_summary ); ?></p>
 						<?php endif; ?>
-						<div class="service-card__body">
-							<div class="service-card__icon"><?php jce_icon( $item[1] ); ?></div>
-							<h3><?php echo esc_html( $item[0] ); ?></h3>
-							<p><?php echo esc_html( $item[2] ); ?></p>
-						</div>
-					</article>
-				<?php endforeach; ?>
-			<?php endif; ?>
+						<a class="link-arrow" href="<?php the_permalink(); ?>">
+							<?php esc_html_e( 'Learn more', 'jce' ); ?><?php jce_icon( 'arrow-right' ); ?>
+							<span class="screen-reader-text"><?php the_title(); ?></span>
+						</a>
+					</div>
+				</article>
+			<?php endwhile; ?>
+			<?php wp_reset_postdata(); ?>
 		</div>
 	</div>
 </section>

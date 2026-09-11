@@ -27,13 +27,13 @@ functions.php                Bootstraps inc/
 header.php                   Green utility bar → charcoal nav → Storm Emergency button
 footer.php                   4-column dark footer + sticky mobile call bar
 front-page.php               Homepage
-archive-service.php          /services/ landing page
 home.php                     Blog index          single.php   Blog post
 page.php                     Generic page        404.php      Not found
 index.php                    Required fallback / search / archives
 single-service.php           A single service     single-location.php   A single town
 single-landing_page.php      Paid/LSA landing page (chrome stripped, one CTA)
 page-templates/
+  template-services.php      "Services" — the /services/ hub for individual service pages
   template-about.php         "About Us"
   template-service-area.php  "Service Area" — the /service-area/ hub for town pages
   template-contact.php       "Contact / Estimate" — includes a styled estimate form
@@ -60,15 +60,16 @@ assets/js/main.js            Mobile nav only — no jQuery, deferred
 
 | Page | Template | Content lives in |
 |---|---|---|
-| `/services/` | `archive-service.php` | Service posts + an optional `services-intro` Page for the editorial copy |
+| `/services/` | `template-services.php` | The Page: editor + "Page Sections", plus every Service post for the grid |
 | `/services/{service}/` | `single-service.php` | The Service post: editor + "Service Page Sections" |
 | `/service-area/` | `template-service-area.php` | The Page: editor + "Page Sections" |
 | `/service-area/{town}/` | `single-location.php` | The Location post: editor + "Service Area Page Sections" |
 | `/about/` | `template-about.php` | The Page: editor + "Page Sections" |
 
-Archives can't hold editable copy of their own, so `/services/` looks for a Page with the
-slug **`services-intro`** and pulls its content, Highlight Cards, and FAQ. It ships as a
-draft — the copy renders on the archive whether or not the Page itself is published.
+`/services/` is a real Page, the same way `/service-area/` and `/about/` are: the Service
+post type's archive is turned off (`has_archive => false`) so this Page can own the URL
+directly, with its own title, subheading, intro copy, Highlight Cards, and FAQ — instead of
+splitting that content across a bare archive and a second, hidden companion Page.
 
 ## How the sections are edited
 
@@ -224,12 +225,34 @@ mobile call bar), and `/service-area/` (the hub every town page links up to). Th
 importer reports it if WordPress assigns a different slug because something already holds
 that URL.
 
+## No invented fallbacks
+
+Template parts do not carry hardcoded copy as a fallback. A section with nothing real to
+show renders nothing: the services grid and the service-area block return early when there
+are no posts, and town cards omit the summary paragraph when a town has no excerpt yet.
+
+This was not the original design — the theme shipped with placeholder lists so a half-built
+site looked finished. That backfired twice over: the copy published under the client's name,
+and it went stale silently (the services grid still advertised eight services and a "Brush
+Clean Up & Mowing" long after that service was split in two). `tools/check-content.php`
+fails the build if a `$fallback…` copy array reappears in a template part.
+
+Section headings, button labels, and aria-labels stay in the templates — those are chrome,
+not copy.
+
 ## Copy status
 
-Eight of the nine Services carry client-approved copy and have their signs / inclusions /
-price-factors / FAQ sections switched off with a dash, because none of them has approved
-text for those. **Tree Pruning is the exception** — it still carries theme-authored
-placeholder copy, and will keep showing the example sections until approved copy replaces it.
+All nine Services now carry client-approved copy in `inc/demo-content.php`, each with its
+signs / inclusions / price-factors / FAQ sections switched off with a dash, because none of
+them has approved text for those.
+
+**The `protect` flag** (`inc/meta-boxes.php` reads it, `jce_demo_insert()` in
+`inc/demo-content.php` enforces it) exists for the situation Tree Pruning was briefly in:
+copy entered directly in WordPress with none held in this file. A protected item is never
+written to by the importer, in either mode — Replace would otherwise overwrite approved
+copy with nothing, which is the one thing this importer must never do. Nothing currently
+uses the flag; `tools/check-importer.php` keeps the mechanism itself under test with a
+synthetic example, independent of which (if any) service currently needs it.
 
 Tree Removal is the fullest page: it is the only one with proof blocks and a sub-services
 list. The approved five-step process is shared by every page (see below).

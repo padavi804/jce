@@ -24,7 +24,11 @@ function jce_register_post_types() {
 				'add_new_item'  => __( 'Add New Service', 'jce' ),
 			),
 			'public'       => true,
-			'has_archive'  => true,
+			// has_archive is false, same as Location below: /services/ is owned by
+			// the real "Services" Page (page-templates/template-services.php), not
+			// a bare post-type archive, so the URL can carry editable copy of its
+			// own. Single Service posts still resolve under /services/{slug}/.
+			'has_archive'  => false,
 			'rewrite'      => array( 'slug' => 'services' ),
 			'menu_icon'    => 'dashicons-hammer',
 			'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'page-attributes' ),

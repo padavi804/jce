@@ -12,7 +12,7 @@ while IFS= read -r f; do
 done < <(find "$THEME" -name '*.php')
 [ $fail -eq 0 ] && echo "  clean"
 
-for check in check-content check-bands check-css-lists check-body-style; do
+for check in check-content check-importer check-bands check-css-lists check-body-style; do
   echo "── $check ──"
   php "tools/$check.php" || fail=1
 done

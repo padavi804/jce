@@ -88,7 +88,15 @@ $secondary = new WP_Query(
 							<?php if ( $distance ) : ?>
 								<span class="area-card__meta"><?php jce_icon( 'map-pin' ); ?><?php echo esc_html( $distance ); ?></span>
 							<?php endif; ?>
-							<p><?php echo esc_html( wp_trim_words( get_the_excerpt(), 20 ) ); ?></p>
+							<?php
+							// A town with no Excerpt and no body copy would otherwise
+							// leave an empty paragraph under its name. Approved town
+							// copy is still pending, so absent has to render as absent.
+							$card_summary = trim( wp_trim_words( get_the_excerpt(), 20 ) );
+							?>
+							<?php if ( $card_summary ) : ?>
+								<p><?php echo esc_html( $card_summary ); ?></p>
+							<?php endif; ?>
 							<span class="link-arrow"><?php esc_html_e( 'See our work here', 'jce' ); ?><?php jce_icon( 'arrow-right' ); ?></span>
 						</span>
 					</a>

@@ -88,12 +88,36 @@ run( 'One section off', array(
 	array( 'sub-services', true, false ), array( 'signs', false, false ), array( 'scope', true, false ),
 ) );
 
-// Templates must never take a band eagerly for a section that can switch off.
-$svc = file_get_contents( "$THEME/single-service.php" );
-foreach ( array( 'proof_rows', 'sub_rows', 'signs_rows', 'faq_rows' ) as $var ) {
-	if ( ! preg_match( '/jce_band_if\(\s*\$' . $var . '/', $svc ) ) {
-		echo "FAIL: \$$var section does not use jce_band_if()\n";
-		$fail++;
+/*
+ * A section whose content can be empty must claim its band conditionally.
+ *
+ * Derived from the template rather than hardcoded, so parking a section by
+ * commenting it out does not leave this check asserting against a section that
+ * is no longer there.
+ */
+foreach ( array( 'single-service.php', 'single-location.php', 'page-templates/template-services.php' ) as $file ) {
+	$src = file_get_contents( "$THEME/$file" );
+
+	// Drop commented-out lines: parked sections are not live sections.
+	$live = implode( "\n", array_filter(
+		preg_split( '/\R/', $src ),
+		static fn( $l ) => ! preg_match( '/^\s*\/\//', $l )
+	) );
+
+	// Each get_template_part( ... ) call, with its argument array.
+	preg_match_all( '/get_template_part\s*\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)/s', $live, $calls );
+
+	foreach ( $calls[0] as $call ) {
+		// Only sections fed a variable list can come back empty. A literal
+		// array or an inline jce_field_rows() with a fallback always renders.
+		if ( ! preg_match( "/'(?:rows|included|pricing)'\s*=>\s*\\\$(\w+)/", $call, $m ) ) { continue; }
+		if ( ! str_contains( $call, "'class'" ) ) { continue; }
+		if ( preg_match( '/jce_band\(\s*\)/', $call ) ) {
+			preg_match( "/'template-parts\/([a-z-]+)'/", $call, $name );
+			$which = $name[1] ?? 'unknown';
+			echo "FAIL [$file]: '$which' is fed \${$m[1]} (which can be empty) but claims a band with bare jce_band()\n";
+			$fail++;
+		}
 	}
 }
 

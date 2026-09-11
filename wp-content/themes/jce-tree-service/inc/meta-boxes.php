@@ -23,7 +23,7 @@ function jce_add_meta_boxes() {
 	add_meta_box( 'jce_service_sections', __( 'Service Page Sections', 'jce' ), 'jce_render_service_sections_box', 'service', 'normal', 'high' );
 
 	add_meta_box( 'jce_location_priority', __( 'Location Priority', 'jce' ), 'jce_render_location_priority_box', 'location', 'side' );
-	add_meta_box( 'jce_location_sections', __( 'Service Area Page Sections', 'jce' ), 'jce_render_location_sections_box', 'location', 'normal', 'high' );
+	add_meta_box( 'jce_location_photos', __( 'Service Area Page Photos', 'jce' ), 'jce_render_location_photos_box', 'location', 'normal', 'high' );
 
 	add_meta_box( 'jce_testimonial_details', __( 'Review Details', 'jce' ), 'jce_render_testimonial_meta_box', 'testimonial', 'normal', 'high' );
 
@@ -42,7 +42,7 @@ function jce_admin_photo_slots_assets( $hook ) {
 	}
 
 	$screen = get_current_screen();
-	if ( ! $screen || ! in_array( $screen->post_type, array( 'service', 'page' ), true ) ) {
+	if ( ! $screen || ! in_array( $screen->post_type, array( 'service', 'page', 'location' ), true ) ) {
 		return;
 	}
 
@@ -261,46 +261,75 @@ function jce_render_location_priority_box( $post ) {
 	<?php
 }
 
-function jce_render_location_sections_box( $post ) {
-	wp_nonce_field( 'jce_save_location_sections', 'jce_location_sections_nonce' );
-	jce_format_note();
+/**
+ * Photo slots for the Service Area page sections.
+ *
+ * Photos only — the copy on these pages is the approved Service Area text and
+ * is the same for every town bar the town name, so there is nothing per-town
+ * to type. A section with no photo here simply renders its text full width
+ * rather than as a photo split.
+ */
+function jce_render_location_photos_box( $post ) {
+	wp_nonce_field( 'jce_save_location_photos', 'jce_location_photos_nonce' );
+	?>
+	<p class="jce-box__intro">
+		<?php esc_html_e( 'Optional photos for this town\'s page. Each one turns its section into a photo-and-text split, the same way the About Us page works. Leave any of them empty and that section stays full-width text. The Featured Image is separate — that is the hero banner at the top of the page.', 'jce' ); ?>
+	</p>
+	<?php
 
-	jce_field_text(
-		'jce_location_distance',
-		__( 'Distance From the Yard', 'jce' ),
-		__( 'e.g. "About 15 minutes from our River Falls shop". Shown as a fact strip under the hero.', 'jce' ),
-		get_post_meta( $post->ID, '_jce_location_distance', true )
+	jce_field_image(
+		'jce_location_intro_image',
+		__( 'Photo Next to the Intro', 'jce' ),
+		__( 'Sits beside the "Anyone with a chainsaw…" opening paragraph.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_location_intro_image', true )
 	);
 
-	jce_field_text(
-		'jce_location_zip',
-		__( 'ZIP Codes Served', 'jce' ),
-		__( 'e.g. "54016, 54082". Shown in the same fact strip.', 'jce' ),
-		get_post_meta( $post->ID, '_jce_location_zip', true )
+	jce_field_image(
+		'jce_location_standard_image',
+		__( 'Photo Next to "The Highest Standard of Tree Care"', 'jce' ),
+		__( 'Without a photo this section is centered text.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_location_standard_image', true )
 	);
 
-	jce_field_textarea(
-		'jce_location_conditions',
-		__( 'What We See on Trees Here', 'jce' ),
-		__( 'Format: Short label | One sentence. The local specifics that prove we actually work in this town.', 'jce' ),
-		get_post_meta( $post->ID, '_jce_location_conditions', true ),
-		6
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'Property-First Care — before / after pair', 'jce' ) . '</h4>';
+	echo '<p class="description" style="margin:0 0 1.25em;">'
+		. esc_html__( 'The creative brief calls for a before/after pair from a job in this town, shot from the same angle. Until both are set, the empty slots show as labelled placeholders so the page doubles as a shot list.', 'jce' )
+		. '</p>';
+
+	jce_field_image(
+		'jce_location_before_image',
+		__( 'Before', 'jce' ),
+		__( 'The property before the work started.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_location_before_image', true )
 	);
 
-	jce_field_textarea(
-		'jce_location_neighborhoods',
-		__( 'Neighborhoods & Areas Served', 'jce' ),
-		__( 'One per line, no pipe. Renders as a list of chips.', 'jce' ),
-		get_post_meta( $post->ID, '_jce_location_neighborhoods', true ),
-		6
+	jce_field_image(
+		'jce_location_after_image',
+		__( 'After', 'jce' ),
+		__( 'Same angle, after the job and the cleanup.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_location_after_image', true )
 	);
 
-	jce_field_textarea(
-		'jce_location_faq',
-		__( 'Frequently Asked Questions', 'jce' ),
-		__( 'Format: Question? | Answer. Also published as FAQ schema.', 'jce' ),
-		get_post_meta( $post->ID, '_jce_location_faq', true ),
-		6
+	echo '<hr>';
+
+	jce_field_image(
+		'jce_location_local_image',
+		__( 'Photo Next to "Locally Owned & Operated"', 'jce' ),
+		__( 'Leave blank to use the bundled town photo, where one ships with the theme.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_location_local_image', true )
+	);
+}
+
+/**
+ * Meta keys behind the Service Area page photo slots.
+ */
+function jce_location_image_fields() {
+	return array(
+		'jce_location_intro_image',
+		'jce_location_standard_image',
+		'jce_location_before_image',
+		'jce_location_after_image',
+		'jce_location_local_image',
 	);
 }
 
@@ -353,7 +382,7 @@ function jce_render_page_sections_box( $post ) {
 	wp_nonce_field( 'jce_save_page_sections', 'jce_page_sections_nonce' );
 	?>
 	<p class="jce-box__intro">
-		<?php esc_html_e( 'These fields are used by the "About Us" and "Service Area" page templates (Page Attributes > Template). On any other template they are ignored. One item per line; the pipe character separates the short label from the sentence.', 'jce' ); ?>
+		<?php esc_html_e( 'These fields are used by the "Services", "About Us", and "Service Area" page templates (Page Attributes > Template). On any other template they are ignored. One item per line; the pipe character separates the short label from the sentence.', 'jce' ); ?>
 	</p>
 	<?php
 
@@ -380,7 +409,7 @@ function jce_render_page_sections_box( $post ) {
 	jce_field_textarea(
 		'jce_page_highlights',
 		__( 'Highlight Cards', 'jce' ),
-		__( 'Format: Title | One sentence. About Us renders these as the "what we stand for" cards; Service Area uses them as the coverage promises.', 'jce' ),
+		__( 'Format: Title | One sentence. About Us renders these as the "what we stand for" cards; Service Area and Services use them as the coverage / "how we decide" promises.', 'jce' ),
 		get_post_meta( $post->ID, '_jce_page_highlights', true ),
 		6
 	);
@@ -479,11 +508,6 @@ function jce_line_field_map() {
 				'jce_service_note_intro',
 			),
 		),
-		'jce_location_sections' => array(
-			'nonce'  => 'jce_location_sections_nonce',
-			'fields' => array( 'jce_location_conditions', 'jce_location_neighborhoods', 'jce_location_faq' ),
-			'text'   => array( 'jce_location_distance', 'jce_location_zip' ),
-		),
 		'jce_page_sections'     => array(
 			'nonce'  => 'jce_page_sections_nonce',
 			'fields' => array( 'jce_page_highlights', 'jce_page_milestones', 'jce_page_faq', 'jce_page_standard', 'jce_page_yard', 'jce_page_local' ),
@@ -510,6 +534,14 @@ function jce_save_meta_boxes( $post_id ) {
 	if ( isset( $_POST['jce_location_meta_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['jce_location_meta_nonce'] ) ), 'jce_save_location_meta' ) ) {
 		if ( isset( $_POST['jce_location_priority'] ) ) {
 			update_post_meta( $post_id, '_jce_location_priority', sanitize_key( wp_unslash( $_POST['jce_location_priority'] ) ) );
+		}
+	}
+
+	if ( isset( $_POST['jce_location_photos_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['jce_location_photos_nonce'] ) ), 'jce_save_location_photos' ) ) {
+		foreach ( jce_location_image_fields() as $field ) {
+			if ( isset( $_POST[ $field ] ) ) {
+				update_post_meta( $post_id, '_' . $field, absint( $_POST[ $field ] ) );
+			}
 		}
 	}
 

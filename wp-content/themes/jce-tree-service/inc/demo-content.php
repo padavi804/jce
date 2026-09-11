@@ -75,21 +75,25 @@ function jce_demo_services() {
 			'slug'    => 'tree-pruning',
 			'title'   => 'Tree Pruning',
 			'order'   => 2,
-			'excerpt' => 'Structural and health pruning timed to the season and the species, not just whatever week we are in the neighborhood.',
+			'excerpt' => "Pruning isn't just cutting branches off. Done wrong, it stresses a tree, invites disease, and can ruin its shape for years. Our ISA-certified arborists know how each species responds to a cut, when in the season to make it, and how much a tree can lose and still stay healthy.",
 			'body'    => jce_demo_body(
 				array(
-					'Pruning is the work that keeps a tree off the removal list. Done right it takes weight off the limbs most likely to fail, opens the canopy so wind passes through instead of pushing against it, and clears the roof, the drive, and the power drop. Done wrong — and it is done wrong constantly — it starts decay the tree spends the next decade losing to.',
-					'The difference is mostly about where the cut goes and when it happens. A cut at the branch collar seals; a flush cut or a stub does not. Oaks pruned between April and July in this part of Wisconsin invite oak wilt, which is why we schedule oak work in the dormant season and will push back if you ask for it in June. Elms have their own calendar. So does apple.',
-					'What we do not do is topping. Cutting a tree back to stubs produces a flush of weak regrowth attached to nothing but decayed wood, and it is the reason so many storm failures around here are trees that were "trimmed" five years ago. If a tree is too big for its spot, that is a removal conversation, and we will have it honestly rather than sell you a service that makes the problem worse.',
+					"We prune for many reasons. Shaping young trees before problems set in. Removing hazardous deadwood. Cleaning up storm damage. Managing a declining ash tree. Timing matters more than people think. Pruning an oak at the wrong time of year risks introducing oak wilt, so we plan the work around your tree's health and the calendar.",
+					"Every job starts with a handwritten estimate from an arborist who walks your property and explains exactly what needs to be removed and why. We clean up every branch and twig before we leave.",
 				)
 			),
 			'meta'    => array(
-				'_jce_service_signs'    => "Limbs on the roof or over the drive|Branches touching a structure abrade shingles, hold moisture against the roof, and give squirrels a bridge. Clearance pruning is the cheapest tree work there is.\nA canopy so dense the wind cannot pass|Solid crowns catch wind like a sail. Thinning reduces the load the trunk has to resist in a storm.\nCrossing or rubbing branches|Two limbs grinding on each other wear through the bark and open the tree to decay at the wound.\nA young tree growing two leaders|Fixed with one cut at five years, it becomes a removal at thirty. Structural pruning while a tree is small is the highest-value work we do.\nDeadwood scattered through the crown|Dead limbs are the ones that come down on a still day. Clearing them is a safety job before it is a cosmetic one.",
-				'_jce_service_included' => "Arborist assessment of the whole tree, not just the limb you called about\nCuts made at the branch collar so the wound seals properly\nDeadwood, crossing limbs, and hazardous branches removed\nClearance pruning for roofs, drives, walkways, and utility drops\nCrown thinning to reduce wind load where the canopy warrants it\nAll brush chipped and removed, beds and lawn raked clean\nSeasonal timing advice — including telling you to wait, when waiting is right",
-				'_jce_service_pricing'  => "Size of the tree|Everything above about forty feet needs a lift or a climber, and that is the main line between a quick job and a long one.\nHow much is coming out|Clearing a roofline is an hour. A full structural prune of a mature oak is most of a day.\nAccess for a lift|Where a bucket truck can reach from the drive, pruning is straightforward. Backyard trees mean climbing, which takes longer.\nSeason|Dormant-season work is faster and better for the tree. Emergency clearance in mid-summer costs more because it is scheduled around everything else.\nCleanup and haul-off|Chipping on site is included; hauling everything away versus leaving chips for your beds changes the number slightly.",
-				'_jce_service_faq'      => "When is the best time to prune?|For most species, the dormant season — roughly November through March. The tree is not spending energy on leaves, the structure is visible, and disease pressure is at its lowest. Oaks especially should not be pruned April through July because of oak wilt.\nHow much can you take off at once?|As a rule, no more than about a quarter of the live canopy in a season. Beyond that the tree is stressed into producing weak regrowth. If someone offers to take half a tree off, that is a warning sign.\nWill pruning fix a leaning tree?|Sometimes. Reducing weight on the leaning side takes load off the roots and can buy years. If the lean is from root failure rather than growth habit, pruning does not address the cause and we will tell you that.\nDo you top trees?|No. Topping is the single most damaging thing done to trees in this area and we will not do it. If a tree is genuinely too large for its location, we will talk about removal instead.",
+				'_jce_service_eyebrow'       => 'Tree Pruning &amp; Trimming',
+				'_jce_service_headline'      => 'Tree Pruning &amp; Trimming by Local Arborists',
+				// No approved copy for these, so they are switched off rather than
+				// left to fall back to the theme's example text.
+				'_jce_service_signs'         => '-',
+				'_jce_service_included'      => '-',
+				'_jce_service_pricing'       => '-',
+				'_jce_service_faq'           => '-',
 			),
 		),
+
 		// APPROVED COPY — everything from here down is client-signed-off prose.
 		// The four standard sections are switched off on each of them: none has
 		// approved copy for signs / inclusions / price factors / FAQ, and the
@@ -263,6 +267,16 @@ function jce_demo_services() {
 
 /* ---------------------------------------------------------------
  * Locations
+ *
+ * Deliberately just the town names, priority, and ordering. The creative
+ * brief's approved Service Area copy is one set of paragraphs with the town
+ * name swapped in, and single-location.php renders it directly — so there is
+ * nothing per-town left to import, and the invented body prose, neighborhood
+ * lists, and local FAQs that used to live here were unapproved text
+ * publishing under the client's name.
+ *
+ * Leaving body and excerpt empty is what makes the template's approved copy
+ * show: a Location with editor content overrides the approved intro with it.
  * ------------------------------------------------------------- */
 function jce_demo_locations() {
 	return array(
@@ -271,194 +285,88 @@ function jce_demo_locations() {
 			'title'    => 'River Falls, WI',
 			'order'    => 1,
 			'priority' => 'primary',
-			'excerpt'  => 'Home base since 2001. Most of our work happens within a few miles of downtown, and a good share of it comes from neighbors of people we have already worked for.',
-			'body'     => jce_demo_body(
-				array(
-					'River Falls is where JCE started and where it still is. The shop is here, the crew lives here, and most weeks we are working within a few miles of downtown. That is not a marketing position — it is just what happens when a company stays in one place for twenty-five years.',
-					'The tree stock here tells the story of when the neighborhoods went in. The blocks around the university are older and mixed, with mature oak and elm that have been through a lot and are worth taking care of. The subdivisions that went up in the seventies and eighties are heavy with ash, planted all at once because it was fast and cheap and nobody knew what was coming. A lot of what we take down now is that generation of ash, and a fair amount of what we treat is the ash worth saving.',
-					'The other thing about River Falls is the ground. Between the Kinnickinnic valley and the older platted blocks, there are plenty of properties where the lot is narrow, the backyard has no vehicle access, and the tree is fifteen feet from the neighbor\'s garage. That is the job we are set up for, and it is why we own a spider lift.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance'      => 'Our shop is here — usually on site within the day',
-				'_jce_location_zip'           => '54022',
-				'_jce_location_conditions'    => "Ash from the seventies boom|Whole streets were planted with ash at the same time, and emerald ash borer has been working through them since 2013. Some can still be treated; most of what we remove now is ash.\nOak worth protecting|The older blocks near the university have mature oaks that are genuinely valuable. We prune them in the dormant season and nowhere near the oak wilt window.\nNarrow lots, no rear access|Plenty of properties here have a backyard a truck cannot reach. That is a climbing and rigging job, not a drop-it job, and it is what our lift equipment exists for.\nThe Kinni valley slopes|Properties on the valley edge have shallow rooting, more wind exposure, and access problems all at once.\nBoulevard trees the city owns|A good share of the trees people call us about between the sidewalk and the street are municipal. We will tell you before you spend anything.",
-				'_jce_location_neighborhoods' => "Downtown River Falls\nUniversity neighborhood\nKinnickinnic River corridor\nSterling Ponds\nMeadowview\nWhitetail Ridge\nGlen Park area\nRural Pierce County properties",
-				'_jce_location_faq'           => "Do you work in River Falls often?|We are based here. Most weeks the majority of our jobs are within a few miles of the shop, which is why our response times here are the best in our service area.\nWho owns the tree by the sidewalk?|Usually the City of River Falls, not you — which means you should not be paying to have it removed. We will tell you which side of the line your tree is on before quoting anything.\nCan you get into a backyard with no driveway access?|Usually, yes. Our smaller tracked machines fit through a standard gate, and a spider lift reaches over a house where a bucket truck cannot. Where nothing fits, we climb and rig it out by hand.\nIs my ash tree worth treating?|If the canopy is still full, often yes — treatment over two years costs well under removal and replanting. If it is already thinning at the top, usually not, and we will say so.",
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'hudson',
 			'title'    => 'Hudson, WI',
 			'order'    => 2,
 			'priority' => 'primary',
-			'excerpt'  => 'Established neighborhoods, mature trees, and a lot of ash that needs a plan. We have been working Hudson properties for two decades.',
-			'body'     => jce_demo_body(
-				array(
-					'Hudson has some of the best mature tree stock in the valley and some of the most expensive things to drop a tree on. The older neighborhoods off Third Street and up the hill have large oak, maple, and elm on lots that were platted long before anyone thought about getting equipment into a backyard.',
-					'That combination — big trees, tight access, and houses close together — is exactly the work that separates companies. A sixty-foot maple between two homes twenty feet apart does not get felled. It gets taken apart from the top down, with a crane if we can position one on the street and by climbing if we cannot.',
-					'Hudson also has a serious ash situation. The growth through the eighties and nineties put ash in as street and yard trees across whole developments, and emerald ash borer has been through. We spend as much time here treating the ash worth keeping as removing the ones that are gone — and telling people honestly which category theirs is in.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance'      => 'About 20 minutes from our River Falls shop',
-				'_jce_location_zip'           => '54016',
-				'_jce_location_conditions'    => "Large trees on close-set lots|The older neighborhoods have mature canopy over houses twenty feet apart. Everything comes down in controlled pieces here; there is nowhere to drop anything.\nAsh across whole developments|The eighties and nineties growth planted ash heavily as street and yard trees. Emerald ash borer has been through, and the decisions now are treat-or-remove on a tree-by-tree basis.\nBluff and river-facing lots|Properties toward the St. Croix have wind exposure, slope, and access constraints that all push the job toward crane work.\nStorm corridor along the river|The straight-line winds that come up the valley hit the same exposed properties repeatedly. Wind-load pruning matters more here than most places.\nMunicipal boulevard trees|A lot of Hudson's street trees belong to the city. Worth confirming before you pay anyone to touch them.",
-				'_jce_location_neighborhoods' => "Downtown Hudson\nThird Street historic district\nWillow River area\nNorth Hudson\nRed Cedar Canyon\nTroy Burne\nBirkmose Park neighborhood\nRural St. Croix County properties",
-				'_jce_location_faq'           => "Are you actually up here regularly, or is Hudson an outer edge?|Hudson is one of our three primary towns and has been for years. It is a twenty-minute drive and a regular part of the weekly schedule, not a stretch.\nCan you get a crane into a Hudson backyard?|Often we can position one on the street and reach over the house, which is the whole point of owning it. Where the street will not take it, a spider lift or climbing handles the job instead.\nMy whole street is ash. What should I do?|Get them assessed individually. Ash in the same block can be in very different condition, and treating the good ones while removing the failed ones is almost always cheaper than removing all of them.\nDo you do work for HOAs and property managers?|Yes, regularly — common-area tree care, storm response, and multi-property assessments across the Hudson area.",
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'prescott',
 			'title'    => 'Prescott, WI',
 			'order'    => 3,
 			'priority' => 'primary',
-			'excerpt'  => 'Bluff properties and river lots where access and cleanup take real equipment — and knowing which trees are holding a slope together.',
-			'body'     => jce_demo_body(
-				array(
-					'Prescott sits where the St. Croix meets the Mississippi, and the tree work here is shaped almost entirely by that topography. Bluff lots, steep driveways, properties where the back of the house is thirty feet above the front, and river frontage with mature trees doing real work holding the bank together.',
-					'That last part matters more than most people expect. On a slope, a tree is not just a tree — it is root structure holding soil. Removing the wrong one on a bluff lot can start an erosion problem that costs a great deal more than the tree did. Part of what an arborist assessment gets you here is knowing which trees are structural to the site and which are not.',
-					'Access is the other constant. Steep, narrow driveways rule out the largest equipment on plenty of Prescott properties, which means smaller tracked machines, more rigging, and sometimes lowering material down to the road by hand. It is slower work, and we would rather tell you that when quoting than surprise you on the day.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance'      => 'About 25 minutes from our River Falls shop',
-				'_jce_location_zip'           => '54021',
-				'_jce_location_conditions'    => "Trees holding a slope together|On bluff lots some trees are structural to the site. Taking the wrong one out starts an erosion problem worth far more than the tree. We assess for that before quoting.\nSteep and narrow access|Plenty of Prescott driveways rule out our largest equipment. Smaller tracked machines, more rigging, and sometimes hand-lowering to the road.\nWind exposure at the confluence|Properties above the river junction take wind from directions sheltered lots never see. Crown thinning is a genuine risk reduction here.\nShallow soil over rock|Bluff-top trees often root shallowly across rock rather than deep. They can look solid and fail suddenly in saturated ground.\nRiverfront cleanup constraints|Working near the water means being careful about what ends up in it. Debris handling is planned, not improvised.",
-				'_jce_location_neighborhoods' => "Downtown Prescott\nBluff-top properties\nSt. Croix riverfront\nMississippi River lots\nFreedom Park area\nRural Pierce County acreages\nOak Ridge\nBig River Road corridor",
-				'_jce_location_faq'           => "Can you get equipment down my driveway?|Usually — we run smaller tracked machines specifically because so many properties here cannot take a full-size truck. Where nothing fits, we climb and rig material out by hand, and we will tell you up front if that is what your site needs.\nWill removing this tree cause erosion?|On a slope it genuinely might, and it is one of the first things we assess on a bluff lot. Sometimes the right answer is to reduce the tree rather than remove it, precisely so the roots stay in the ground.\nDo you work on the riverfront?|Yes. Working near the water means planning debris handling rather than improvising it, which is part of the quote rather than an afterthought.\nHow far out is Prescott for you?|About twenty-five minutes, and it is a primary service town — there is no travel surcharge and no difference in how we schedule it.",
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'ellsworth',
 			'title'    => 'Ellsworth, WI',
 			'order'    => 10,
 			'priority' => 'secondary',
-			'excerpt'  => 'Village lots and surrounding Pierce County farmland — removals, clearing, and storm work on the same schedule as our primary towns.',
-			'body'     => jce_demo_body(
-				array(
-					'Ellsworth is a regular stop for us, both in the village itself and on the farms and acreages around it. The work here splits fairly evenly between residential removals on village lots and larger clearing jobs on rural property — fence lines, field edges, and windbreaks that have gone past the point of being maintainable.',
-					'Rural Pierce County properties tend to have more room to work and more material to deal with. That usually means the job goes faster than the same tree in town, and the conversation is more about what happens to the wood and brush than about how to get equipment in.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 20 minutes from our River Falls shop',
-				'_jce_location_zip'      => '54011',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'new-richmond',
 			'title'    => 'New Richmond, WI',
 			'order'    => 11,
 			'priority' => 'secondary',
-			'excerpt'  => 'Growing subdivisions with maturing tree stock, plus acreage clearing north of the river.',
-			'body'     => jce_demo_body(
-				array(
-					'New Richmond has grown quickly, and the trees planted through that growth are now reaching the size where they need real attention rather than a homeowner with a pole saw. Structural pruning on maturing trees is some of the highest-value work we do, and this is a town with a lot of it.',
-					'We also do a fair amount of lot clearing on the acreages around New Richmond — building sites, fence lines, and reclaiming ground that has gone to buckthorn and box elder.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 35 minutes from our River Falls shop',
-				'_jce_location_zip'      => '54017',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'hastings',
 			'title'    => 'Hastings, MN',
 			'order'    => 12,
 			'priority' => 'secondary',
-			'excerpt'  => 'Across the river in Dakota County — mature neighborhood canopy and river-bluff properties.',
-			'body'     => jce_demo_body(
-				array(
-					'Hastings is a regular stop on the Minnesota side. The older neighborhoods have excellent mature canopy on lots that were not designed with equipment access in mind, which is familiar territory for us.',
-					'The bluff properties along the Mississippi bring the same slope and access considerations we deal with in Prescott, and the same caution about which trees are doing structural work holding ground in place.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 30 minutes from our River Falls shop',
-				'_jce_location_zip'      => '55033',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'roberts',
 			'title'    => 'Roberts, WI',
 			'order'    => 13,
 			'priority' => 'secondary',
-			'excerpt'  => 'Village and rural St. Croix County work, ten minutes off the interstate from our shop.',
-			'body'     => jce_demo_body(
-				array(
-					'Roberts and the surrounding township are close enough to our shop that scheduling is straightforward. The work is a mix of residential removals, pruning, and clearing on the rural properties around the village.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 20 minutes from our River Falls shop',
-				'_jce_location_zip'      => '54023',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'hammond',
 			'title'    => 'Hammond, WI',
 			'order'    => 14,
 			'priority' => 'secondary',
-			'excerpt'  => 'Village lots and surrounding acreage, on the same crew schedule as the rest of St. Croix County.',
-			'body'     => jce_demo_body(
-				array(
-					'Hammond sits in easy reach of our shop and is part of the regular St. Croix County rotation. Residential removals, pruning, and storm response all run on the same schedule and the same pricing as our primary towns.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 25 minutes from our River Falls shop',
-				'_jce_location_zip'      => '54015',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'baldwin',
 			'title'    => 'Baldwin, WI',
 			'order'    => 15,
 			'priority' => 'secondary',
-			'excerpt'  => 'Residential tree care and rural clearing in eastern St. Croix County.',
-			'body'     => jce_demo_body(
-				array(
-					'Baldwin is the eastern edge of our regular service area. Residential work in the village and larger clearing jobs on the farms and acreages around it make up most of what we do here.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 35 minutes from our River Falls shop',
-				'_jce_location_zip'      => '54002',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'beldenville',
 			'title'    => 'Beldenville, WI',
 			'order'    => 16,
 			'priority' => 'secondary',
-			'excerpt'  => 'Rural Pierce County acreages, minutes from the shop.',
-			'body'     => jce_demo_body(
-				array(
-					'Beldenville is close to home for us — mostly rural properties where the work runs to removals, windbreak maintenance, and clearing overgrown ground back to something usable.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 15 minutes from our River Falls shop',
-				'_jce_location_zip'      => '54003',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'houlton',
 			'title'    => 'Houlton, WI',
 			'order'    => 17,
 			'priority' => 'secondary',
-			'excerpt'  => 'St. Croix riverfront and bluff properties just north of Hudson.',
-			'body'     => jce_demo_body(
-				array(
-					'Houlton properties sit on the bluffs above the St. Croix, which brings the same access and slope-stability considerations as our Prescott work. Wind exposure on the river-facing lots makes crown thinning genuinely worthwhile here.',
-				)
-			),
-			'meta'     => array(
-				'_jce_location_distance' => 'About 25 minutes from our River Falls shop',
-				'_jce_location_zip'      => '54082',
-			),
+			'excerpt'  => '',
+			'body'     => '',
 		),
 	);
 }
@@ -469,69 +377,18 @@ function jce_demo_locations() {
 function jce_demo_testimonials() {
 	return array(
 		array(
-			'title' => 'Dana R.',
-			'body'  => 'We had a dead ash about fifteen feet off the back corner of the house and two other companies quoted it without getting out of the truck. Joe walked the whole yard, told us the ash had to go but that the maple we were also worried about was fine and would be for years. They took the ash down in pieces over the deck without touching a board of it. The yard was cleaner when they left than when they got here.',
+			'title' => 'Brian Gresback',
+			'body'  => 'The JCE Tree Service Team did a great job removing two very large poplars and trimming two others. They have the right equipment to take down big trees in a small area with virtually no property disturbance.',
 			'meta'  => array(
-				'_jce_reviewer_location' => 'Sterling Ponds, River Falls',
-				'_jce_job_type'          => 'Large ash removal',
-				'_jce_rating'            => 5,
-				'_jce_review_source'     => 'Google',
-				'_jce_review_service'    => 'tree-removal',
+				'_jce_rating' => 5,
 			),
 		),
 		array(
-			'title' => 'Mark T.',
-			'body'  => 'Storm took a limb through the garage roof at about nine at night. I called expecting to leave a message and someone picked up, asked exactly what it was resting on, and told me to stay out of the garage and that they would be there first thing. They were. Had the weight off the roof before the roofer even called me back, and gave me photos and a written description that my adjuster accepted without a single follow-up question.',
+			'title' => 'Ed',
+			'body'  => 'Very friendly, competent, and careful. No lawn damage, and great clean-up afterwards.',
 			'meta'  => array(
-				'_jce_reviewer_location' => 'North Hudson',
-				'_jce_job_type'          => 'Emergency storm removal',
-				'_jce_rating'            => 5,
-				'_jce_review_source'     => 'Google',
-				'_jce_review_service'    => 'emergency-tree-service',
-			),
-		),
-		array(
-			'title' => 'Linda K.',
-			'body'  => 'I was told by another company that my two big oaks needed to come down, which would have been about eight thousand dollars. JCE came out for a second opinion, spent forty minutes looking at them, and said both were structurally sound and just needed deadwood cleared. That was three years ago and they are still standing. I have sent them four neighbors since.',
-			'meta'  => array(
-				'_jce_reviewer_location' => 'University neighborhood, River Falls',
-				'_jce_job_type'          => 'Tree inspection and pruning',
-				'_jce_rating'            => 5,
-				'_jce_review_source'     => 'Google',
-				'_jce_review_service'    => 'tree-inspection',
-			),
-		),
-		array(
-			'title' => 'Steve and Pat M.',
-			'body'  => 'Bluff lot, terrible driveway, and a big cottonwood that had to come out from behind the house. Every other company either would not quote it or wanted to bring in a crane we could not get up the hill. JCE brought smaller tracked equipment and lowered it out piece by piece. Two days of careful work and you cannot tell they were here except the tree is gone.',
-			'meta'  => array(
-				'_jce_reviewer_location' => 'Bluff-top, Prescott',
-				'_jce_job_type'          => 'Difficult-access removal',
-				'_jce_rating'            => 5,
-				'_jce_review_source'     => 'Facebook',
-				'_jce_review_service'    => 'prescott',
-			),
-		),
-		array(
-			'title' => 'Amy W.',
-			'body'  => 'Had them treat four ash trees rather than remove them. What sold me was that they told me the fifth one was too far gone to be worth treating and I should take it out instead — nobody trying to sell me treatments says that. Four seasons on and all four are still full. The one they said to remove came apart in a windstorm the next spring, so they were right about that too.',
-			'meta'  => array(
-				'_jce_reviewer_location' => 'Red Cedar Canyon, Hudson',
-				'_jce_job_type'          => 'Emerald ash borer treatment',
-				'_jce_rating'            => 5,
-				'_jce_review_source'     => 'Google',
-				'_jce_review_service'    => 'plant-health-care',
-			),
-		),
-		array(
-			'title' => 'Greg H.',
-			'body'  => 'Cleared about three acres of buckthorn and box elder that had swallowed the back of our property. They walked it with me first and flagged four oaks I would honestly have let the machine take because I did not know what I was looking at. Those four trees are now the best thing about the yard. Stump-treated everything so it has not come back.',
-			'meta'  => array(
-				'_jce_reviewer_location' => 'Rural Pierce County, Ellsworth',
-				'_jce_job_type'          => 'Lot clearing',
-				'_jce_rating'            => 5,
-				'_jce_review_source'     => 'Google',
-				'_jce_review_service'    => 'lot-land-clearing',
+				'_jce_job_type' => 'Dead oak removal',
+				'_jce_rating'   => 5,
 			),
 		),
 	);
@@ -593,24 +450,19 @@ function jce_demo_pages() {
 				'_jce_page_faq'        => "Do you charge more for towns further out?|No travel surcharge inside the area shown above. Beyond it, we will tell you honestly on the phone whether the drive makes us the wrong company for the job.\nMy town is not on the list. Will you still come?|Often yes, especially for larger jobs where the drive is a small share of the day. Call and describe the property and we will give you a straight answer rather than a maybe.\nHow fast can you get here after a storm?|Trees on structures and blocked driveways get triaged first, usually the same day across the whole area. Everything else is scheduled behind those, and we will tell you where in the line you are.\nDo you work on the Minnesota side?|Yes — Hastings, Afton, Lakeland, and the Lake St. Croix Beach area are all regular stops for us.",
 			),
 		),
+		// The real /services/ page — see page-templates/template-services.php.
+		// The Service post type has has_archive => false so this Page owns the
+		// URL directly, the same way the "service-area" Page below owns
+		// /service-area/. Ships with no excerpt or body: there is no approved
+		// subheading or intro copy for this page yet, and inventing some would
+		// put it on the live site under the client's name. Each section stays
+		// absent until real copy is typed in.
 		array(
-			'slug'     => 'services-intro',
+			'slug'     => 'services',
 			'title'    => 'Tree Services in River Falls, Hudson &amp; Prescott',
-			'template' => '',
-			'status'   => 'draft',
-			'excerpt'  => 'Removal is about two-thirds of what we do. The rest is keeping the trees worth keeping healthy — and telling you honestly which is which.',
-			'body'     => jce_demo_body(
-				array(
-					'<h2>One crew, trained for the whole list.</h2>',
-					'Most homeowners find us because something needs to come down. A dead ash, a silver maple dropping limbs on the driveway, an oak that started leaning after the last storm. That is the bulk of our work and the reason the equipment in our yard looks the way it does.',
-					'But an ISA-certified arborist walking your property is going to notice the rest of it too, and we would rather tell you what we see than sell you the one job you called about. Sometimes that means a tree you assumed was finished can be pruned back into shape for a fraction of a removal. Sometimes it means the tree you were not worried about is the one with a problem.',
-					'Either way you get the assessment first and the number second. Below is everything we are set up to do — pick the one you came for, or call and describe what you are looking at.',
-				)
-			),
-			'meta'     => array(
-				'_jce_page_highlights' => "Save it if it can be saved|A tree with a dead limb is not a dead tree. If pruning buys you another twenty years, that is the recommendation you get, even though it is the smaller invoice.\nTake it down before it comes down|A leaning trunk over a bedroom is not a wait-and-see. We will tell you plainly when something has moved from a maintenance question to a safety one.\nTime it to the species|Oaks get pruned in the dormant season because of oak wilt. Ash gets treated before the beetle is visible, not after. The calendar is part of the recommendation.\nLeave the yard right|Every piece of equipment we own was chosen to spread weight and protect turf. Cleanup is part of the job, not a line item on top of it.",
-				'_jce_page_faq'        => "Do you charge for an estimate?|No. An arborist comes out, walks the property, and hand-writes the estimate while standing there with you. There is no fee and no obligation attached to it.\nHow far ahead are you booking?|Routine removals and pruning are usually two to four weeks out, longer in the fall rush. Storm damage and anything resting on a structure jumps the queue the same day.\nAre you insured?|Fully licensed and insured for both liability and workers compensation, and we will hand you the certificate before we start. Ask every company you call for this — an uninsured crew in your tree is your liability, not theirs.\nDo you haul everything away?|Yes, unless you want the wood. Plenty of customers keep the rounds for firewood, and we will stack them wherever you want them at no extra charge. Brush and chips leave with us either way.\nWill you work with my insurance company?|On storm damage, yes. You get photographs and a written description of the damage and the work in the format adjusters actually accept.",
-			),
+			'template' => 'page-templates/template-services.php',
+			'excerpt'  => '',
+			'body'     => '',
 		),
 		array(
 			'slug'     => 'estimate',
@@ -653,6 +505,19 @@ function jce_demo_pages() {
  */
 function jce_demo_insert( $post_type, $item, &$log, $replace = false ) {
 	$existing = get_page_by_path( $item['slug'], OBJECT, $post_type );
+
+	// A protected item is never overwritten, whatever the checkbox says. These
+	// are posts whose approved copy lives in WordPress rather than in this
+	// file, so a Replace run would destroy the only copy of it.
+	if ( $existing && ! empty( $item['protect'] ) ) {
+		$log[] = sprintf(
+			/* translators: 1: post type, 2: post title */
+			__( 'Protected %1$s "%2$s" — left untouched; its copy lives in WordPress, not in the importer.', 'jce' ),
+			$post_type,
+			$item['title']
+		);
+		return 'skipped';
+	}
 
 	if ( $existing && ! $replace ) {
 		$log[] = sprintf(

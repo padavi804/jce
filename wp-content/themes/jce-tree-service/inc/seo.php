@@ -29,8 +29,6 @@ function jce_meta_description() {
 		} else {
 			$desc = wp_trim_words( wp_strip_all_tags( strip_shortcodes( get_the_content() ) ), 30, '' );
 		}
-	} elseif ( is_post_type_archive( 'service' ) ) {
-		$desc = __( 'Tree removal, pruning, emergency storm response, and plant health care from ISA-certified arborists serving River Falls, Hudson, and Prescott, WI.', 'jce' );
 	} elseif ( is_home() ) {
 		$desc = __( 'Seasonal tree care advice from the JCE Tree Service arborists in River Falls, Hudson, and Prescott, Wisconsin.', 'jce' );
 	} else {

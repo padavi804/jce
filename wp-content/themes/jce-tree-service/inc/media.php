@@ -136,6 +136,16 @@ function jce_default_service_images() {
 }
 
 /**
+ * Permalink for a Service by slug, e.g. on a Location page that names a
+ * specific service in approved copy rather than looping the whole grid.
+ * Falls back to the Services archive if that Service hasn't been created yet.
+ */
+function jce_service_url( $slug ) {
+	$service = get_page_by_path( $slug, OBJECT, 'service' );
+	return $service ? get_permalink( $service ) : jce_url( 'services_url', '/services/' );
+}
+
+/**
  * Bundled location photos, keyed by the Location post slug.
  */
 function jce_default_location_images() {

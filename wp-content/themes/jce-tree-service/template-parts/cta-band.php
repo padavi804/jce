@@ -12,6 +12,7 @@ $args = wp_parse_args(
 		'variant' => 'default',
 		'title'   => __( 'Ready for a straight answer about your trees?', 'jce' ),
 		'copy'    => __( 'An arborist comes out, walks the property, and hand-writes the estimate. No cost, no pressure, no callback in three days.', 'jce' ),
+		'email'   => false, // Adds a plain "Email Us Instead" link beside the buttons.
 	)
 );
 
@@ -35,6 +36,11 @@ $is_emergency = 'emergency' === $args['variant'];
 				<?php if ( jce_biz( 'phone' ) ) : ?>
 					<a class="btn btn--ghost btn--lg" href="tel:<?php echo esc_attr( jce_tel() ); ?>">
 						<?php jce_icon( 'phone' ); ?><?php echo esc_html( jce_biz( 'phone' ) ); ?>
+					</a>
+				<?php endif; ?>
+				<?php if ( $args['email'] && jce_biz( 'email' ) ) : ?>
+					<a class="link-arrow" href="mailto:<?php echo esc_attr( jce_biz( 'email' ) ); ?>">
+						<?php esc_html_e( 'Email Us Instead', 'jce' ); ?>
 					</a>
 				<?php endif; ?>
 			<?php endif; ?>
