@@ -28,9 +28,10 @@ while ( have_posts() ) :
 		array(
 			'context' => 'about',
 			'eyebrow' => __( 'About JCE Tree Service', 'jce' ),
-			'title'   => get_the_title() ? get_the_title() : __( 'Twenty-Five Years in River Falls', 'jce' ),
-			'sub'     => get_the_excerpt() ? get_the_excerpt() : __( 'Family-owned since 2001, still based in the same town, still run by the person who writes your estimate.', 'jce' ),
+			'title'   => get_the_title() ? get_the_title() : __( '25 Years of Doing Right by People and Trees in our Community', 'jce' ),
+			'sub'     => get_the_excerpt() ? get_the_excerpt() : __( 'Locally-owned. Arborist-led. The highest standard of tree care. No exceptions.', 'jce' ),
 			'image'   => has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'jce-hero' ) : '',
+			'focus'   => jce_field( '_jce_page_hero_focus', null, 5 ),
 		)
 	);
 	?>
@@ -45,10 +46,18 @@ while ( have_posts() ) :
 			<div class="split split--photo">
 				<div class="split__media">
 					<?php
-					// A Featured Image on this page wins; otherwise the bundled
-					// crew photo stands in rather than an empty placeholder.
-					if ( has_post_thumbnail() ) {
-						the_post_thumbnail( 'large', array( 'loading' => 'lazy', 'decoding' => 'async' ) );
+					// The "Our Story" photo is its own field, kept separate from
+					// the Featured Image (which drives the hero banner only) so
+					// the two spots can carry different photos. Falls back to
+					// the bundled crew photo if none has been chosen yet.
+					$story_image_id = (int) jce_field( '_jce_page_story_image' );
+					if ( $story_image_id ) {
+						echo wp_get_attachment_image(
+							$story_image_id,
+							'large',
+							false,
+							array( 'loading' => 'lazy', 'decoding' => 'async' )
+						);
 					} else {
 						jce_bundled_image(
 							'crew-team-river-falls.jpg',
@@ -160,7 +169,7 @@ while ( have_posts() ) :
 		<?php
 	endif;
 
-	get_template_part( 'template-parts/personal-estimate-steps', null, array( 'class' => jce_band() ) );
+	// get_template_part( 'template-parts/personal-estimate-steps', null, array( 'class' => jce_band() ) );
 
 	/* --------------------------------------------------------------
 	 * We're Proud to Be Located in River Falls — single-field paragraphs
@@ -190,8 +199,8 @@ while ( have_posts() ) :
 		<?php
 	endif;
 
-	get_template_part( 'template-parts/reviews', null, array( 'class' => jce_band() ) );
-	get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
+	// get_template_part( 'template-parts/reviews', null, array( 'class' => jce_band() ) );
+	// get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
 
 	/* --------------------------------------------------------------
 	 * What 25 Years Actually Buys You — credential recap, right before the

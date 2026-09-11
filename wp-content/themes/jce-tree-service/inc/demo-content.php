@@ -11,7 +11,11 @@
  * content, instead of asking a developer to change a template.
  *
  * Safe to run more than once — anything whose slug already exists is skipped,
- * so an import never overwrites edited copy.
+ * so an import never overwrites edited copy, unless the admin screen's
+ * "Replace" box for that specific post type is checked. That replace toggle
+ * is per post type (Services / Locations / Pages / Testimonials), not
+ * global, so pushing updated copy for Pages can never touch Services, and
+ * vice versa — see jce_run_demo_import().
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -743,11 +747,31 @@ function jce_demo_insert( $post_type, $item, &$log, $replace = false ) {
 }
 
 /**
+ * Post types the importer knows about, and the checkbox label/description
+ * shown for each one's "replace" toggle on the admin screen.
+ */
+function jce_demo_post_types() {
+	return array(
+		'service'     => __( 'Services', 'jce' ),
+		'location'    => __( 'Locations', 'jce' ),
+		'page'        => __( 'Pages', 'jce' ),
+		'testimonial' => __( 'Testimonials', 'jce' ),
+	);
+}
+
+/**
  * Run the whole import.
  *
+ * @param array<string,bool> $replace Which post types to overwrite, keyed by
+ *                                    the keys from jce_demo_post_types(). Any
+ *                                    type left out (or false) is left alone —
+ *                                    existing posts of that type are only
+ *                                    ever skipped, never rewritten. This is
+ *                                    what lets "replace the Pages" leave
+ *                                    hand-edited Services untouched.
  * @return array{created:int,skipped:int,log:string[]}
  */
-function jce_run_demo_import( $replace = false ) {
+function jce_run_demo_import( $replace = array() ) {
 	$log     = array();
 	$created = 0;
 	$updated = 0;
@@ -774,8 +798,9 @@ function jce_run_demo_import( $replace = false ) {
 	}
 
 	foreach ( $sets as $post_type => $items ) {
+		$replace_type = ! empty( $replace[ $post_type ] );
 		foreach ( $items as $item ) {
-			$result = jce_demo_insert( $post_type, $item, $log, $replace );
+			$result = jce_demo_insert( $post_type, $item, $log, $replace_type );
 			if ( 'created' === $result ) {
 				$created++;
 			} elseif ( 'updated' === $result ) {
@@ -817,12 +842,18 @@ function jce_render_demo_page() {
 		return;
 	}
 
+	$post_types = jce_demo_post_types();
+
 	$result = null;
 	if (
 		isset( $_POST['jce_demo_nonce'] )
 		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['jce_demo_nonce'] ) ), 'jce_import_demo' )
 	) {
-		$result = jce_run_demo_import( ! empty( $_POST['jce_demo_replace'] ) );
+		$replace = array();
+		foreach ( array_keys( $post_types ) as $post_type ) {
+			$replace[ $post_type ] = ! empty( $_POST[ 'jce_demo_replace_' . $post_type ] );
+		}
+		$result = jce_run_demo_import( $replace );
 	}
 
 	$counts = array(
@@ -881,15 +912,26 @@ function jce_render_demo_page() {
 		<form method="post">
 			<?php wp_nonce_field( 'jce_import_demo', 'jce_demo_nonce' ); ?>
 
-			<p style="max-width:42em;padding:.9em 1.1em;background:#fcf9e8;border-left:4px solid #dba617;">
-				<label>
-					<input type="checkbox" name="jce_demo_replace" value="1">
-					<strong><?php esc_html_e( 'Replace existing content', 'jce' ); ?></strong>
-				</label><br>
-				<span class="description">
-					<?php esc_html_e( 'Rewrites Services, Locations, and Pages that already exist, using the copy above. This is how approved copy lands on top of placeholder text from an earlier import — but it also discards any edits made in WordPress since. Published URLs are never changed. Leave unchecked to add only what is missing.', 'jce' ); ?>
-				</span>
-			</p>
+			<div style="max-width:42em;padding:.9em 1.1em;background:#fcf9e8;border-left:4px solid #dba617;">
+				<p style="margin-top:0;">
+					<strong><?php esc_html_e( 'Replace existing content — pick which post types, if any.', 'jce' ); ?></strong><br>
+					<span class="description">
+						<?php esc_html_e( 'Checking a box below rewrites every post of that type whose slug already exists, using the copy in this file — discarding any edits made in WordPress since, for that type only. Types left unchecked are never touched: existing posts of that type are only ever skipped, so hand-edited work is safe as long as its type stays unchecked. Published URLs are never changed.', 'jce' ); ?>
+					</span>
+				</p>
+				<?php foreach ( $post_types as $post_type => $label ) : ?>
+					<label style="display:block;margin:.5em 0;">
+						<input type="checkbox" name="jce_demo_replace_<?php echo esc_attr( $post_type ); ?>" value="1">
+						<?php
+						printf(
+							/* translators: %s: post type label, e.g. "Pages" */
+							esc_html__( 'Replace %s', 'jce' ),
+							esc_html( $label )
+						);
+						?>
+					</label>
+				<?php endforeach; ?>
+			</div>
 
 			<p>
 				<button type="submit" class="button button-primary button-hero">

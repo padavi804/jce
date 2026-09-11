@@ -116,4 +116,37 @@
 			writeValue( $panel );
 		} );
 	} );
+
+	/**
+	 * Single-image picker — one thumbnail, no companion list to match
+	 * against. See jce_field_image() in inc/fields.php.
+	 */
+	$( function () {
+		$( document ).on( 'click', '.jce-image-field__choose', function ( e ) {
+			e.preventDefault();
+
+			var $field = $( this ).closest( '.jce-image-field' );
+			var frame = wp.media( { title: 'Select Image', multiple: false, library: { type: 'image' } } );
+
+			frame.on( 'select', function () {
+				var attachment = frame.state().get( 'selection' ).first().toJSON();
+				$field.attr( 'data-value', attachment.id );
+				$field.find( '.jce-image-field__thumb' ).html( $( '<img>' ).attr( 'src', thumbUrl( attachment ) ) );
+				$field.find( '.jce-image-field__value' ).val( attachment.id );
+				$field.find( '.jce-image-field__remove' ).show();
+			} );
+
+			frame.open();
+		} );
+
+		$( document ).on( 'click', '.jce-image-field__remove', function ( e ) {
+			e.preventDefault();
+
+			var $field = $( this ).closest( '.jce-image-field' );
+			$field.attr( 'data-value', '' );
+			$field.find( '.jce-image-field__thumb' ).empty();
+			$field.find( '.jce-image-field__value' ).val( '' );
+			$( this ).hide();
+		} );
+	} );
 } )( jQuery );

@@ -18,6 +18,11 @@
  *     @type string $image   Explicit image URL, wins over 'context'.
  *     @type bool   $buttons Render the estimate + call pair.
  *     @type string $area    "Proudly serving…" line under the buttons.
+ *     @type int    $focus   Crop bias for the (always object-fit: cover)
+ *                           banner photo, 1–10: 1 is the top of the photo,
+ *                           5 is center, 10 is the bottom. Lets an
+ *                           off-center photo be re-framed without
+ *                           re-editing the file itself.
  * }
  */
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,6 +39,7 @@ $args = wp_parse_args(
 		'image'   => '',
 		'buttons' => false,
 		'area'    => '',
+		'focus'   => 5,
 	)
 );
 
@@ -55,6 +61,16 @@ if ( $args['image'] ) {
 // lines and swamps the hero. Past roughly forty characters it steps down a
 // size and gets a wider measure.
 $long_title = mb_strlen( wp_strip_all_tags( $args['title'] ) ) > 40;
+
+// 1–10 on a vertical crop bias: 1 is the top edge of the photo, 5 is dead
+// center, 10 is the bottom edge. Two even slopes either side of 5 (rather
+// than one straight 1–10 line) so "5" always lands exactly on 50% the way
+// the admin field promises, not just approximately.
+$focus_step = is_numeric( $args['focus'] ) ? (int) $args['focus'] : 5;
+$focus_step = max( 1, min( 10, $focus_step ) );
+$focus_pct  = $focus_step <= 5
+	? ( $focus_step - 1 ) / 4 * 50
+	: 50 + ( $focus_step - 5 ) / 5 * 50;
 ?>
 <section class="page-hero<?php echo $hero ? ' page-hero--has-image' : ''; ?><?php echo $long_title ? ' page-hero--long' : ''; ?>">
 	<?php if ( $hero ) : ?>
@@ -62,6 +78,7 @@ $long_title = mb_strlen( wp_strip_all_tags( $args['title'] ) ) > 40;
 			<img src="<?php echo esc_url( $hero['url'] ); ?>"
 				alt="<?php echo esc_attr( $hero['alt'] ); ?>"
 				width="1920" height="1080"
+				style="object-position: center <?php echo esc_attr( $focus_pct ); ?>%;"
 				fetchpriority="high" decoding="async">
 		</div>
 	<?php endif; ?>

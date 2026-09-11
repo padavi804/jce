@@ -32,8 +32,9 @@ function jce_add_meta_boxes() {
 add_action( 'add_meta_boxes', 'jce_add_meta_boxes' );
 
 /**
- * The photo-slots panel under "The List" needs the native media picker.
- * Loaded only on the Service edit screen, not every admin page.
+ * The photo-slots panel (Services) and the single-image picker (Pages) both
+ * need the native media picker. Loaded only on the Service and Page edit
+ * screens, not every admin page.
  */
 function jce_admin_photo_slots_assets( $hook ) {
 	if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
@@ -41,7 +42,7 @@ function jce_admin_photo_slots_assets( $hook ) {
 	}
 
 	$screen = get_current_screen();
-	if ( ! $screen || 'service' !== $screen->post_type ) {
+	if ( ! $screen || ! in_array( $screen->post_type, array( 'service', 'page' ), true ) ) {
 		return;
 	}
 
@@ -356,6 +357,26 @@ function jce_render_page_sections_box( $post ) {
 	</p>
 	<?php
 
+	echo '<h4 style="margin:0 0 .75em;">' . esc_html__( 'Hero (About Us)', 'jce' ) . '</h4>';
+
+	jce_field_range(
+		'jce_page_hero_focus',
+		__( 'Hero Image Focus', 'jce' ),
+		__( 'The Featured Image is cropped to fill the hero banner. If it\'s cutting off the wrong part (a head, a sign), nudge the crop here instead of re-editing the photo. 1 = top of the photo, 5 = center (default), 10 = bottom.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_hero_focus', true )
+	);
+
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'Our Story Photo (About Us)', 'jce' ) . '</h4>';
+
+	jce_field_image(
+		'jce_page_story_image',
+		__( 'Photo Next to "Our Story"', 'jce' ),
+		__( 'Separate from the Featured Image, which is the hero banner only. Leave blank to use the bundled crew photo.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_story_image', true )
+	);
+
+	echo '<hr>';
+
 	jce_field_textarea(
 		'jce_page_highlights',
 		__( 'Highlight Cards', 'jce' ),
@@ -513,6 +534,19 @@ function jce_save_meta_boxes( $post_id ) {
 			}
 			if ( isset( $_POST['jce_service_reel_images'] ) ) {
 				update_post_meta( $post_id, '_jce_service_reel_images', jce_sanitize_id_list( $_POST['jce_service_reel_images'] ) );
+			}
+		}
+
+		// Same idea on the Page Sections box: a single attachment ID and an
+		// enum, not lines of text.
+		if ( 'jce_page_sections' === $action ) {
+			if ( isset( $_POST['jce_page_story_image'] ) ) {
+				update_post_meta( $post_id, '_jce_page_story_image', absint( $_POST['jce_page_story_image'] ) );
+			}
+			if ( isset( $_POST['jce_page_hero_focus'] ) ) {
+				$focus = absint( $_POST['jce_page_hero_focus'] );
+				$focus = max( 1, min( 10, $focus ? $focus : 5 ) );
+				update_post_meta( $post_id, '_jce_page_hero_focus', $focus );
 			}
 		}
 	}

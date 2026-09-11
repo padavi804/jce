@@ -328,6 +328,32 @@ function jce_field_text( $name, $label, $help, $value ) {
 }
 
 /**
+ * Render a labelled 1–10 slider inside a meta box, with the live value
+ * shown next to it (via a couple lines of inline JS — not worth a whole
+ * enqueued file for one `<input oninput>`).
+ *
+ * @param string $name  Field name (also the meta key).
+ * @param string $label Field label.
+ * @param string $help  Help text under the label.
+ * @param int    $value Current value, 1–10.
+ */
+function jce_field_range( $name, $label, $help, $value ) {
+	$value = $value ? (int) $value : 5;
+	?>
+	<p class="jce-field">
+		<label for="<?php echo esc_attr( $name ); ?>"><strong><?php echo esc_html( $label ); ?></strong></label>
+		<span class="jce-field__help description"><?php echo esc_html( $help ); ?></span>
+		<span class="jce-field__range">
+			<input type="range" id="<?php echo esc_attr( $name ); ?>" name="<?php echo esc_attr( $name ); ?>"
+				min="1" max="10" step="1" value="<?php echo esc_attr( $value ); ?>"
+				oninput="this.nextElementSibling.textContent=this.value">
+			<output><?php echo esc_html( $value ); ?></output>
+		</span>
+	</p>
+	<?php
+}
+
+/**
  * Sanitize a multi-line field. Line structure is preserved; each line is run
  * through sanitize_text_field, which would otherwise collapse the newlines.
  */
@@ -386,6 +412,36 @@ function jce_field_photo_slots( $name, $value, $source_id ) {
 }
 
 /**
+ * Render a single-image picker: a thumbnail plus Choose/Remove buttons,
+ * backed by a hidden attachment-ID field. Unlike jce_field_photo_slots(),
+ * this isn't matched against a companion list — it's one standalone image.
+ *
+ * @param string $name  Hidden field name (also the meta key).
+ * @param string $label Field label.
+ * @param string $help  Help text under the label.
+ * @param int    $value Current attachment ID, or empty for none.
+ */
+function jce_field_image( $name, $label, $help, $value ) {
+	$thumb_url = $value ? wp_get_attachment_image_url( (int) $value, 'medium' ) : '';
+	?>
+	<p class="jce-field">
+		<label><strong><?php echo esc_html( $label ); ?></strong></label>
+		<span class="jce-field__help description"><?php echo esc_html( $help ); ?></span>
+		<span class="jce-image-field" data-value="<?php echo esc_attr( $value ); ?>">
+			<span class="jce-image-field__thumb">
+				<?php if ( $thumb_url ) : ?>
+					<img src="<?php echo esc_url( $thumb_url ); ?>" alt="">
+				<?php endif; ?>
+			</span>
+			<button type="button" class="button jce-image-field__choose"><?php esc_html_e( 'Choose Image', 'jce' ); ?></button>
+			<button type="button" class="button-link jce-image-field__remove" <?php echo $value ? '' : 'style="display:none;"'; ?>><?php esc_html_e( 'Remove', 'jce' ); ?></button>
+			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" class="jce-image-field__value" value="<?php echo esc_attr( $value ); ?>">
+		</span>
+	</p>
+	<?php
+}
+
+/**
  * Meta box styling — just enough to keep the format hints readable.
  */
 function jce_meta_box_styles( $hook ) {
@@ -405,7 +461,14 @@ function jce_meta_box_styles( $hook ) {
 		. '.jce-photo-slot__thumb{flex:0 0 72px;width:72px;height:45px;background:#e2e2e2;overflow:hidden}'
 		. '.jce-photo-slot__thumb img{display:block;width:100%;height:100%;object-fit:cover}'
 		. '.jce-photo-slot__title{flex:1 1 auto}'
-		. '.jce-photo-slot__remove{color:#b32d2e}';
+		. '.jce-photo-slot__remove{color:#b32d2e}'
+		. '.jce-image-field{display:flex;align-items:center;gap:.75em}'
+		. '.jce-image-field__thumb{flex:0 0 96px;width:96px;height:60px;background:#f0f0f1;border:1px solid #dcdcde;overflow:hidden}'
+		. '.jce-image-field__thumb img{display:block;width:100%;height:100%;object-fit:cover}'
+		. '.jce-image-field__remove{color:#b32d2e}'
+		. '.jce-field__range{display:flex;align-items:center;gap:.75em}'
+		. '.jce-field__range input[type=range]{max-width:220px}'
+		. '.jce-field__range output{font-weight:600;min-width:1.5em;text-align:center}';
 
 	wp_register_style( 'jce-admin', false, array(), JCE_THEME_VERSION );
 	wp_enqueue_style( 'jce-admin' );
