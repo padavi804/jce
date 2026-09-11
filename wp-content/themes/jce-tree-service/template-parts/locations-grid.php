@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $args = wp_parse_args(
 	isset( $args ) ? $args : array(),
 	array(
-		'heading' => __( 'Towns We Work In', 'jce' ),
-		'eyebrow' => __( 'Where We Work', 'jce' ),
+		'heading' => __( 'Where We Work', 'jce' ),
+		'eyebrow' => __( 'Service Area', 'jce' ),
 		'lede'    => '',
 		'class'   => '',
 	)

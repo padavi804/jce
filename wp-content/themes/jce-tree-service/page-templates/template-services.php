@@ -26,9 +26,9 @@ while ( have_posts() ) :
 		null,
 		array(
 			'context' => 'services',
-			'eyebrow' => __( 'Tree Care Services', 'jce' ),
-			'title'   => get_the_title() ? get_the_title() : __( 'Tree Services in River Falls, Hudson &amp; Prescott', 'jce' ),
-			'sub'     => get_the_excerpt(),
+			'eyebrow' => __( 'Tree Removal Near Me', 'jce' ),
+			'title'   => jce_field( '_jce_page_headline', null, get_the_title() ? get_the_title() : __( 'Tree Removal by Local Tree Experts in the St. Croix River Valley', 'jce' ) ),
+			'sub'     => jce_field( '_jce_page_subheading' ),
 			'buttons' => true,
 			'area'    => jce_area_sentence(),
 			'image'   => has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'jce-hero' ) : '',
@@ -85,7 +85,7 @@ while ( have_posts() ) :
 		)
 	);
 
-	get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
+	// get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
 	get_template_part( 'template-parts/reviews', null, array( 'class' => jce_band() ) );
 	get_template_part( 'template-parts/cta-band' );
 

@@ -386,7 +386,21 @@ function jce_render_page_sections_box( $post ) {
 	</p>
 	<?php
 
-	echo '<h4 style="margin:0 0 .75em;">' . esc_html__( 'Hero (About Us)', 'jce' ) . '</h4>';
+	echo '<h4 style="margin:0 0 .75em;">' . esc_html__( 'Hero', 'jce' ) . '</h4>';
+
+	jce_field_text(
+		'jce_page_headline',
+		__( 'Page Headline (H1)', 'jce' ),
+		__( 'The long-form headline shown as this page\'s H1, e.g. "Tree Removal by Local Tree Experts in the St. Croix River Valley". Blank uses the Title field above. Keep the Title field short — it is what appears in the browser tab, search results, and menus.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_headline', true )
+	);
+
+	jce_field_text(
+		'jce_page_subheading',
+		__( 'Sub Heading', 'jce' ),
+		__( 'One line under the H1. Left blank, no sub heading prints — it never falls back to example copy.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_subheading', true )
+	);
 
 	jce_field_range(
 		'jce_page_hero_focus',
@@ -511,7 +525,7 @@ function jce_line_field_map() {
 		'jce_page_sections'     => array(
 			'nonce'  => 'jce_page_sections_nonce',
 			'fields' => array( 'jce_page_highlights', 'jce_page_milestones', 'jce_page_faq', 'jce_page_standard', 'jce_page_yard', 'jce_page_local' ),
-			'text'   => array(),
+			'text'   => array( 'jce_page_headline', 'jce_page_subheading' ),
 		),
 	);
 }

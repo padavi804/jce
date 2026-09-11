@@ -28,8 +28,8 @@ while ( have_posts() ) :
 		array(
 			'context' => 'about',
 			'eyebrow' => __( 'About JCE Tree Service', 'jce' ),
-			'title'   => get_the_title() ? get_the_title() : __( '25 Years of Doing Right by People and Trees in our Community', 'jce' ),
-			'sub'     => get_the_excerpt() ? get_the_excerpt() : __( 'Locally-owned. Arborist-led. The highest standard of tree care. No exceptions.', 'jce' ),
+			'title'   => jce_field( '_jce_page_headline', null, get_the_title() ? get_the_title() : __( '25 Years of Doing Right by People and Trees in our Community', 'jce' ) ),
+			'sub'     => jce_field( '_jce_page_subheading' ),
 			'image'   => has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'jce-hero' ) : '',
 			'focus'   => jce_field( '_jce_page_hero_focus', null, 5 ),
 		)

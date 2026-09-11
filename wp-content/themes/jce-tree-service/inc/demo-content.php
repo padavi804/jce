@@ -409,7 +409,7 @@ function jce_demo_pages() {
 		// rather than being flattened into one long editor-content block.
 		array(
 			'slug'     => 'about',
-			'title'    => '25 Years of Doing Right by People and Trees in our Community.',
+			'title'    => 'About Us',
 			'template' => 'page-templates/template-about.php',
 			'excerpt'  => 'Locally-owned. Arborist-led. The highest standard of tree care. No exceptions.',
 			// "Our Story" — the split section next to the crew photo.
@@ -420,6 +420,8 @@ function jce_demo_pages() {
 				)
 			),
 			'meta'     => array(
+				'_jce_page_headline'   => '25 Years of Doing Right by People and Trees in our Community.',
+				'_jce_page_subheading' => 'Locally-owned. Arborist-led. The highest standard of tree care. No exceptions.',
 				// "The Crew Behind the Work" — the highlight cards.
 				'_jce_page_highlights' => "Four ISA-Certified Arborists|Which means the person diagnosing your tree's health has the training to be right about it, not just confident about it.\nTwo Team Members with Forestry Degrees|Which means we understand how trees behave in this climate, this soil, and these species — not tree care in general.\nFour Licensed Pesticide Applicators|Which means treatment for disease or pests comes from people licensed to do the work.\nAn Owner Who's Spent Decades in These Woods|Which means the estimate you get reflects 25 years of judgment calls on trees just like yours, in neighborhoods just like yours.\nA Crew That Sticks Around|Many of our team members have been with JCE for years, and every one of them trains on the same quality standard, so the crew that shows up is never a variable.",
 				// "Why We Still Do It the Same Way".
@@ -437,15 +439,14 @@ function jce_demo_pages() {
 			'title'    => 'Service Area',
 			'template' => 'page-templates/template-service-area.php',
 			'excerpt'  => 'River Falls, Hudson, Prescott, and the towns between them in the St. Croix River Valley.',
-			'body'     => jce_demo_body(
-				array(
-					'<h2>We work where we live.</h2>',
-					'JCE has been based in River Falls since 2001, and the shape of our service area has more to do with driving time than with drawing a circle on a map. If we can get a crew, a chipper, and a crane to your property and back in a day without the drive eating the job, you are in it.',
-					'In practice that means Pierce and St. Croix counties on the Wisconsin side and the river towns just across it. We know which neighborhoods went in during the ash boom of the seventies, which bluff lots need a crane rather than a bucket, and which streets we cannot get a chip truck down. That is not local color — it is the difference between an accurate estimate and a surprise on the day.',
-					'Pick your town below for what we see on trees there and the reviews from that street. Do not see it listed? Call anyway. If you are close and we can get there, we will tell you; if you are not, we will point you to someone who can.',
-				)
-			),
+			// No approved intro paragraph yet for the body below the trust band —
+			// the previous "We work where we live." copy here was never signed
+			// off, so it stays empty rather than publishing invented text under
+			// the client's name. See page-templates/template-service-area.php,
+			// which already skips this section entirely when there is no content.
+			'body'     => '',
 			'meta'     => array(
+				'_jce_page_subheading' => 'River Falls, Hudson, Prescott, and the towns between them in the St. Croix River Valley.',
 				'_jce_page_highlights' => "The same crew, whichever town|We do not sub out work to whoever is closest. The truck that pulls up in Prescott is the same one that pulls up in River Falls, with the same arborist on it.\nA real estimate, not a phone number|Someone drives out and walks the property, wherever it is. We have never quoted a tree we have not stood under, and we are not going to start.\nStorm response across the whole area|When a line of weather comes through, we triage by what the tree is touching, not by how far away you are. A limb through a roof in Ellsworth outranks a routine removal next door.\nWe know the local tree problems|Emerald ash borer, oak wilt, and the storm corridor along the river behave differently in each of these towns. Twenty-five years here is why we can tell you which one you have.",
 				'_jce_page_faq'        => "Do you charge more for towns further out?|No travel surcharge inside the area shown above. Beyond it, we will tell you honestly on the phone whether the drive makes us the wrong company for the job.\nMy town is not on the list. Will you still come?|Often yes, especially for larger jobs where the drive is a small share of the day. Call and describe the property and we will give you a straight answer rather than a maybe.\nHow fast can you get here after a storm?|Trees on structures and blocked driveways get triaged first, usually the same day across the whole area. Everything else is scheduled behind those, and we will tell you where in the line you are.\nDo you work on the Minnesota side?|Yes — Hastings, Afton, Lakeland, and the Lake St. Croix Beach area are all regular stops for us.",
 			),
@@ -453,16 +454,21 @@ function jce_demo_pages() {
 		// The real /services/ page — see page-templates/template-services.php.
 		// The Service post type has has_archive => false so this Page owns the
 		// URL directly, the same way the "service-area" Page below owns
-		// /service-area/. Ships with no excerpt or body: there is no approved
-		// subheading or intro copy for this page yet, and inventing some would
-		// put it on the live site under the client's name. Each section stays
-		// absent until real copy is typed in.
+		// /service-area/. The Title stays short (browser tab, search results,
+		// menus); the approved H1 lives in the Page Headline field instead, the
+		// same framing as the Tree Removal service since removal is the primary
+		// draw. There is no separate approved intro paragraph yet, so the body
+		// stays empty rather than inventing one.
 		array(
 			'slug'     => 'services',
-			'title'    => 'Tree Services in River Falls, Hudson &amp; Prescott',
+			'title'    => 'Services',
 			'template' => 'page-templates/template-services.php',
-			'excerpt'  => '',
+			'excerpt'  => "A dead or hazardous tree isn't something to gamble on. Our arborists don't just take trees down, they know when a tree can be saved and when it can't, and they've got 25 years of judgment behind that call.",
 			'body'     => '',
+			'meta'     => array(
+				'_jce_page_headline'   => 'Tree Removal by Local Tree Experts in the St. Croix River Valley',
+				'_jce_page_subheading' => "A dead or hazardous tree isn't something to gamble on. Our arborists don't just take trees down, they know when a tree can be saved and when it can't, and they've got 25 years of judgment behind that call.",
+			),
 		),
 		array(
 			'slug'     => 'estimate',
