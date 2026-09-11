@@ -16,6 +16,11 @@
  *     @type string $eyebrow Section eyebrow.
  *     @type string $class   Extra section classes, e.g. 'section--cream'.
  * }
+ *
+ * Answers allow the same safe HTML as post content (wp_kses_post) rather than
+ * plain text, so an answer can link to another page — e.g. "send us a
+ * request" pointing at the contact form. The FAQPage schema strips tags back
+ * out, since that field is meant to be plain text.
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -51,7 +56,7 @@ foreach ( $faq_rows as $row ) {
 		'name'           => $row[0],
 		'acceptedAnswer' => array(
 			'@type' => 'Answer',
-			'text'  => $row[1],
+			'text'  => wp_strip_all_tags( $row[1] ),
 		),
 	);
 }
@@ -70,7 +75,7 @@ foreach ( $faq_rows as $row ) {
 						<span><?php echo esc_html( $row[0] ); ?></span>
 						<?php jce_icon( 'chevron-down', 'faq__chevron' ); ?>
 					</summary>
-					<div class="faq__a"><p><?php echo esc_html( $row[1] ); ?></p></div>
+					<div class="faq__a"><p><?php echo wp_kses_post( $row[1] ); ?></p></div>
 				</details>
 			<?php endforeach; ?>
 		</div>

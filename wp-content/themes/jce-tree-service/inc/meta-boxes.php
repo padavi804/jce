@@ -382,7 +382,7 @@ function jce_render_page_sections_box( $post ) {
 	wp_nonce_field( 'jce_save_page_sections', 'jce_page_sections_nonce' );
 	?>
 	<p class="jce-box__intro">
-		<?php esc_html_e( 'These fields are used by the "Services", "About Us", and "Service Area" page templates (Page Attributes > Template). On any other template they are ignored. One item per line; the pipe character separates the short label from the sentence.', 'jce' ); ?>
+		<?php esc_html_e( 'These fields are used by the "Services", "About Us", "Service Area", "Contact Us", "FAQ", and "Careers" page templates (Page Attributes > Template). On any other template they are ignored. One item per line; the pipe character separates the short label from the sentence.', 'jce' ); ?>
 	</p>
 	<?php
 
@@ -488,6 +488,16 @@ function jce_render_page_sections_box( $post ) {
 		__( 'Leave blank to use the bundled River Falls photo.', 'jce' ),
 		get_post_meta( $post->ID, '_jce_page_local_image', true )
 	);
+
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'Legal / Fine Print (Careers)', 'jce' ) . '</h4>';
+
+	jce_field_textarea(
+		'jce_page_legal',
+		__( 'Fine Print', 'jce' ),
+		__( 'Shown in small type at the very bottom of the page — for a compliance statement like an EEO notice. One paragraph per line, no pipe.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_legal', true ),
+		4
+	);
 }
 
 /* ---------------------------------------------------------------
@@ -524,7 +534,7 @@ function jce_line_field_map() {
 		),
 		'jce_page_sections'     => array(
 			'nonce'  => 'jce_page_sections_nonce',
-			'fields' => array( 'jce_page_highlights', 'jce_page_milestones', 'jce_page_faq', 'jce_page_standard', 'jce_page_yard', 'jce_page_local' ),
+			'fields' => array( 'jce_page_highlights', 'jce_page_milestones', 'jce_page_faq', 'jce_page_standard', 'jce_page_yard', 'jce_page_local', 'jce_page_legal' ),
 			'text'   => array( 'jce_page_headline', 'jce_page_subheading' ),
 		),
 	);

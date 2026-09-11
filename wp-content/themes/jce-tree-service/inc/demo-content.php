@@ -489,6 +489,59 @@ function jce_demo_pages() {
 			'excerpt'  => 'Storm damage, a tree on a structure, or a hazardous leaner — call, do not use the form.',
 			'body'     => '',
 		),
+
+		// APPROVED COPY — client-provided, below this line. Added alongside the
+		// existing Pages rather than replacing any of them: a plain import run
+		// only ever creates a Page whose slug does not exist yet, so this never
+		// touches About / Service Area / Services / Contact & Free Estimate /
+		// Emergency, whether or not they've since been edited in WordPress.
+
+		// A plain contact-info page, separate from the "estimate" Page above —
+		// that one owns /estimate/ and its own, longer estimate form.
+		array(
+			'slug'     => 'contact',
+			'title'    => 'Contact Us',
+			'template' => 'page-templates/template-contact-us.php',
+			'excerpt'  => "Office hours, phone, email, and a short form if you'd rather write than call.",
+			'body'     => '',
+		),
+		array(
+			'slug'     => 'faq',
+			'title'    => 'FAQ',
+			'template' => 'page-templates/template-faq.php',
+			'excerpt'  => 'Straight answers to the questions we hear most from local homeowners.',
+			'body'     => '',
+			'meta'     => array(
+				'_jce_page_headline'   => 'Frequently Asked Questions',
+				'_jce_page_subheading' => "We're Answering Questions we Hear from Local Homeowners",
+				'_jce_page_faq'        => "Is there a cost for the estimate?|No. Every estimate is free. Give us a call or send us a request (<a href='/contact/'>link to the form</a>) and we'll get a certified arborist out to your property to take a look.\nHow long does it take to get an estimate?|Most homeowners get theirs within a week.\nHow do I pay?|We send an invoice electronically the day after the service is performed. Payment is due within 15 days from invoice date. You can pay by cash, check or card. If you choose to pay by credit or debit card, a 3% processing fee will be automatically added to your bill. Checks can be made out to JCE Tree Service LLC.  Unpaid invoices incur a 1.5% late fee each month.\nHow long is the price quote good for?|We hold our price for a full year, unless the owner's put a different timeframe in writing.\nOnce I approve a job, when will it actually get done?|Most jobs get done within four weeks, though it can run longer depending on the season and what's ahead of yours on the schedule. Some tree work can only be done during certain seasons.  For example, oak trees can only be pruned in the winter. Large removals sometimes cannot be done when the ground is still soft.  If you're working against a deadline, just tell us when you call, or when we're out doing your estimate. We can usually accommodate that if we know ahead of time.\nAre you insured?|JCE Tree Service is fully insured and licensed, with general liability and workers' comp coverage. We're happy to show you proof if needed. Just ask!\nDo I need a permit to remove a tree in WI or MN?|Most private removals don't need a permit in either state, but it depends on your specific city, township, or county. Permits are more likely if your property is near a lake, river, or wetland — which applies to a lot of homes along the St. Croix — within a road right-of-way, or if your municipality protects certain species or larger trees. We'll flag it during your estimate if your property falls into one of those categories.\nWhat happens if something gets damaged on my property?|We plan every job, train our crew, and purchase cutting edge equipment specifically to avoid this. In the rare case something does happen, we're fully insured and we'll make it right. Just talk to us and we'll walk you through it.\nAre there grants or assistance programs for removing dead ash trees?|There are no grants available to homeowners in WI or MN.\nWill you help document damage for an insurance claim?|Yes. We document the damage and the work as we go, and can help you put together what you need for your insurance claim once the job is done.\nIs stump grinding included, or extra?|Stump grinding is priced separately from removal. Just mention it during your estimate and we'll include it in your quote.\nWhat happens to the wood — can I keep it?|Yes — just ask. We're happy to chip it into wood chips or cut it into rounds and leave it on-site as firewood instead of hauling it away.",
+			),
+		),
+		array(
+			'slug'     => 'careers',
+			'title'    => 'Careers',
+			'template' => 'page-templates/template-careers.php',
+			'excerpt'  => 'Join the JCE crew — hard-working, reliable, and ready to meet the same standard we hold everyone to.',
+			'body'     => jce_demo_body(
+				array(
+					"JCE Tree Service has been climbing, cutting, and cleaning up after trees in the St. Croix River Valley for 25 years. We're a local, family-owned business located in River Falls, and we've built the whole business around one rule: the standard doesn't change, job to job. That means we're picky about who's on the crew with us.",
+					"<h2>What We're Looking For</h2>",
+					"Someone hard-working and reliable, first and foremost. The kind of person who shows up on time and does the job right, even when nobody's watching. Tree work experience, a CDL, and climbing experience are a plus, but not required. If you've got the right attitude, we'll train you the rest of the way, and once you're on the team, we'll keep supporting you so you can meet the standard we hold everyone to.",
+					'<h2>Physical Requirements</h2>',
+					"This is physically demanding, outdoor work in all weather conditions. Crew members should be able to lift and carry 50+ lbs regularly, work at heights (including climbing and aerial equipment), stand and move on uneven or wooded terrain for extended periods, and safely operate chainsaws and other power equipment.",
+					'<h2>What the Job Looks Like</h2>',
+					"This is a year-round position, 40–50 hours a week. In the job, you will be working in the St. Croix River Valley (River Falls, Hudson, Prescott, and the surrounding area), working as part of a JCE crew performing hands-on tree care. You will help with removing trees, pruning and trimming branches, clearing brush and storm debris, and grinding stumps, often using chainsaws, chippers, and rigging or climbing equipment. It's physical outdoor work that requires close attention to safety, since the job involves working at heights, around power lines, and with heavy equipment.",
+					'<h2>Pay &amp; Benefits</h2>',
+					"Pay is highly competitive and based on experience. JCE offers benefits including paid holidays, $250 per month toward purchase of your own health insurance, and 401k with 3% employer match.",
+					'<h2>Why People Stick Around Here</h2>',
+					"A lot of our crew has been with us for years, and every one of them trains on the same standard. We invest in equipment chosen to protect the properties we work on, so you're working with the right tools. And you'll be learning from a team that includes four ISA-certified arborists, two team members with forestry degrees, and decades of hands-on tree care experience.",
+				)
+			),
+			'meta'     => array(
+				'_jce_page_headline' => 'Work with us as a Tree Crew Member',
+				'_jce_page_legal'    => "JCE Tree Service is an equal employment opportunity employer. All employees and prospective employees are recruited, selected, and trained without regard to age, sex, race, color, religion, disability, national origin, marital status, veteran status, or any other status or characteristic protected by law. JCE Tree Service applies this same standard throughout the employment relationship.\nEvery applicant is carefully screened, with full consideration given to their training, education, skills, experience, growth potential, and work record. All JCE managers and employees are responsible for actively supporting our equal employment opportunity program.\nJCE Tree Service will make reasonable accommodations for qualified individuals with known disabilities, unless doing so would create an undue hardship.",
+			),
+		),
 	);
 }
 
