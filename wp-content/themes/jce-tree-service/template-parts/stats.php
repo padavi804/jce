@@ -3,8 +3,10 @@
  * Credential counts, in a headed band.
  *
  * @param array $args {
- *     @type array  $stats   Rows of [ number, label ]. Defaults to the
- *                           site-wide credential counts if not supplied.
+ *     @type array  $stats   Rows of [ number, label, icon ]. Icon is an
+ *                           optional jce_icon() key — omit it to leave that
+ *                           stat without one. Defaults to the site-wide
+ *                           credential counts if not supplied.
  *     @type string $heading Optional section heading.
  *     @type string $eyebrow Optional eyebrow above the heading.
  *     @type string $class   Extra section classes.
@@ -25,10 +27,10 @@ $args = wp_parse_args(
 );
 
 $stats = $args['stats'] ? $args['stats'] : array(
-	array( '2001', __( 'Serving River Falls Since', 'jce' ) ),
-	array( '4', __( 'Licensed Pesticide Applicators', 'jce' ) ),
-	array( '2', __( 'Forestry Degrees on Staff', 'jce' ) ),
-	array( '15', __( 'Towns Across the Valley', 'jce' ) ),
+	array( '2001', __( 'Serving River Falls Since', 'jce' ), 'calendar' ),
+	array( '4', __( 'Licensed Pesticide Applicators', 'jce' ), 'droplet' ),
+	array( '2', __( 'Forestry Degrees on Staff', 'jce' ), 'leaf' ),
+	array( '15', __( 'Towns Across the Valley', 'jce' ), 'map-pin' ),
 );
 ?>
 <section class="stats section--dark <?php echo esc_attr( $args['class'] ); ?>" aria-label="<?php esc_attr_e( 'JCE Tree Service by the numbers', 'jce' ); ?>">
@@ -45,6 +47,9 @@ $stats = $args['stats'] ? $args['stats'] : array(
 		<div class="stats__grid">
 			<?php foreach ( $stats as $stat ) : ?>
 				<div class="stat">
+					<?php if ( ! empty( $stat[2] ) ) : ?>
+						<span class="stat__icon"><?php jce_icon( $stat[2] ); ?></span>
+					<?php endif; ?>
 					<span class="stat__num"><?php echo esc_html( $stat[0] ); ?></span>
 					<span class="stat__label"><?php echo esc_html( $stat[1] ); ?></span>
 				</div>

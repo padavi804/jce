@@ -100,16 +100,38 @@ while ( have_posts() ) :
 		)
 	);
 	if ( $standard_paragraphs ) :
+		$standard_image_id = (int) jce_field( '_jce_page_standard_image' );
 		?>
 		<section class="section <?php echo esc_attr( jce_band() ); ?>">
-			<div class="wrap wrap--narrow">
-				<div class="section-head section-head--center">
-					<h2><?php esc_html_e( 'Why We Still Do It the Same Way', 'jce' ); ?></h2>
-				</div>
-				<div class="entry-content">
-					<?php foreach ( $standard_paragraphs as $paragraph ) : ?>
-						<p><?php echo esc_html( $paragraph ); ?></p>
-					<?php endforeach; ?>
+			<div class="wrap">
+				<div class="split split--photo split--reverse">
+					<div class="split__media">
+						<?php
+						if ( $standard_image_id ) {
+							echo wp_get_attachment_image(
+								$standard_image_id,
+								'large',
+								false,
+								array( 'loading' => 'lazy', 'decoding' => 'async' )
+							);
+						} else {
+							jce_bundled_image(
+								'service-tree-inspection.jpg',
+								__( 'An ISA-certified JCE arborist inspecting a tree on a residential property', 'jce' ),
+								800,
+								500,
+								'',
+								__( 'Photo: The same guy walks the property and writes the estimate', 'jce' )
+							);
+						}
+						?>
+					</div>
+					<div class="split__content entry-content">
+						<h2 class="mt-0"><?php esc_html_e( 'Why We Still Do It the Same Way', 'jce' ); ?></h2>
+						<?php foreach ( $standard_paragraphs as $paragraph ) : ?>
+							<p><?php echo esc_html( $paragraph ); ?></p>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -153,16 +175,38 @@ while ( have_posts() ) :
 		)
 	);
 	if ( $yard_paragraphs ) :
+		$yard_image_id = (int) jce_field( '_jce_page_yard_image' );
 		?>
 		<section class="section <?php echo esc_attr( jce_band() ); ?>">
-			<div class="wrap wrap--narrow">
-				<div class="section-head section-head--center">
-					<h2><?php esc_html_e( "We Treat Your Yard Like It's Ours", 'jce' ); ?></h2>
-				</div>
-				<div class="entry-content">
-					<?php foreach ( $yard_paragraphs as $paragraph ) : ?>
-						<p><?php echo esc_html( $paragraph ); ?></p>
-					<?php endforeach; ?>
+			<div class="wrap">
+				<div class="split split--photo">
+					<div class="split__media">
+						<?php
+						if ( $yard_image_id ) {
+							echo wp_get_attachment_image(
+								$yard_image_id,
+								'large',
+								false,
+								array( 'loading' => 'lazy', 'decoding' => 'async' )
+							);
+						} else {
+							jce_bundled_image(
+								'crew-chainsaw-winter.jpg',
+								__( 'A JCE Tree Service crew member operating a chainsaw on a job site', 'jce' ),
+								900,
+								1200,
+								'',
+								__( 'Photo: Equipment chosen to protect the property, not just move fast', 'jce' )
+							);
+						}
+						?>
+					</div>
+					<div class="split__content entry-content">
+						<h2 class="mt-0"><?php esc_html_e( "We Treat Your Yard Like It's Ours", 'jce' ); ?></h2>
+						<?php foreach ( $yard_paragraphs as $paragraph ) : ?>
+							<p><?php echo esc_html( $paragraph ); ?></p>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -183,16 +227,38 @@ while ( have_posts() ) :
 		)
 	);
 	if ( $local_paragraphs ) :
+		$local_image_id = (int) jce_field( '_jce_page_local_image' );
 		?>
 		<section class="section <?php echo esc_attr( jce_band() ); ?>">
-			<div class="wrap wrap--narrow">
-				<div class="section-head section-head--center">
-					<h2><?php esc_html_e( "We're Proud to Be Located in River Falls", 'jce' ); ?></h2>
-				</div>
-				<div class="entry-content">
-					<?php foreach ( $local_paragraphs as $paragraph ) : ?>
-						<p><?php echo esc_html( $paragraph ); ?></p>
-					<?php endforeach; ?>
+			<div class="wrap">
+				<div class="split split--photo split--reverse">
+					<div class="split__media">
+						<?php
+						if ( $local_image_id ) {
+							echo wp_get_attachment_image(
+								$local_image_id,
+								'large',
+								false,
+								array( 'loading' => 'lazy', 'decoding' => 'async' )
+							);
+						} else {
+							jce_bundled_image(
+								'location-river-falls.jpg',
+								__( 'Downtown River Falls, Wisconsin', 'jce' ),
+								1600,
+								900,
+								'',
+								__( 'Photo: Downtown River Falls', 'jce' )
+							);
+						}
+						?>
+					</div>
+					<div class="split__content entry-content">
+						<h2 class="mt-0"><?php esc_html_e( "We're Proud to Be Located in River Falls", 'jce' ); ?></h2>
+						<?php foreach ( $local_paragraphs as $paragraph ) : ?>
+							<p><?php echo esc_html( $paragraph ); ?></p>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -212,11 +278,11 @@ while ( have_posts() ) :
 		array(
 			'heading' => __( 'What 25 Years Actually Buys You', 'jce' ),
 			'stats'   => array(
-				array( '4.9', __( 'Star Rating, Unfiltered', 'jce' ) ),
-				array( '80%+', __( 'Repeat & Referral Customers', 'jce' ) ),
-				array( '4', __( 'ISA-Certified Arborists on Staff', 'jce' ) ),
-				array( 'Elite', __( 'HomeAdvisor Service Rating', 'jce' ) ),
-				array( '2001', __( 'Locally Owned & Operated Since', 'jce' ) ),
+				array( '4.9', __( 'Star Rating, Unfiltered', 'jce' ), 'star' ),
+				array( '80%+', __( 'Repeat & Referral Customers', 'jce' ), 'users' ),
+				array( '4', __( 'ISA-Certified Arborists on Staff', 'jce' ), 'award' ),
+				array( 'Elite', __( 'HomeAdvisor Service Rating', 'jce' ), 'shield' ),
+				array( '2001', __( 'Locally Owned & Operated Since', 'jce' ), 'calendar' ),
 			),
 		)
 	);

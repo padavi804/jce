@@ -720,7 +720,8 @@ strong { color: var(--ink); font-weight: 600; }
 	gap: 2rem 1.5rem;
 	padding-block: clamp(2.5rem, 1.5rem + 3vw, 4rem);
 }
-.stat { text-align: center; }
+.stat { text-align: center; padding-inline: 1rem; }
+.stat__icon { display: inline-block; width: 1.6rem; height: 1.6rem; margin-bottom: .6rem; color: var(--green); }
 .stat__num {
 	font-family: var(--font-display);
 	font-size: clamp(2.4rem, 1.8rem + 2.4vw, 3.4rem);
@@ -734,6 +735,11 @@ strong { color: var(--ink); font-weight: 600; }
 	font-size: .88rem;
 	color: rgba(255,255,255,.72);
 	letter-spacing: .04em;
+}
+/* Dividers only once the grid has settled into a single row — on a wrapped
+   mobile stack a left border reads as a stray line, not a divider. */
+@media (min-width: 761px) {
+	.stat + .stat { border-left: 1px solid rgba(255,255,255,.14); }
 }
 
 /* ===========================================================

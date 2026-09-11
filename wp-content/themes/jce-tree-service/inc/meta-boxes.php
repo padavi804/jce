@@ -409,6 +409,13 @@ function jce_render_page_sections_box( $post ) {
 		4
 	);
 
+	jce_field_image(
+		'jce_page_standard_image',
+		__( 'Photo Next to "Why We Still Do It the Same Way"', 'jce' ),
+		__( 'Leave blank to use the bundled arborist-on-site photo.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_standard_image', true )
+	);
+
 	jce_field_textarea(
 		'jce_page_yard',
 		__( 'Yard Care (About Us)', 'jce' ),
@@ -417,12 +424,26 @@ function jce_render_page_sections_box( $post ) {
 		3
 	);
 
+	jce_field_image(
+		'jce_page_yard_image',
+		__( 'Photo Next to "We Treat Your Yard Like It\'s Ours"', 'jce' ),
+		__( 'Leave blank to use the bundled crew/equipment photo.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_yard_image', true )
+	);
+
 	jce_field_textarea(
 		'jce_page_local',
 		__( 'Local Roots (About Us)', 'jce' ),
 		__( 'The "We\'re Proud to Be Located in River Falls" section. One paragraph per line.', 'jce' ),
 		get_post_meta( $post->ID, '_jce_page_local', true ),
 		4
+	);
+
+	jce_field_image(
+		'jce_page_local_image',
+		__( 'Photo Next to "We\'re Proud to Be Located in River Falls"', 'jce' ),
+		__( 'Leave blank to use the bundled River Falls photo.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_page_local_image', true )
 	);
 }
 
@@ -537,11 +558,13 @@ function jce_save_meta_boxes( $post_id ) {
 			}
 		}
 
-		// Same idea on the Page Sections box: a single attachment ID and an
-		// enum, not lines of text.
+		// Same idea on the Page Sections box: single attachment IDs and a
+		// number, not lines of text.
 		if ( 'jce_page_sections' === $action ) {
-			if ( isset( $_POST['jce_page_story_image'] ) ) {
-				update_post_meta( $post_id, '_jce_page_story_image', absint( $_POST['jce_page_story_image'] ) );
+			foreach ( array( 'jce_page_story_image', 'jce_page_standard_image', 'jce_page_yard_image', 'jce_page_local_image' ) as $image_field ) {
+				if ( isset( $_POST[ $image_field ] ) ) {
+					update_post_meta( $post_id, '_' . $image_field, absint( $_POST[ $image_field ] ) );
+				}
 			}
 			if ( isset( $_POST['jce_page_hero_focus'] ) ) {
 				$focus = absint( $_POST['jce_page_hero_focus'] );
