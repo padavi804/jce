@@ -32,6 +32,25 @@ function jce_add_meta_boxes() {
 add_action( 'add_meta_boxes', 'jce_add_meta_boxes' );
 
 /**
+ * The photo-slots panel under "The List" needs the native media picker.
+ * Loaded only on the Service edit screen, not every admin page.
+ */
+function jce_admin_photo_slots_assets( $hook ) {
+	if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+	if ( ! $screen || 'service' !== $screen->post_type ) {
+		return;
+	}
+
+	wp_enqueue_media();
+	wp_enqueue_script( 'jce-admin-photo-slots', JCE_THEME_URI . '/assets/js/admin-photo-slots.js', array( 'jquery' ), JCE_THEME_VERSION, true );
+}
+add_action( 'admin_enqueue_scripts', 'jce_admin_photo_slots_assets' );
+
+/**
  * Shared note explaining the line/pipe format, shown at the top of each box.
  */
 function jce_format_note() {
@@ -83,6 +102,22 @@ function jce_render_service_sections_box( $post ) {
 		get_post_meta( $post->ID, '_jce_service_headline', true )
 	);
 
+	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'Photo Reel (after the body)', 'jce' ) . '</h4>';
+
+	jce_field_textarea(
+		'jce_service_reel',
+		__( 'Captions', 'jce' ),
+		__( 'One caption per line, e.g. "Removing a declining ash — River Falls". Each line gets its own photo below. Leave empty to skip this section — there is no example fallback, since these are meant to be real job photos.', 'jce' ),
+		get_post_meta( $post->ID, '_jce_service_reel', true ),
+		5
+	);
+
+	jce_field_photo_slots(
+		'jce_service_reel_images',
+		get_post_meta( $post->ID, '_jce_service_reel_images', true ),
+		'jce_service_reel'
+	);
+
 	echo '<hr><h4 style="margin:0 0 .75em;">' . esc_html__( 'How the job goes', 'jce' ) . '</h4>';
 
 	jce_field_text(
@@ -130,9 +165,15 @@ function jce_render_service_sections_box( $post ) {
 	jce_field_textarea(
 		'jce_service_subservices',
 		__( 'The List', 'jce' ),
-		__( 'Format: Title | Description. Each one gets its own photo slot — until a photo is added, the placeholder is labelled with the title so this doubles as a shot list.', 'jce' ),
+		__( 'Format: Title | Description. Each one gets its own photo slot below — until a photo is added, the placeholder is labelled with the title so this doubles as a shot list.', 'jce' ),
 		get_post_meta( $post->ID, '_jce_service_subservices', true ),
 		8
+	);
+
+	jce_field_photo_slots(
+		'jce_service_subservices_images',
+		get_post_meta( $post->ID, '_jce_service_subservices_images', true ),
+		'jce_service_subservices'
 	);
 
 	jce_field_text(
@@ -385,6 +426,7 @@ function jce_line_field_map() {
 				'jce_service_sub_intro',
 				'jce_service_subservices',
 				'jce_service_notes',
+				'jce_service_reel',
 			),
 			'text'   => array(
 				'jce_service_cta_title',
@@ -459,6 +501,18 @@ function jce_save_meta_boxes( $post_id ) {
 		foreach ( $group['text'] as $field ) {
 			if ( isset( $_POST[ $field ] ) ) {
 				update_post_meta( $post_id, '_' . $field, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
+			}
+		}
+
+		// The photo slots panels ride along with their companion textarea
+		// under the same nonce, but their value is a comma-separated ID
+		// list, not lines of text.
+		if ( 'jce_service_sections' === $action ) {
+			if ( isset( $_POST['jce_service_subservices_images'] ) ) {
+				update_post_meta( $post_id, '_jce_service_subservices_images', jce_sanitize_id_list( $_POST['jce_service_subservices_images'] ) );
+			}
+			if ( isset( $_POST['jce_service_reel_images'] ) ) {
+				update_post_meta( $post_id, '_jce_service_reel_images', jce_sanitize_id_list( $_POST['jce_service_reel_images'] ) );
 			}
 		}
 	}

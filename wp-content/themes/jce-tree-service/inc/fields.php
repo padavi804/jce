@@ -126,6 +126,27 @@ function jce_field_rows( $key, $columns = 2, $post_id = null, $fallback = array(
 }
 
 /**
+ * Read a post meta field as a list of attachment IDs, positionally matched to
+ * the rows of a companion jce_field_rows()/jce_field_lines() field — see
+ * jce_field_photo_slots().
+ *
+ * @param string   $key     Meta key.
+ * @param int|null $post_id Defaults to the current post.
+ * @return int[] Zero where a row has no photo, so callers can index into it
+ *               the same way they index into the matching rows array.
+ */
+function jce_field_ids( $key, $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$raw     = get_post_meta( $post_id, $key, true );
+
+	if ( '' === trim( (string) $raw ) ) {
+		return array();
+	}
+
+	return array_map( 'absint', explode( ',', $raw ) );
+}
+
+/**
  * Read a single-value post meta field.
  */
 function jce_field( $key, $post_id = null, $fallback = '' ) {
@@ -318,6 +339,53 @@ function jce_sanitize_lines( $value ) {
 }
 
 /**
+ * Sanitize a comma-separated list of attachment IDs, as written by the photo
+ * slots panel. Empty slots are kept as empty strings rather than dropped, so
+ * position — which is what matches a photo to its row — survives a partial
+ * save.
+ */
+function jce_sanitize_id_list( $value ) {
+	$ids = explode( ',', (string) wp_unslash( $value ) );
+
+	$ids = array_map(
+		static function ( $id ) {
+			$id = trim( $id );
+			return '' === $id ? '' : (string) absint( $id );
+		},
+		$ids
+	);
+
+	return implode( ',', $ids );
+}
+
+/**
+ * Render the photo-slots panel that pairs one image with each line of a
+ * companion textarea (e.g. "The List" on a Service).
+ *
+ * There's no way to keep a JS-driven picker in sync with a textarea on every
+ * keystroke without it fighting the admin's typing, so this instead reads
+ * the textarea's current lines on demand, when "Match Photo Slots" is
+ * clicked — see assets/js/admin-photo-slots.js. Rows are matched to lines by
+ * position: reordering lines in the textarea does not move their photos.
+ *
+ * @param string $name      Hidden field name (also the meta key).
+ * @param string $value     Current comma-separated attachment IDs.
+ * @param string $source_id HTML id of the textarea to read titles from.
+ */
+function jce_field_photo_slots( $name, $value, $source_id ) {
+	?>
+	<div class="jce-photo-slots" data-source="<?php echo esc_attr( $source_id ); ?>">
+		<p class="jce-field__help description">
+			<?php esc_html_e( 'Add a photo for any line above. Slots are matched by position, so after adding, removing, or reordering lines, click Match Photo Slots to List to line them back up.', 'jce' ); ?>
+		</p>
+		<button type="button" class="button jce-photo-slots__sync"><?php esc_html_e( 'Match Photo Slots to List', 'jce' ); ?></button>
+		<div class="jce-photo-slots__rows"></div>
+		<input type="hidden" name="<?php echo esc_attr( $name ); ?>" class="jce-photo-slots__value" value="<?php echo esc_attr( $value ); ?>">
+	</div>
+	<?php
+}
+
+/**
  * Meta box styling — just enough to keep the format hints readable.
  */
 function jce_meta_box_styles( $hook ) {
@@ -329,7 +397,15 @@ function jce_meta_box_styles( $hook ) {
 		. '.jce-field label{display:block;margin-bottom:.15em}'
 		. '.jce-field__help{display:block;margin-bottom:.4em;font-style:normal}'
 		. '.jce-field textarea{font-size:12px;line-height:1.6}'
-		. '.jce-box__intro{margin:0 0 1.25em;padding:.75em 1em;background:#f0f6f1;border-left:4px solid #3CB460}';
+		. '.jce-box__intro{margin:0 0 1.25em;padding:.75em 1em;background:#f0f6f1;border-left:4px solid #3CB460}'
+		. '.jce-photo-slots{margin:-.25em 0 1.35em;padding:.9em 1em;background:#f6f7f7;border:1px solid #dcdcde}'
+		. '.jce-photo-slots__rows{margin-top:.75em}'
+		. '.jce-photo-slot{display:flex;align-items:center;gap:.75em;padding:.5em 0;border-top:1px solid #e2e2e2}'
+		. '.jce-photo-slot:first-child{border-top:0}'
+		. '.jce-photo-slot__thumb{flex:0 0 72px;width:72px;height:45px;background:#e2e2e2;overflow:hidden}'
+		. '.jce-photo-slot__thumb img{display:block;width:100%;height:100%;object-fit:cover}'
+		. '.jce-photo-slot__title{flex:1 1 auto}'
+		. '.jce-photo-slot__remove{color:#b32d2e}';
 
 	wp_register_style( 'jce-admin', false, array(), JCE_THEME_VERSION );
 	wp_enqueue_style( 'jce-admin' );

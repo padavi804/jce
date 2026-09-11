@@ -33,7 +33,10 @@ while ( have_posts() ) :
 	// if it is actually going to render — see jce_band_if().
 	$steps_rows = jce_field_rows( '_jce_service_steps', 2 );
 	$proof_rows = jce_field_rows( '_jce_service_proof', 5 );
+	$reel_rows  = jce_field_lines( '_jce_service_reel' );
+	$reel_images = jce_field_ids( '_jce_service_reel_images' );
 	$sub_rows   = jce_field_rows( '_jce_service_subservices', 2 );
+	$sub_images = jce_field_ids( '_jce_service_subservices_images' );
 	$sub_notes  = jce_field_rows( '_jce_service_notes', 2 );
 	$sub_intro  = jce_field( '_jce_service_note_intro' );
 
@@ -102,7 +105,10 @@ while ( have_posts() ) :
 			// The post title stays short — it is what appears on cards and in
 			// menus — so the long keyword headline lives in its own field.
 			'title'   => jce_field( '_jce_service_headline', null, get_the_title() ),
-			'sub'     => get_the_excerpt(),
+			// No standfirst here: the body copy that immediately follows the
+			// hero already opens with its own — see the "Editor content"
+			// block below. Printing the excerpt in both places is the usual
+			// way that pattern breaks.
 			'buttons' => true,
 			'area'    => jce_area_sentence(),
 		)
@@ -131,6 +137,45 @@ while ( have_posts() ) :
 	?>
 
 	<?php
+	/* --------------------------------------------------------------
+	 * Photo reel — real job photos, browsable, right after the body.
+	 * ------------------------------------------------------------ */
+	get_template_part(
+		'template-parts/photo-reel',
+		null,
+		array(
+			'rows'   => $reel_rows,
+			'images' => $reel_images,
+			'class'  => jce_band_if( $reel_rows ),
+		)
+	);
+
+	/* --------------------------------------------------------------
+	 * The kinds of this service
+	 * ------------------------------------------------------------ */
+	get_template_part(
+		'template-parts/sub-services',
+		null,
+		array(
+			'rows'       => $sub_rows,
+			'images'     => $sub_images,
+			'intro'      => jce_field_lines( '_jce_service_sub_intro' ),
+			'heading'    => jce_field(
+				'_jce_service_sub_heading',
+				null,
+				sprintf(
+					/* translators: %s: service name */
+					__( '%s Services', 'jce' ),
+					get_the_title()
+				)
+			),
+			'eyebrow'    => __( 'Every Situation', 'jce' ),
+			'note_intro' => $sub_intro,
+			'notes'      => $sub_notes,
+			'class'      => jce_band_if( $sub_rows ),
+		)
+	);
+
 	/* --------------------------------------------------------------
 	 * How the job goes
 	 * ------------------------------------------------------------ */
@@ -161,82 +206,28 @@ while ( have_posts() ) :
 		)
 	);
 
-	/* --------------------------------------------------------------
-	 * The kinds of this service
-	 * ------------------------------------------------------------ */
-	get_template_part(
-		'template-parts/sub-services',
-		null,
-		array(
-			'rows'       => $sub_rows,
-			'intro'      => jce_field_lines( '_jce_service_sub_intro' ),
-			'heading'    => jce_field(
-				'_jce_service_sub_heading',
-				null,
-				sprintf(
-					/* translators: %s: service name */
-					__( '%s Services', 'jce' ),
-					get_the_title()
-				)
-			),
-			'eyebrow'    => __( 'Every Situation', 'jce' ),
-			'note_intro' => $sub_intro,
-			'notes'      => $sub_notes,
-			'class'      => jce_band_if( $sub_rows ),
-		)
-	);
-
-	/* --------------------------------------------------------------
-	 * Signs you need this
-	 * ------------------------------------------------------------ */
-	get_template_part(
-		'template-parts/feature-list',
-		null,
-		array(
-			'rows'    => $signs_rows,
-			'eyebrow' => __( 'Worth a Look', 'jce' ),
-			'heading' => __( 'Signs It Is Time to Call', 'jce' ),
-			'lede'    => __( 'None of these mean the tree has to come down. All of them mean it is worth having someone qualified put eyes on it.', 'jce' ),
-			'icon'    => 'alert',
-			'class'   => jce_band_if( $signs_rows ),
-		)
-	);
-
-	/* --------------------------------------------------------------
-	 * What's included + what moves the price
-	 * ------------------------------------------------------------ */
-	get_template_part(
-		'template-parts/service-scope',
-		null,
-		array(
-			'class'    => jce_band_if( $included_rows || $pricing_rows ),
-			'included' => $included_rows,
-			'pricing'  => $pricing_rows,
-		)
-	);
-
 	get_template_part( 'template-parts/credentials' );
 	jce_band( 'dark' );
 
 	/* --------------------------------------------------------------
 	 * FAQ
 	 * ------------------------------------------------------------ */
-	get_template_part(
-		'template-parts/faq',
-		null,
-		array(
-			'rows'    => $faq_rows,
-			'heading' => sprintf(
-				/* translators: %s: service name */
-				__( '%s: The Questions We Get', 'jce' ),
-				get_the_title()
-			),
-			'class'   => jce_band_if( $faq_rows ),
-		)
-	);
+	// get_template_part(
+	// 	'template-parts/faq',
+	// 	null,
+	// 	array(
+	// 		'rows'    => $faq_rows,
+	// 		'heading' => sprintf(
+	// 			/* translators: %s: service name */
+	// 			__( '%s: The Questions We Get', 'jce' ),
+	// 			get_the_title()
+	// 		),
+	// 		'class'   => jce_band_if( $faq_rows ),
+	// 	)
+	// );
 
 	get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
-	get_template_part( 'template-parts/reviews', null, array( 'related' => $service_slug, 'class' => jce_band() ) );
+	// get_template_part( 'template-parts/reviews', null, array( 'related' => $service_slug, 'class' => jce_band() ) );
 	get_template_part( 'template-parts/related-services', null, array( 'class' => jce_band() ) );
 
 	get_template_part(

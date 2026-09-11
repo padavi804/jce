@@ -21,7 +21,7 @@ $args = wp_parse_args(
 	array(
 		'exclude' => get_the_ID(),
 		'limit'   => 7,
-		'heading' => __( 'Other Things We Do', 'jce' ),
+		'heading' => __( 'What Else We Handle', 'jce' ),
 		'class'   => '',
 	)
 );

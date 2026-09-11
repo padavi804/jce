@@ -8,12 +8,14 @@
  * card gets its own photo slot; until a photo exists the branded placeholder
  * carries the card title as its label, so the page doubles as a shot list.
  *
- * The "Good to Know" panel sits above the cards deliberately: it is where the
- * add-ons and exclusions are stated, and the brief is explicit that surprises
- * on an estimate are the thing to design out.
+ * The "Good to Know" panel sits below the cards: it is where the add-ons and
+ * exclusions are stated, and the brief is explicit that surprises on an
+ * estimate are the thing to design out.
  *
  * @param array $args {
  *     @type array    $rows    Rows of [ title, copy ].
+ *     @type int[]    $images  Attachment ID per row, positionally matched. 0
+ *                              (or a missing index) falls back to the placeholder.
  *     @type string[] $intro   Paragraphs above the cards.
  *     @type string   $heading Section heading.
  *     @type string   $eyebrow Section eyebrow.
@@ -31,6 +33,7 @@ $args = wp_parse_args(
 	isset( $args ) ? $args : array(),
 	array(
 		'rows'       => array(),
+		'images'     => array(),
 		'intro'      => array(),
 		'heading'    => '',
 		'eyebrow'    => '',
@@ -59,6 +62,22 @@ if ( ! $args['rows'] ) {
 			</div>
 		<?php endif; ?>
 
+		<div class="sub-service-grid">
+			<?php foreach ( $args['rows'] as $i => $row ) : ?>
+				<article class="sub-service">
+					<div class="sub-service__media">
+						<?php jce_attachment_or_placeholder( isset( $args['images'][ $i ] ) ? $args['images'][ $i ] : 0, 'jce-card', 'media-ph--wide', $row[0] ); ?>
+					</div>
+					<div class="sub-service__body">
+						<h3><?php echo esc_html( $row[0] ); ?></h3>
+						<?php if ( ! empty( $row[1] ) ) : ?>
+							<p><?php echo esc_html( $row[1] ); ?></p>
+						<?php endif; ?>
+					</div>
+				</article>
+			<?php endforeach; ?>
+		</div>
+
 		<?php if ( $args['notes'] || $args['note_intro'] ) : ?>
 			<aside class="good-to-know">
 				<div class="good-to-know__head">
@@ -85,21 +104,5 @@ if ( ! $args['rows'] ) {
 				<?php endif; ?>
 			</aside>
 		<?php endif; ?>
-
-		<div class="sub-service-grid">
-			<?php foreach ( $args['rows'] as $row ) : ?>
-				<article class="sub-service">
-					<div class="sub-service__media">
-						<?php jce_media_placeholder( 'media-ph--wide', $row[0] ); ?>
-					</div>
-					<div class="sub-service__body">
-						<h3><?php echo esc_html( $row[0] ); ?></h3>
-						<?php if ( ! empty( $row[1] ) ) : ?>
-							<p><?php echo esc_html( $row[1] ); ?></p>
-						<?php endif; ?>
-					</div>
-				</article>
-			<?php endforeach; ?>
-		</div>
 	</div>
 </section>

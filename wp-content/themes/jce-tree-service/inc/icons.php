@@ -137,3 +137,30 @@ function jce_image_or_placeholder( $post_id = null, $size = 'large', $modifier =
 	}
 	jce_media_placeholder( $modifier, $label );
 }
+
+/**
+ * A specific attachment (not a post's Featured Image) with a graceful
+ * placeholder fallback — for per-row photos like the "The List" slots on a
+ * Service, where each image belongs to a line of text rather than to a post.
+ *
+ * @param int    $attachment_id 0 renders the placeholder.
+ * @param string $size          Registered image size.
+ * @param string $modifier      Extra class, e.g. 'media-ph--wide'.
+ * @param string $label         Alt text, and the placeholder's caption.
+ */
+function jce_attachment_or_placeholder( $attachment_id, $size = 'jce-card', $modifier = '', $label = '' ) {
+	if ( $attachment_id && wp_attachment_is_image( $attachment_id ) ) {
+		echo wp_get_attachment_image(
+			$attachment_id,
+			$size,
+			false,
+			array(
+				'loading'  => 'lazy',
+				'decoding' => 'async',
+				'alt'      => $label,
+			)
+		);
+		return;
+	}
+	jce_media_placeholder( $modifier, $label );
+}

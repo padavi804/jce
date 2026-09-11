@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<p><?php
 					printf(
 						/* translators: %s: number of ISA-certified arborists */
-						esc_html__( '%s ISA Certified Arborists and two forestry-degreed tree professionals on staff mean the person assessing your tree has the training to understand how trees grow, decline, and fail, and can tell you when removal is necessary and when a tree can be saved. It also means the crews working on your property bring deep knowledge of the trees, diseases, and conditions common to our area.', 'jce' ),
+						esc_html__( '%s ISA Certified Arborists and 2 forestry-degreed tree professionals on staff mean the person assessing your tree has the training to understand how trees grow, decline, and fail, and can tell you when removal is necessary and when a tree can be saved. It also means the crews working on your property bring deep knowledge of the trees, diseases, and conditions common to our area.', 'jce' ),
 						esc_html( jce_biz( 'arborist_count', '4' ) )
 					);
 				?></p>
