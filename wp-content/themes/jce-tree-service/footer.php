@@ -3,12 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$phone     = jce_biz( 'phone' );
-$email     = jce_biz( 'email' );
 $facebook  = jce_biz( 'facebook_url' );
 $instagram = jce_biz( 'instagram_url' );
 $youtube   = jce_biz( 'youtube_url' );
-$street    = jce_biz( 'street_address' );
 ?>
 </main>
 
@@ -31,7 +28,7 @@ $street    = jce_biz( 'street_address' );
 			<?php else : ?>
 				<h3><?php bloginfo( 'name' ); ?></h3>
 			<?php endif; ?>
-			<p><?php esc_html_e( 'Family-owned tree care in River Falls since 2001. Four ISA-certified arborists, a full equipment fleet, and a crew that cleans up like they\'re leaving their own yard.', 'jce' ); ?></p>
+			<p><?php esc_html_e( 'JCE Tree Service · River Falls, WI · Serving River Falls, Hudson, Prescott & the St. Croix Valley for 25 years', 'jce' ); ?></p>
 
 			<?php if ( $facebook || $instagram || $youtube ) : ?>
 				<div class="footer-socials">
@@ -54,80 +51,6 @@ $street    = jce_biz( 'street_address' );
 						</a>
 					<?php endif; ?>
 				</div>
-			<?php endif; ?>
-		</div>
-
-		<div class="footer-col">
-			<h3><?php esc_html_e( 'Services', 'jce' ); ?></h3>
-			<?php
-			if ( has_nav_menu( 'services' ) ) {
-				wp_nav_menu( array( 'theme_location' => 'services', 'container' => false, 'depth' => 1 ) );
-			} else {
-				$services = get_posts(
-					array(
-						'post_type'      => 'service',
-						'posts_per_page' => 8,
-						'orderby'        => 'menu_order title',
-						'order'          => 'ASC',
-					)
-				);
-				if ( $services ) {
-					echo '<ul>';
-					foreach ( $services as $service ) {
-						printf( '<li><a href="%s">%s</a></li>', esc_url( get_permalink( $service ) ), esc_html( get_the_title( $service ) ) );
-					}
-					echo '</ul>';
-				}
-			}
-			?>
-		</div>
-
-		<div class="footer-col">
-			<h3><?php esc_html_e( 'Service Area', 'jce' ); ?></h3>
-			<?php
-			$locations = get_posts(
-				array(
-					'post_type'      => 'location',
-					'posts_per_page' => 6,
-					'orderby'        => 'menu_order title',
-					'order'          => 'ASC',
-				)
-			);
-			if ( $locations ) {
-				echo '<ul>';
-				foreach ( $locations as $location ) {
-					printf( '<li><a href="%s">%s</a></li>', esc_url( get_permalink( $location ) ), esc_html( get_the_title( $location ) ) );
-				}
-				echo '</ul>';
-			}
-			?>
-			<?php if ( has_nav_menu( 'footer' ) ) : ?>
-				<h3 style="margin-top:1.75rem;"><?php esc_html_e( 'Company', 'jce' ); ?></h3>
-				<?php wp_nav_menu( array( 'theme_location' => 'footer', 'container' => false, 'depth' => 1 ) ); ?>
-			<?php endif; ?>
-		</div>
-
-		<div class="footer-col">
-			<h3><?php esc_html_e( 'Get In Touch', 'jce' ); ?></h3>
-			<ul class="footer-contact">
-				<?php if ( $phone ) : ?>
-					<li><?php jce_icon( 'phone' ); ?><a href="tel:<?php echo esc_attr( jce_tel() ); ?>"><?php echo esc_html( $phone ); ?></a></li>
-				<?php endif; ?>
-				<?php if ( $email ) : ?>
-					<li><?php jce_icon( 'mail' ); ?><a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></li>
-				<?php endif; ?>
-				<li>
-					<?php jce_icon( 'map-pin' ); ?>
-					<span>
-						<?php if ( $street ) : ?><?php echo esc_html( $street ); ?><br><?php endif; ?>
-						<?php echo esc_html( jce_biz( 'city', 'River Falls' ) . ', ' . jce_biz( 'state', 'WI' ) . ' ' . jce_biz( 'zip' ) ); ?>
-					</span>
-				</li>
-				<li><?php jce_icon( 'clock' ); ?><span><?php echo esc_html( jce_biz( 'business_hours' ) ); ?><br><?php echo esc_html( jce_biz( 'emergency_note', '24/7 storm response' ) ); ?></span></li>
-			</ul>
-
-			<?php if ( is_active_sidebar( 'footer-1' ) ) : ?>
-				<div class="footer-widgets"><?php dynamic_sidebar( 'footer-1' ); ?></div>
 			<?php endif; ?>
 		</div>
 
