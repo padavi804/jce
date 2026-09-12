@@ -124,41 +124,41 @@ while ( have_posts() ) :
 	/* --------------------------------------------------------------
 	 * How the job goes
 	 * ------------------------------------------------------------ */
-	get_template_part(
-		'template-parts/personal-estimate-steps',
-		null,
-		array(
-			'rows'    => $steps_rows,
-			'heading' => jce_field( '_jce_service_steps_heading', null, __( 'The Personal Estimate', 'jce' ) ),
-			// The steps section always renders — it falls back to the brief's
-			// standard three when the field is empty.
-			'class'   => jce_band(),
-		)
-	);
+	// get_template_part(
+	// 	'template-parts/personal-estimate-steps',
+	// 	null,
+	// 	array(
+	// 		'rows'    => $steps_rows,
+	// 		'heading' => jce_field( '_jce_service_steps_heading', null, __( 'The Personal Estimate', 'jce' ) ),
+	// 		// The steps section always renders — it falls back to the brief's
+	// 		// standard three when the field is empty.
+	// 		'class'   => jce_band(),
+	// 	)
+	// );
 
 	/* --------------------------------------------------------------
 	 * Proof — claim, quote, photograph. No fallback copy: a fabricated
 	 * customer quote is not an acceptable placeholder.
 	 * ------------------------------------------------------------ */
-	get_template_part(
-		'template-parts/proof-blocks',
-		null,
-		array(
-			'rows'    => $proof_rows,
-			'eyebrow' => __( 'Proof', 'jce' ),
-			'heading' => __( 'What That Looks Like on a Real Property', 'jce' ),
-			'class'   => jce_band_if( $proof_rows ),
-		)
-	);
+	// get_template_part(
+	// 	'template-parts/proof-blocks',
+	// 	null,
+	// 	array(
+	// 		'rows'    => $proof_rows,
+	// 		'eyebrow' => __( 'Proof', 'jce' ),
+	// 		'heading' => __( 'What That Looks Like on a Real Property', 'jce' ),
+	// 		'class'   => jce_band_if( $proof_rows ),
+	// 	)
+	// );
 
-	get_template_part( 'template-parts/credentials' );
-	jce_band( 'dark' );
+	// get_template_part( 'template-parts/credentials' );
+	// jce_band( 'dark' );
 
 	/* --------------------------------------------------------------
 	 * FAQ
 	 * ------------------------------------------------------------ */
 
-	get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
+	// get_template_part( 'template-parts/service-area', null, array( 'class' => jce_band() ) );
 	get_template_part( 'template-parts/related-services', null, array( 'class' => jce_band() ) );
 
 	get_template_part(

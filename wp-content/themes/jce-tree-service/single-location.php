@@ -225,35 +225,11 @@ while ( have_posts() ) :
 	<?php
 	/* --------------------------------------------------------------
 	 * Process — the brief's three-step Personal Estimate.
-	 *
-	 * Passed explicitly rather than inherited: the Customizer default is the
-	 * five-step version approved for the Services pages, and this page's
-	 * approved copy is the three-step one.
 	 * ------------------------------------------------------------ */
 	get_template_part(
-		'template-parts/personal-estimate-steps',
+		'template-parts/personal-estimate-steps-3step',
 		null,
-		array(
-			'heading' => __( 'The Personal Estimate', 'jce' ),
-			'rows'    => array(
-				array(
-					__( 'You call, we schedule your free estimate.', 'jce' ),
-					__( "A local arborist walks your property and figures out what's going on. Sometimes that means the tree comes down. Sometimes it means we tell you it didn't need to. Either way, you get an expert assessment and a clear recommendation on next steps.", 'jce' ),
-				),
-				array(
-					__( "We walk you through what's needed", 'jce' ),
-					__( "You get a hand-written estimate on the spot, and we walk you through it. No callback in three days, no fine print to decode. Just a straight answer while we're standing right there looking at the same tree you are.", 'jce' ),
-				),
-				array(
-					__( 'We schedule the job to fit your needs and the season.', 'jce' ),
-					__( "Once you give the go-ahead, we get you on the schedule, timed to the job and the season. A dead ash in July and a leaning oak in January don't call for the same approach, and we'll tell you why.", 'jce' ),
-				),
-			),
-			// The approved copy ends this section on the phone number, not the
-			// estimate button the shared part offers by default.
-			'cta'     => 'call',
-			'class'   => jce_band(),
-		)
+		array( 'class' => jce_band() )
 	);
 
 

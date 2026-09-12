@@ -1596,18 +1596,6 @@ strong { color: var(--ink); font-weight: 600; }
 }
 .tag .icon { width: .95rem; height: .95rem; color: var(--green); flex: none; }
 
-/* Distance line on a town card in the locations grid */
-.area-card__meta {
-	display: inline-flex;
-	align-items: center;
-	gap: .4rem;
-	margin-bottom: .5rem;
-	font-size: .82rem;
-	font-weight: 600;
-	color: var(--green-700);
-}
-.area-card__meta .icon { width: .95rem; height: .95rem; flex: none; }
-
 /* ===========================================================
    24. SERVICE PAGE — hero actions, proof blocks, sub-services
    =========================================================== */

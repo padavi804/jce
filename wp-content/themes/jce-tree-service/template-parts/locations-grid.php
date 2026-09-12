@@ -79,24 +79,11 @@ $secondary = new WP_Query(
 				<?php
 				while ( $primary->have_posts() ) :
 					$primary->the_post();
-					$distance = get_post_meta( get_the_ID(), '_jce_location_distance', true );
 					?>
 					<a class="area-card" href="<?php the_permalink(); ?>">
 						<span class="area-card__media"><?php jce_card_image( 'location' ); ?></span>
 						<span class="area-card__body">
 							<h3><?php the_title(); ?></h3>
-							<?php if ( $distance ) : ?>
-								<span class="area-card__meta"><?php jce_icon( 'map-pin' ); ?><?php echo esc_html( $distance ); ?></span>
-							<?php endif; ?>
-							<?php
-							// A town with no Excerpt and no body copy would otherwise
-							// leave an empty paragraph under its name. Approved town
-							// copy is still pending, so absent has to render as absent.
-							$card_summary = trim( wp_trim_words( get_the_excerpt(), 20 ) );
-							?>
-							<?php if ( $card_summary ) : ?>
-								<p><?php echo esc_html( $card_summary ); ?></p>
-							<?php endif; ?>
 							<span class="link-arrow"><?php esc_html_e( 'See our work here', 'jce' ); ?><?php jce_icon( 'arrow-right' ); ?></span>
 						</span>
 					</a>

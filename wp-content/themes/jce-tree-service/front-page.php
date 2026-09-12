@@ -41,12 +41,12 @@ get_template_part( 'template-parts/trust-band' );
 // template-parts/stats.php and its styles are retained — re-add the
 // get_template_part() call here to bring it back.
 get_template_part( 'template-parts/services-grid' );
-// Same shared five steps as every other page — only the heading differs, so
-// the homepage can introduce the pillar by name.
+// Three-step version of the Personal Estimate, same as the Service Area
+// pages. Keeps the estimate-button CTA rather than the phone-only version.
 get_template_part(
-	'template-parts/personal-estimate-steps',
+	'template-parts/personal-estimate-steps-3step',
 	null,
-	array( 'heading' => jce_biz( 'process_heading_home', jce_default_process_heading_home() ) )
+	array( 'cta' => true )
 );
 get_template_part( 'template-parts/credentials' );
 get_template_part( 'template-parts/service-area' );
