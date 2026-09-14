@@ -30,7 +30,7 @@ $is_emergency = 'emergency' === $args['variant'];
 					<?php jce_icon( 'phone' ); ?><?php echo esc_html( jce_emergency_phone() ); ?>
 				</a>
 			<?php else : ?>
-				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( jce_url( 'estimate_url', '/estimate/' ) ); ?>">
+				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( jce_url( 'estimate_url', '/contact/' ) ); ?>">
 					<?php esc_html_e( 'Get Your Personal Estimate', 'jce' ); ?>
 				</a>
 				<?php if ( jce_biz( 'phone' ) ) : ?>

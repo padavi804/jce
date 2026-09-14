@@ -471,13 +471,6 @@ function jce_demo_pages() {
 			),
 		),
 		array(
-			'slug'     => 'estimate',
-			'title'    => 'Contact &amp; Free Estimate',
-			'template' => 'page-templates/template-contact.php',
-			'excerpt'  => 'An arborist comes out, walks the property, and hand-writes the estimate. No cost, no pressure.',
-			'body'     => '',
-		),
-		array(
 			// Must stay in sync with the jce_emergency_url Customizer default —
 			// this is what the header's Storm Emergency button and the sticky
 			// mobile call bar link to. Pages and Services are separate slug
@@ -493,11 +486,11 @@ function jce_demo_pages() {
 		// APPROVED COPY — client-provided, below this line. Added alongside the
 		// existing Pages rather than replacing any of them: a plain import run
 		// only ever creates a Page whose slug does not exist yet, so this never
-		// touches About / Service Area / Services / Contact & Free Estimate /
-		// Emergency, whether or not they've since been edited in WordPress.
+		// touches About / Service Area / Services / Emergency, whether or not
+		// they've since been edited in WordPress.
 
-		// A plain contact-info page, separate from the "estimate" Page above —
-		// that one owns /estimate/ and its own, longer estimate form.
+		// The one Contact / Estimate page — owns /contact/ and the estimate
+		// form (jce_estimate_url Customizer default points here).
 		array(
 			'slug'     => 'contact',
 			'title'    => 'Contact Us',
@@ -634,7 +627,7 @@ function jce_demo_insert( $post_type, $item, &$log, $replace = false ) {
 	}
 
 	// WordPress silently appends a suffix when a slug is already taken. Several
-	// of these slugs are linked to by Customizer defaults (/estimate/,
+	// of these slugs are linked to by Customizer defaults (/contact/,
 	// /emergency-tree-service/, /service-area/), so a drifted slug is a broken
 	// nav button rather than a cosmetic difference — say so rather than
 	// reporting a clean success.

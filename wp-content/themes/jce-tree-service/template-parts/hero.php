@@ -43,7 +43,7 @@ $accent = jce_biz( 'hero_headline_accent', 'No Exceptions.' );
 			<p class="hero__subhead"><?php echo esc_html( jce_biz( 'hero_subhead' ) ); ?></p>
 
 			<div class="btn-row hero__actions">
-				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( jce_url( 'estimate_url', '/estimate/' ) ); ?>">
+				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( jce_url( 'estimate_url', '/contact/' ) ); ?>">
 					<?php esc_html_e( 'Get Your Personal Estimate', 'jce' ); ?>
 					<?php jce_icon( 'arrow-right' ); ?>
 				</a>

@@ -136,7 +136,7 @@ function jce_primary_menu_fallback() {
 		home_url( '/services/' )     => __( 'Services', 'jce' ),
 		home_url( '/service-area/' ) => __( 'Service Area', 'jce' ),
 		home_url( '/about/' )        => __( 'About Us', 'jce' ),
-		jce_url( 'estimate_url', '/estimate/' ) => __( 'Contact', 'jce' ),
+		jce_url( 'estimate_url', '/contact/' ) => __( 'Contact', 'jce' ),
 	);
 
 	echo '<ul>';

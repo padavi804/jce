@@ -2,9 +2,8 @@
 /**
  * Template Name: Contact Us
  *
- * A plain contact page — hours, phone, email, and a short request form.
- * Separate from the "Contact / Estimate" template (template-contact.php),
- * which owns the existing /estimate/ page and its own, longer form.
+ * The site's one contact/estimate page (/contact/) — hours, phone, email,
+ * and the estimate request form.
  *
  * The hours/phone/email below are literal text rather than jce_biz(), which
  * reads the site-wide Customizer contact info. This page's approved copy
@@ -90,61 +89,69 @@ while ( have_posts() ) :
 
 						<?php
 						/**
-						 * Swap this block for your forms plugin, e.g.:
-						 *   echo do_shortcode( '[contact-form-7 id="123" title="Contact Request"]' );
-						 * The markup below matches the theme styles so the plugin
-						 * output can reuse the same classes.
+						 * Contact request form — Contact Form 7. After creating the
+						 * form in wp-admin → Contact → Contact Forms, replace the id
+						 * below with the id CF7 assigns it (shown in the admin list
+						 * and in the shortcode CF7 gives you to copy).
+						 * The CF7 form content reuses the same field ids/classes the
+						 * theme styles target (form-grid, form-field, req, btn--*).
 						 *
-						 * Approved confirmation message, for whichever plugin ends up
-						 * sending it: "Thank you! Estimate requests completed during
-						 * the workweek are generally responded to the same day.
-						 * WEekends will be replied the next day."
+						 * Approved confirmation message (set on the form's Messages
+						 * tab, "Message sent" field): "Thank you! Estimate requests
+						 * completed during the workweek are generally responded to
+						 * the same day. Weekends will be replied the next day."
 						 */
+						if ( shortcode_exists( 'contact-form-7' ) ) {
+							echo do_shortcode( '[contact-form-7 id="000" title="Contact Request"]' );
+						} else {
+							?>
+							<form class="estimate-form" method="post" action="">
+								<div class="form-field">
+									<label for="jce-name"><?php esc_html_e( 'Name', 'jce' ); ?> <span class="req">*</span></label>
+									<input type="text" id="jce-name" name="jce-name" autocomplete="name" required>
+								</div>
+
+								<div class="form-field">
+									<label for="jce-address"><?php esc_html_e( 'Property Address', 'jce' ); ?> <span class="req">*</span></label>
+									<input type="text" id="jce-address" name="jce-address" autocomplete="street-address" required>
+								</div>
+
+								<div class="form-grid">
+									<div class="form-field">
+										<label for="jce-phone"><?php esc_html_e( 'Phone Number', 'jce' ); ?> <span class="req">*</span></label>
+										<input type="tel" id="jce-phone" name="jce-phone" autocomplete="tel" required>
+									</div>
+									<div class="form-field">
+										<label for="jce-email"><?php esc_html_e( 'Email', 'jce' ); ?> <span class="req">*</span></label>
+										<input type="email" id="jce-email" name="jce-email" autocomplete="email" required>
+									</div>
+								</div>
+
+								<div class="form-field">
+									<label for="jce-service"><?php esc_html_e( 'What can we help you with?', 'jce' ); ?> <span class="req">*</span></label>
+									<select id="jce-service" name="jce-service" required>
+										<option value="" disabled selected><?php esc_html_e( 'Select…', 'jce' ); ?></option>
+										<option><?php esc_html_e( 'Tree removal', 'jce' ); ?></option>
+										<option><?php esc_html_e( 'Tree trimming / pruning', 'jce' ); ?></option>
+										<option><?php esc_html_e( 'Tree health or disease concern', 'jce' ); ?></option>
+										<option><?php esc_html_e( 'Storm damage / emergency cleanup', 'jce' ); ?></option>
+										<option><?php esc_html_e( 'Brush or lot clearing', 'jce' ); ?></option>
+										<option><?php esc_html_e( "Not sure / need an arborist's recommendation", 'jce' ); ?></option>
+									</select>
+								</div>
+
+								<div class="form-field">
+									<label for="jce-message"><?php esc_html_e( 'Tell us a little about the project', 'jce' ); ?> <span class="req">*</span></label>
+									<textarea id="jce-message" name="jce-message" required placeholder="<?php esc_attr_e( 'How many trees are involved? What are you noticing? Is the tree near a house, power line, driveway, or other structure?', 'jce' ); ?>"></textarea>
+								</div>
+
+								<button type="submit" class="btn btn--primary btn--lg btn--block">
+									<?php esc_html_e( 'Request My Free Estimate', 'jce' ); ?>
+								</button>
+							</form>
+							<?php
+						}
 						?>
-						<form class="estimate-form" method="post" action="">
-							<div class="form-field">
-								<label for="jce-name"><?php esc_html_e( 'Name', 'jce' ); ?> <span class="req">*</span></label>
-								<input type="text" id="jce-name" name="jce-name" autocomplete="name" required>
-							</div>
-
-							<div class="form-field">
-								<label for="jce-address"><?php esc_html_e( 'Property Address', 'jce' ); ?> <span class="req">*</span></label>
-								<input type="text" id="jce-address" name="jce-address" autocomplete="street-address" required>
-							</div>
-
-							<div class="form-grid">
-								<div class="form-field">
-									<label for="jce-phone"><?php esc_html_e( 'Phone Number', 'jce' ); ?> <span class="req">*</span></label>
-									<input type="tel" id="jce-phone" name="jce-phone" autocomplete="tel" required>
-								</div>
-								<div class="form-field">
-									<label for="jce-email"><?php esc_html_e( 'Email', 'jce' ); ?> <span class="req">*</span></label>
-									<input type="email" id="jce-email" name="jce-email" autocomplete="email" required>
-								</div>
-							</div>
-
-							<div class="form-field">
-								<label for="jce-service"><?php esc_html_e( 'What can we help you with?', 'jce' ); ?> <span class="req">*</span></label>
-								<select id="jce-service" name="jce-service" required>
-									<option value="" disabled selected><?php esc_html_e( 'Select…', 'jce' ); ?></option>
-									<option><?php esc_html_e( 'Tree removal', 'jce' ); ?></option>
-									<option><?php esc_html_e( 'Tree trimming / pruning', 'jce' ); ?></option>
-									<option><?php esc_html_e( 'Tree health or disease concern', 'jce' ); ?></option>
-									<option><?php esc_html_e( 'Storm damage / emergency cleanup', 'jce' ); ?></option>
-									<option><?php esc_html_e( 'Brush or lot clearing', 'jce' ); ?></option>
-									<option><?php esc_html_e( "Not sure / need an arborist's recommendation", 'jce' ); ?></option>
-								</select>
-							</div>
-
-							<div class="form-field">
-								<label for="jce-message"><?php esc_html_e( 'Tell us a little about the project', 'jce' ); ?> <span class="req">*</span></label>
-								<textarea id="jce-message" name="jce-message" required placeholder="<?php esc_attr_e( 'How many trees are involved? What are you noticing? Is the tree near a house, power line, driveway, or other structure?', 'jce' ); ?>"></textarea>
-							</div>
-
-							<button type="submit" class="btn btn--primary btn--lg btn--block">
-								<?php esc_html_e( 'Request My Free Estimate', 'jce' ); ?>
-							</button>
-						</form>
 					</div>
 				</div>
 

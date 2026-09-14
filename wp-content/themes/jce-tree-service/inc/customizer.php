@@ -38,7 +38,7 @@ function jce_customize_register( $wp_customize ) {
 		'jce_state'          => array( 'jce_contact', __( 'State (abbr.)', 'jce' ), 'WI', 'sanitize_text_field' ),
 		'jce_zip'            => array( 'jce_contact', __( 'ZIP Code', 'jce' ), '54022', 'sanitize_text_field' ),
 		'jce_business_hours' => array( 'jce_contact', __( 'Business Hours', 'jce' ), 'Mon–Fri 7:00am–5:00pm', 'sanitize_text_field' ),
-		'jce_estimate_url'   => array( 'jce_contact', __( 'Estimate Page URL', 'jce' ), '/estimate/', 'sanitize_text_field' ),
+		'jce_estimate_url'   => array( 'jce_contact', __( 'Estimate Page URL', 'jce' ), '/contact/', 'sanitize_text_field' ),
 
 		// Emergency.
 		'jce_emergency_phone' => array( 'jce_emergency', __( 'Emergency Phone (blank = main number)', 'jce' ), '', 'sanitize_text_field' ),

@@ -76,7 +76,7 @@ if ( ! is_page_template( 'page-templates/template-emergency.php' ) ) :
 		<a class="btn btn--emergency" href="tel:<?php echo esc_attr( jce_emergency_tel() ); ?>">
 			<?php jce_icon( 'phone' ); ?><span><?php esc_html_e( 'Call Now', 'jce' ); ?></span>
 		</a>
-		<a class="btn btn--primary" href="<?php echo esc_url( jce_url( 'estimate_url', '/estimate/' ) ); ?>">
+		<a class="btn btn--primary" href="<?php echo esc_url( jce_url( 'estimate_url', '/contact/' ) ); ?>">
 			<?php esc_html_e( 'Free Estimate', 'jce' ); ?>
 		</a>
 	</div>

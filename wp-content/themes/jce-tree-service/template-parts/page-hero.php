@@ -94,7 +94,7 @@ $focus_pct  = $focus_step <= 5
 
 		<?php if ( $args['buttons'] ) : ?>
 			<div class="btn-row page-hero__actions">
-				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( jce_url( 'estimate_url', '/estimate/' ) ); ?>">
+				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( jce_url( 'estimate_url', '/contact/' ) ); ?>">
 					<?php esc_html_e( 'Get Your Personal Estimate', 'jce' ); ?>
 				</a>
 				<?php if ( jce_biz( 'phone' ) ) : ?>
